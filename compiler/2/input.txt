@@ -1,0 +1,7 @@
+define a;
+array c[3];
+
+a = 0;
+while(a<3){
+ c[1] = a;
+}
