@@ -1,0 +1,11 @@
+qsort: main.o quicksort.o
+	gcc -o qsort main.o quicksort.o
+
+main.o: main.c myHeader.h
+	gcc -c main.c
+
+quicksort.o: quicksort.c myHeader.h
+	gcc -c quicksort.c
+
+clear:
+	rm -r *~
