@@ -14,8 +14,8 @@
 
 int main(int argc, char* argv[]){
   int s, i=0, len, size, n;
-  char recv_buf[BUFSZE]={0};  /* 受信バッファ                  */
-  char send_buf[BUFSIZE]={0};  /* 送信バッファ                  */
+  char recv_buf[BUFSIZE]={0};  /* 受信バッファ                  */
+  char send_buf[BUFSIZE+3]={0};  /* 送信バッファ                  */
   struct sockaddr_in sa;
   struct hostent *hp;   
   struct timeval tv;    /* selectのタイムアウト時間       */
@@ -42,12 +42,12 @@ int main(int argc, char* argv[]){
     exit(1);
   }
 
-printf("connected to '%s'\n", inet_ntoa(sa.sin_addr));
+  printf("connected to '%s'\n", inet_ntoa(sa.sin_addr));
 
   /* client processing routine */
   while(1){
-    bzero(send_buf,strlen(send_buf));
-    bzero(recv_buf,strlen(recv_buf));
+    //bzero(send_buf,strlen(send_buf));
+    //bzero(recv_buf,strlen(recv_buf));
     tv.tv_sec = 600;
     tv.tv_usec = 0;
 
@@ -64,13 +64,20 @@ printf("connected to '%s'\n", inet_ntoa(sa.sin_addr));
       if((n = read(0, recv_buf, BUFSIZE-1))<= 0) break;
       recv_buf[n]='\0';
       sscanf(recv_buf, "%s", send_buf);
-      if(strcmp(send_buf, "quit") == 0) break;
+      if(strcmp(send_buf, "%Q") == 0 ||
+	 strcmp(send_buf, "%q") == 0) {
+	printf("Bye.\n");
+	break;
+      }
       if(send(s, recv_buf, n, 0) <= 0) break;
     }
 
     /* server */
     if (FD_ISSET(s, &readfd)){
-      if ((n = recv(s, recv_buf, BUFSIZE-1, 0)) <= 0){
+      //recv(s,recv_buf,2,0);
+      //printf("%s",recv_buf);
+      //bzero(recv_buf,BUFSIZE);
+      if ((n = recv(s, recv_buf, (BUFSIZE+3)-1, 0)) < 0){
 	fprintf(stderr, "Error: connection closed. \n");
 	exit(EXIT_FAILURE);
       }
@@ -79,16 +86,16 @@ printf("connected to '%s'\n", inet_ntoa(sa.sin_addr));
       fflush(stdout);
     }
   }
-
-  strcpy(recv_buf, "quit");
-  send(s, recv_buf, n, 0);
+  bzero(send_buf, BUFSIZE);
+  strncpy(send_buf, "%Q", 2);
+  send(s, send_buf, n, 0);
   close(s);
 
   return EXIT_SUCCESS;
 }
 
 
-  /*
+/*
   while(1){
     bzero(buf2, sizeof(buf2));
     recv(s,buf2,5,0);
@@ -107,5 +114,5 @@ printf("connected to '%s'\n", inet_ntoa(sa.sin_addr));
     
     printf("%s\n",buf);
   }
-}
-  */
+}*/
+  
