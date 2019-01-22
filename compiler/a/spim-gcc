@@ -1,0 +1,49 @@
+#!/bin/sh
+
+# spim-gcc: klunge for feeding gcc -S output to the SPIM simulator.
+#
+# OPT1 ... Mandatory gcc options for the SPIM.
+# OPT2 ... Added for safety.
+# OPT3 ... Optimize options.
+#
+#             -fcaller-saves -fcse-follow-jumps -fcse-skip-blocks
+#              -fdelayed-branch -felide-constructors
+#              -fexpensive-optimizations -ffast-math -ffloat-store
+#              -fforce-addr -fforce-mem -finline-functions
+#              -fkeep-inline-functions -fmemoize-lookups
+#              -fno-default-inline -fno-defer-pop
+#              -fno-function-cse -fno-inline -fno-peephole
+#              -fomit-frame-pointer -frerun-cse-after-loop
+#              -fschedule-insns -fschedule-insns2
+#              -fstrength-reduce -fthread-jumps -funroll-all-loops
+#              -funroll-loops -O -O2
+#
+
+TOPDIR=`dirname $0`
+mips_gcc="$TOPDIR/../mipsel-linux-gcc/usr/local/bin/mipsel-linux-gcc" 
+
+OPT1='-fleading-underscore -mno-abicalls -finhibit-size-directive -mrnames -mmips-as -mno-check-zero-division'
+
+OPT2='-fverbose-asm -mcpu=r2000'
+
+OPT3='-O0'
+#OPT3='-O3'
+#OPT3='-O3 -fomit-frame-pointer'
+#OPT3='-O0 -fomit-frame-pointer'
+
+#
+# XXX: SPIM simulator is not able to deal ".ascii...\000" correctly.
+#      We have to replace .ascii to the corresponding .asciiz.  
+# 2010-12-02 nom.
+
+for file; do
+  $mips_gcc -S -o - $OPT1 $OPT2 $OPT3 $file                   \
+     | egrep -wv '^[	 ]*\.(extern|type|version|globl)'            \
+     | sed 's/^_main:/main:/'                                        \
+     | sed 's/^gcc2_compiled.://'                                    \
+     | sed '/^[	 ]*\.l*comm/s/, *[0-9][0-9]*$//'                     \
+     | sed 's/^\([\t ]*\.ascii\)\([\t ][\t ]*"[^"]*\)\\000"/\1z\2"/' \
+     > /tmp/spim.$$
+
+  mv /tmp/spim.$$ `basename $file .c`.s
+done
