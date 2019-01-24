@@ -558,7 +558,7 @@ void generate_statement_code(Node *stat, Symbols *gstable, Symbols *lstable){
   }
 
   if(stat->type == AST_WHILE){
-    generate_while_code(stat->child[0], gstable, lstable);
+    generate_while_code(stat, gstable, lstable);
   }
 }
 
@@ -682,12 +682,12 @@ int generate_arithmetic_code(Node *exp, Symbols *gstable, Symbols *lstable, int 
     printf("\tsw   $t2, %d($sp)  /* push */\n", -stack_size * 4);
   } else {
     if(exp->type == AST_NUM){
-      stack_size++;
       printf("\taddi $t0, $zero, %d\n", exp->value);
     } else if(exp->type == AST_IDENT){
       printf("\tlw  $t0, %s\n\tnop\n",
-	     get_variable_address(exp->child[0], gstable, lstable));
+	     get_variable_address(exp, gstable, lstable));
     }
+    stack_size++;
     printf("\tsw   $t0, %d($sp)  /* push */\n", -stack_size * 4);
   }
 
@@ -699,7 +699,7 @@ void generate_expression_code(Node *exp, Symbols *gstable, Symbols *lstable, cha
   if(exp == NULL) return;
 
   generate_arithmetic_code(exp->child[0], gstable, lstable, 0);  // left
-  //generate_arithmetic_code(exp->child[1], gstable, lstable, 1);  // right
+  generate_arithmetic_code(exp->child[1], gstable, lstable, 1);  // right
   // pop
   printf("\tlw  $t0, -4($sp)  /* pop */\n");
   printf("\tlw  $t1, -8($sp)  /* pop */\n");
@@ -724,7 +724,7 @@ void generate_expression_code(Node *exp, Symbols *gstable, Symbols *lstable, cha
     printf("\tslt  $t0, $t0, $t1\n");
     printf("\tbeq  $t0, $zero, %s\n", label_name);
     printf("\tnop\n");
-  } 
+  }
 }
 
 int label_count = 0;
@@ -740,11 +740,14 @@ void generate_while_code(Node *while_node, Symbols *gstable, Symbols *lstable){
   printf("while_L1_%d:\n", label_count);
   // stat
   if(while_node->child[1]->type == AST_STAT_LIST){  // ブロック
+    printf("/* stat list */\n");
     stat_list = while_node->child[1];
     while(stat_list != NULL){
       generate_statement_code(stat_list->child[0], gstable, lstable);
+      stat_list = stat_list->child[1];
     }
   } else {  // 1行だけ
+    printf("/* statement %s */\n", get_ntype_name(while_node->child[1]->type));
     generate_statement_code(while_node->child[1], gstable, lstable);
   }
   printf("while_L2_%d:\n", label_count);

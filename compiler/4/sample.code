@@ -1,8 +1,14 @@
-define ans;
-
+define a;
 func main(){
-     define i,fact;
 
-     ans = 1;
-     ans = ans + ans;
-     }
+define i;
+define sum;
+
+sum = 0;
+i = 1;
+while(i < 11) {
+   sum = sum + i;
+   i = i + 1;
+}
+ a = sum;	
+}

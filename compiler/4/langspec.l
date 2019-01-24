@@ -12,7 +12,7 @@ extern Symbols *stable;
 "define"    { return DEFINE; }
 "array"     { return ARRAY; }
 "func"      {
-    stable = sym_add(NULL, "local", SYM_KEYWORD);
+    stable = sym_add(NULL, "local", SYM_KEYWORD, 0, 0);
     return FUNC;
 }
 "funccall"  { return FUNCCALL; }

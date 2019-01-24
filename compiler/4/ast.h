@@ -90,3 +90,4 @@ void generate_expression_code(Node *exp, Symbols *gstable, Symbols *lstable, cha
 void generate_while_code(Node *while_node, Symbols *gstable, Symbols *lstable);
 
 #endif // _AST_H_
+

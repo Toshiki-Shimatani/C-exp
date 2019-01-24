@@ -461,10 +461,10 @@ int main(){
     fprintf(stderr, "Error\n");
     return 1;
   }
-  //  printf("tree\n");
+  // printf("tree\n");
   //print_ast_tree(top, global_stable, global_stable, 0);
   //printf("symbol table\n");
-  //print_symbol_table(global_stable, 0);
+  // print_symbol_table(global_stable, 0);
   //printf("code\n");
   generate_program_code(top, global_stable);
   return 0;
