@@ -1,0 +1,8 @@
+define ans;
+
+func main(){
+     define i,fact;
+
+     ans = 1;
+     ans = ans + ans;
+     }
