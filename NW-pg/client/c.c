@@ -13,7 +13,8 @@
 #define BUFSIZE 1024+1
 #define MAX_LINE_LEN 1024 /*1行に読み込める最大文字数*/
 
-int cmd_read(char *file, int socket);
+void cmd_read(char *file, int socket);
+void cmd_write(char *file, int socket);
 
 int main(int argc, char* argv[]){
   int s, i=0, len, size, n;
@@ -26,7 +27,10 @@ int main(int argc, char* argv[]){
   struct timeval tv;    /* selectのタイムアウト時間       */
   fd_set readfd;        /* selectで検出するディスクリプタ  */
   int cnt;
-
+  if(argc < 2){
+    fprintf(stderr,"Error: Didn't set IP_addr or domain\n");
+    exit(1);
+  }
   if((hp = gethostbyname(argv[1]))==0){
     fprintf(stderr,"Error: Unknwon host.\n");
     exit(1);
@@ -77,6 +81,16 @@ int main(int argc, char* argv[]){
 	printf("Bye.\n");
 	break;
       }
+      if(strcmp(cmd1,"%W")== 0 ||
+	 strcmp(cmd1,"w") == 0){
+	send(s,"%W\n",3,0);
+	if(cnt == 2) cmd_write(cmd2, s);
+	else if(cnt == 1){
+	  fprintf(stderr,"%W(%w) command need argument(filename).\n");
+	  fprintf(stderr,"format: %W (file name)\n");
+	}
+	continue;
+      }
       if(strcmp(cmd1, "%R") == 0 ||
 	 strcmp(cmd1, "%r") == 0) {
 	send(s,"%R\n",3,0);
@@ -85,6 +99,7 @@ int main(int argc, char* argv[]){
 	  fprintf(stderr,"%R(%r) command need argument(filename).\n");
 	  fprintf(stderr,"format: %R (file name)\n");
 	}
+	
 	  continue;
       }
       if(send(s, recv_buf, n, 0) <= 0) break;
@@ -97,6 +112,7 @@ int main(int argc, char* argv[]){
       //bzero(recv_buf,BUFSIZE);
       if ((n = recv(s, recv_buf, (BUFSIZE)-1, 0)) < 0){
 	fprintf(stderr, "Error: connection closed. \n");
+	close(s);
 	exit(EXIT_FAILURE);
       }
       recv_buf[n]='\0';
@@ -134,7 +150,7 @@ int main(int argc, char* argv[]){
   }
 }*/
   
-int cmd_read(char *file, int socket) {
+void cmd_read(char *file, int socket) {
   FILE *fp;
   char line[BUFSIZE + 1];
   char ack[2]={0};
@@ -144,7 +160,7 @@ int cmd_read(char *file, int socket) {
 
   if (fp == NULL) {
     fprintf(stderr,"Could not open file: $s\n", file);
-    return 1;
+    return;
   }
   
   while(1){
@@ -165,6 +181,45 @@ int cmd_read(char *file, int socket) {
   }
   printf("OK.\n");
   fclose(fp);
-  return 0;
+  return;
+}  
+
+void cmd_write(char *file, int socket){
+  FILE *fp;
+  char line[BUFSIZE + 1];
+  char ack[2]={0};
+  char recv_buf[BUFSIZE+1]={0};
+  int n;
+  
+  fp = fopen(file, "w");
+
+  if (fp == NULL) {
+    fprintf(stderr,"Could not open file: $s\n", file);
+    return;
+  }
+
+  if(strchr(file,'/')!=NULL){
+    fprintf(stderr,"This file-name is including invalid character '/' : %s\n", file);
+    return;
+  }
+  while(1){
+    if((recv(socket,ack,1,0))>0) {
+      break;
+    }
+  }
+  send(socket," ",1,0);
+  while (1) {
+      bzero(recv_buf,BUFSIZE);
+      while(1){
+	if((recv(socket,recv_buf,BUFSIZE,0)) > 0) break;
+      }
+      recv_buf[BUFSIZE]='\0';
+      if(*recv_buf == '\0') break;
+      fprintf(fp,"%s",recv_buf);
+      send(socket," ",1,0);
+  }
+  printf("OK.\n");
+  fclose(fp);
+  return;
 }  
 
