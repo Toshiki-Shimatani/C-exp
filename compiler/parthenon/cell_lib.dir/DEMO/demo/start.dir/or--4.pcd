@@ -1,0 +1,33 @@
+;***************************************************
+;* (C)Copyright by NTT DATA Corp.1994(unpublished) *
+;*                        All rights are reserved. *
+;***************************************************
+
+(def-module or--4 power 13 area 0.98 gates 4
+
+	(def-pin in1 type input  load 0.13)
+	(def-pin in2 type input  load 0.13)
+	(def-pin in3 type input  load 0.13)
+	(def-pin in4 type input  load 0.13)
+	(def-pin out type output load 0.11)
+
+        (def-symbol OR in1 in2 in3 in4 out)
+
+	(def-function out (or
+		in1
+		in2
+		in3
+		in4
+	))
+
+	(def-delay /in1 /out (+ 0.90 (* 1.5 ~out)))
+	(def-delay /in2 /out (+ 0.90 (* 1.5 ~out)))
+	(def-delay /in3 /out (+ 0.90 (* 1.5 ~out)))
+	(def-delay /in4 /out (+ 0.90 (* 1.5 ~out)))
+	(def-delay %in1 %out (+ 0.90 (* 1.5 ~out)))
+	(def-delay %in2 %out (+ 0.90 (* 1.5 ~out)))
+	(def-delay %in3 %out (+ 0.90 (* 1.5 ~out)))
+	(def-delay %in4 %out (+ 0.90 (* 1.5 ~out)))
+
+	(def-constraint drive (- 0 ~out) type max)
+)

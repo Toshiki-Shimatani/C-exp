@@ -1,0 +1,8 @@
+ name <new_name>
+
+        Change the name of the current network to <new_name>.
+        The name of the network is used in output networks (PLA, NLIF, or 
+        BLIF format).
+
+        The name of the current network is printed out by "print_names" 
+        command. 

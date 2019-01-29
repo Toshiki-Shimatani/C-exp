@@ -1,0 +1,30 @@
+;***************************************************
+;* (C)Copyright by NTT DATA Corp.1994(unpublished) *
+;*                        All rights are reserved. *
+;***************************************************
+
+(def-module ao_i31 power 12  area 1.1 gates 4
+  
+    (def-pin a1 type input load 0.13)
+    (def-pin a2 type input load 0.13)
+    (def-pin a3 type input load 0.13)
+    (def-pin b type input load 0.12)
+    (def-pin zn type output load 0.072)
+
+    (def-symbol AOI31 a1 a2 a3 b zn)
+
+    (def-function ^zn (or (and a1 a2 a3 ) b ))
+
+    (def-delay /a1 /zn (+ 0.80 (* 1.8 ~zn)))
+    (def-delay /a2 /zn (+ 0.83 (* 1.8 ~zn)))
+    (def-delay /a3 /zn (+ 0.89 (* 1.8 ~zn)))
+    (def-delay /b  /zn (+ 0.74 (* 1.8 ~zn)))
+
+    (def-delay %a1 %zn (+ 0.80 (* 1.8 ~zn)))
+    (def-delay %a2 %zn (+ 0.83 (* 1.8 ~zn)))
+    (def-delay %a3 %zn (+ 0.89 (* 1.8 ~zn)))
+    (def-delay %b  %zn (+ 0.74 (* 1.8 ~zn)))
+
+    (def-constraint drive (- 1.1 ~zn) type max)
+    (def-constraint drive (- ~zn 0) type min)
+)

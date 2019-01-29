@@ -1,0 +1,19 @@
+;***************************************************
+;* (C)Copyright by NTT DATA Corp.1994(unpublished) *
+;*                        All rights are reserved. *
+;***************************************************
+
+(def-module in2_i1 power 2.5 area 0.49 gates 2
+  
+    (def-pin i type input load 0.19)
+    (def-pin zn type output load 0.10)
+
+    (def-function ^zn i)
+
+    (def-delay /i /zn (+ 0.10 (* 0.91 ~zn)))
+    (def-delay %i %zn (+ 0.10 (* 0.91 ~zn)))
+
+	(def-constraint drive (- 2.2 ~zn) type max)
+	(def-constraint drive (- ~zn 0) type min)
+    (def-symbol INVERTER i zn)
+)

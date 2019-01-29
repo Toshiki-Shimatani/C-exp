@@ -1,0 +1,29 @@
+ＳＰＥＡＫＰ
+
+
+機　能　　　以後のコマンドの出力先(speaking-stream)を切り換えます。
+
+形　式　　　ｓｐｅａｋｐ　ファイル
+
+パラメータ　ファイル：コマンド出力先ファイルのパス名を指定します。
+　　　　　　　　　　　パス名は,ファイルシステムでの指定方法に従います。
+
+実行例　　　2SECONDS> speakp 2seconds.sim.msg
+　　　　　　2SECONDS> echo abc
+　　　　　　2SECONDS> speak
+　　　　　　2SECONDS> exec 'cat 2seconds.sim.msg'
+　　　　　　abc
+　　　　　　2SECONDS> speakp
+　　　　　　speakpa ' ' ;
+　　　　　　speakpa ' ' ;
+　　　　　　2SECONDS>
+
+注意事項　　・現在の出力先(speaking-stream)を,スタック領域にプッシュします。
+　　　　　　・ファイルを省略すると,speaking-streamのstock状態が表示されます。
+　　　　　　・指定されたファイルが既に存在する場合,そのファイルはトランケートされます。
+　　　　　　・指定されたファイルが存在しない場合,ファイルが新たに作成されます。
+
+関連事項　　SPEAKコマンド
+　　　　　　SPEAKAコマンド
+　　　　　　SPEAKPAコマンド
+　　　　　　SPEAKXコマンド

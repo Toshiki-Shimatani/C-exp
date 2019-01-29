@@ -1,0 +1,46 @@
+speak command
+
+    (A) FUNCTION
+        Speak command changes the destination of output (speaking
+        file) by the later use of commands to specebfied
+        file or standard output.
+
+    (B) SYNOPSIS
+
+         speak  [ <file> ]
+
+    (C) PARAMETERS
+        <file>
+        specifies the file to be the new destination.
+        When omitted, stdout of SECONDS' process becomes speaking
+        file.
+        Using this command as "speak /dev/tty" makes terminal as
+        speaking file, even if SECONDS has been invoked with being
+        redirected to a file or a pipe.
+
+    (D) NOTES
+       The <file> is overwritten if it already exists, otherwise it
+       is newly created.
+
+       (may be obsolete information)
+       When using this command on Apollo machine with assigning the
+       display manager's pad to control terminal, "speak /dev/tty"
+       never works as noted above without invoking SECONDS via
+       apollocap. Do the followings, after creating two pairs of
+       /dev/ptyp? and /dev/ttyp? by using /etc/crpty command.
+
+ % apollocap -p /bin/csh                #enter to apollocap
+ % seconds | < something >              #use seconds' output through pipe
+ SFL > echo "to something"              #write to pipe
+ SFL > speak /dev/tty                   # --- redirection
+ SFL > echo "to tty"                    #write to DM window to tty
+ SFL > speak                            # --- redirection
+ SFL > echo "to something again"        #write to pipe
+ SFL > bye                              #exit from seconds
+ % ^D                                   #exit from apollocap
+ %
+
+    (E) SEE ALSO
+        speaka command
+        claim command
+        listen command

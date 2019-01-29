@@ -1,0 +1,73 @@
+print command
+
+    (A) FUNCTION
+        Print command reports on the values of facilities on the
+        current simulation time in specified format.
+
+    (B) SYNOPSIS
+
+       print  <format>  { <facility> }
+
+    (C) PARAMETERS
+       <format>
+        specifies a format string in which the report is put.
+
+        Following rules are applied in the format:
+
+         1) a character which follows '\' is put out as it is, except
+           for 'n' and 't',
+         2) '\n' and '\t' are put out as a newline- and a tab
+           character, respectively,
+         3) and a substring starting from '%' that is not a part of
+            '\%' to the first non-numerical is called a conversion
+            directive, which is put out with being replaced as
+            describe below. Any character which is not included in the
+            directive is put out as it is.
+
+         A conversion directive is parsed as:
+
+          "%" { <digit> } <conversion character>
+
+        In a format, the n-th convertion directive, excluding the one
+        with <conversion character> being 't', coresponds to the n-th
+        <facility> parameter: the directive specifies how the
+        facility's value is put out.
+
+        The sequence of <digit> specifies the minimum width of the
+        value's display. If the sequece is omitted, the width is
+        specified as the one required for the value.
+
+        How the value is put out is specified with <conversion
+        character> as follows:
+
+         <conversion character>       display
+               b                  as a binary number
+               d                  as a decimal number
+               o                  as an octal number
+               x                  as a hexadecimal number
+               s                  as a state name
+           any other              as a hexadecimal number
+
+        Conversion character 't' put current time out in decimal.
+
+       <facility>
+        specifies the facility to be reported on.
+        A word in a memory facility can be specified as:
+
+         <facility>'@'<address> 
+
+        where the <address> is an unsigned integer that locates the word.
+
+    (D) NOTES
+        In the case that the number of non-'t' conversion directive
+        does not match to the number of given <facility> paramters,
+        excess <facility> parameters are ignored and excess directives
+        are put out as null string.
+
+    (E) SEE ALSO
+        rpt_add command
+
+
+
+
+

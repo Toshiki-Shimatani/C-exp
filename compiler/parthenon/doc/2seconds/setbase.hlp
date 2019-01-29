@@ -1,0 +1,30 @@
+NAME:
+	setbase
+
+SYNOPSIS:
+	setbase <base>
+	setbase
+
+DESCRIPTION:
+	Setbase command sets the base in which the following printing
+	commands will print their output.
+	The <base> must be one of characters 'B' (Binary), 'O'
+	(Octal), 'D' (Decimal) and 'X' (heXadecimal), according to the
+	desired base.
+
+	The second synopsis reports the current base setting.
+
+EXAMPLES:
+	2SECONDS> setbase ; expr /pc
+	setbase B ;
+	%B8%01111110
+	2SECONDS> setbase X ; setbase ; expr /pc
+	setbase X ;
+	%X8%7e
+
+NOTES:
+	* On 2SECONDS's invokation the base is initialized with 'B'.
+
+SEE ALSO:
+	EXPR(command)
+	EXPRN(command)

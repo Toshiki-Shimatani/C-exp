@@ -1,0 +1,20 @@
+  lct command
+
+  (A) FUNCTION
+
+  Assuming that cuurent module is either top module or a pcd module,
+  lct command lists a set of constraints the module has.
+
+  (B) SYNOPSIS
+
+  lct
+
+  (C) PARAMETERS
+
+  None.
+
+  (D) NOTES
+
+  (E) SEE ALSO
+
+  lcta, lcts, lctf

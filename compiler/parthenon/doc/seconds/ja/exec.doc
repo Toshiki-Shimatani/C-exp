@@ -1,0 +1,36 @@
+exec コマンド
+
+　　(A)  機能
+　　　　 チャイルドプロセスをフォークし、シェルを起動します。
+
+　　(B)  形式
+
+　　　　 exec　[ <command> ]
+
+　　(C)  パラメータ
+        <command>
+          シェルが実行すべきコマンドで、一つのトークン文字列でなければなりま
+          せん。
+          <command> を指定すると、<command> が、シェルにより実行されます。
+          <command> を省略するとシェル自身が起動され、コマンド待ちとなります。
+          どのシェルが起動されるかは、SHELL 環境変数によって決まります。
+                SHELL 変数                      起動されるシェル
+                  /com/sh                         /com/sh
+                  /bin/sh                         /bin/sh
+                  /bin/csh                        /bin/sh(/bin/cshではない）
+
+
+　　(D) 注意事項
+　　　  チャイルドプロセスの stdin , stdout , stderr は、それぞれ SECONDS の
+　　　　stdin , stdout , stderr に設定され、 listen , speak , claim コマンド
+        により切り換えることはできません。
+        <command> は、チャイルドプロセスで実行されるため、SECONDS プロセスの
+        ワーキングディレクトリや環境変数を変えることはできません。これらを変
+        えるには、 dir/ setenv コマンドを使用してください。
+
+　　(E) 関連事項
+        dir コマンド
+        ldir コマンド
+        setenv コマンド
+
+

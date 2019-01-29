@@ -1,0 +1,18 @@
+task command
+
+    (A) FUNCTION
+        Task command reports to the speaking file on each of the
+        active task at the time.
+
+    (B) SYNOPSIS
+
+         task
+
+    (C) PARAMETERS
+        None.
+
+    (D) NOTES
+
+    (E) SEE ALSO
+        2.5 execution of simulation
+        forward command

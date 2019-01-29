@@ -1,0 +1,24 @@
+;***************************************************
+;* (C)Copyright by NTT DATA Corp.1994(unpublished) *
+;*                        All rights are reserved. *
+;***************************************************
+
+(def-module bgate--2 power 3.4 area 0.49 gates 2
+
+	(def-pin clock type input  load 0.16 note clock)
+	(def-pin enb   type input  load 0.16)
+	(def-pin nout  type output load 0.10)
+
+        (def-symbol NAND enb clock nout)
+
+	(def-function ^nout (b_gate--2 clock enb))
+
+	(def-delay /clock \nout (+ 0.15 (* 1.8 ~nout)))
+	(def-delay \clock /nout (+ 0.15 (* 1.8 ~nout)))
+
+	(def-constraint setup (- /clock /enb) type setup)
+	(def-constraint hold1 (- (+ /enb ?cycle) \clock) type hold)
+	(def-constraint hold2 (- %enb \clock 0)          type hold)
+
+	(def-constraint drive (- 0 ~nout) type max)
+)

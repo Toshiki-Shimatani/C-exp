@@ -1,0 +1,27 @@
+ＭＯＮ＿ＯＦＦ
+
+
+機　能　　　指定したモニターDBのエントリを,forwardコマンドのブレーク条件から外します。
+
+形　式　　　ｍｏｎ＿ｏｆｆ　キー
+
+パラメータ　キー：モニター出力を停止するモニターセルの識別名を指定します。
+
+実行例　　　2SECONDS> monitor do　　　
+　　　　　　mon2　　unknown　　　　
+　　　　　　mon1　　unknown
+　　　　　　2SECONDS> mon_off mon2 ; monitor do
+　　　　　　mon2　　off　　　　
+　　　　　　mon1　　unknown
+　　　　　　2SECONDS> mon_off
+　　　　　　mon_off  'mon2' ; 
+
+注意事項　　・mon_addコマンドで作成された時点では,セル対応のスイッチは"on"になっています。
+　　　　　　・キーが１つも指定されなかった場合は,モニタースイッチが"off"になっているセルを表
+　　　　　　　示します。
+
+関連事項　　MONITORコマンド
+　　　　　　MON_ADDコマンド
+　　　　　　MON_OFFコマンド
+　　　　　　MON_RMVコマンド
+　　　　　　MON_STATコマンド

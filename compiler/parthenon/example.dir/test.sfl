@@ -1,0 +1,48 @@
+/******************************************
+* (C)Copyright by N.T.T 1993(unpublished) *
+* All rights are reserved.                *
+******************************************/
+module test {
+    input     in1;
+    input     in2;
+    input     in3;
+    input     in4;
+    reg       a;
+    reg       b;
+    reg       c;
+    reg       d;
+    output    f1;
+    output    f2;
+    output    f3;
+    instrin   start ;
+    instruct start par {
+        a := in1;
+        b := in2;
+        c := in3;
+        d := in4;
+        f1 = (^a & ^b & ^c & ^d)
+           | (^a & ^b & ^c &  d)
+           | (^a &  b & ^c & ^d)
+           | ( a & ^b & ^c & ^d)
+           | ( a &  b & ^c & ^d)
+           | ( a &  b &  c &  d) ;
+        f2 = (^a & ^b & ^c & ^d)
+           | (^a & ^b & ^c &  d)
+           | (^a &  b &  c &  d)
+           | ( a & ^b & ^c & ^d) ;
+        f3 = (^a & ^b & ^c &  d)
+           | (^a &  b & ^c & ^d)
+           | (^a &  b &  c &  d)
+           | ( a & ^b & ^c &  d)
+           | ( a & ^b &  c &  d)
+           | ( a &  b & ^c & ^d)
+           | ( a &  b & ^c &  d)
+           | ( a &  b &  c &  d) ;
+    }
+}
+
+/*
+/* ^(not): 39 */ ===> /* inv-: 1 */
+/* &(and): 54 */ ===> /* nand--3: 4, nand--4: 4 */
+/* |(or) : 15 */ ===> /* nor--2: 1 */
+*/

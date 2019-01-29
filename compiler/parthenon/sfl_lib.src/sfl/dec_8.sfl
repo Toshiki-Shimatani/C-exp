@@ -1,0 +1,24 @@
+/******************************************
+* (C)Copyright by N.T.T 1993(unpublished) *
+* All rights are reserved.                *
+******************************************/
+module dec_8 {
+    input       cin ;
+    input       in<8> ;
+    output      out<8> ;
+    output      p ;
+    sel_v       cry<8>;
+    instrin     do ;
+    instruct do par {
+        p =     ^in<7> & ^in<6> & ^in<5> & ^in<4> & ^in<3> & ^in<2> & ^in<1> & ^in<0> ;
+        cry =  (^in<6> & ^in<5> & ^in<4> & ^in<3> & ^in<2> & ^in<1> & ^in<0> &  cin)
+            || (^in<5> & ^in<4> & ^in<3> & ^in<2> & ^in<1> & ^in<0> &  cin)
+            || (^in<4> & ^in<3> & ^in<2> & ^in<1> & ^in<0> &  cin)
+            || (^in<3> & ^in<2> & ^in<1> & ^in<0> &  cin)
+            || (^in<2> & ^in<1> & ^in<0> &  cin)
+            || (^in<1> & ^in<0> &  cin)
+            || (^in<0> &  cin)
+            || ( cin) ;
+        out =  in @ cry ;
+    }
+}

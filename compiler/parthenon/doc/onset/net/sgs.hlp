@@ -1,0 +1,9 @@
+ sgs
+
+        Apply Simple Gate Substitution of the Transduction method
+        for the network with simple gates.
+
+ sgsm
+
+        Apply Simple Gate Substitution of the Transduction method
+        for the mapped network with complex gates and simple gates.

@@ -1,0 +1,85 @@
+sch_add command
+
+    (A) FUNCTION
+        Sch_add command adds a cell to the schedule list.
+
+    (B) SYNOPSIS
+
+         sch_add  <time>  <key>  <script> {<argument>}
+
+    (C) PARAMETERS
+        <time>
+        specifies the time when <script> is run, which should be 
+        either of an unsigned interger, an interger with a '+' sign or
+        the kind of distribution for a random number.
+
+        The interger with a '+' specifies the time as sum of current
+        time and the integer.
+
+        Either of the following forms requests a random number which
+        specifies the time as sum of current time and the random
+        number.
+
+            '%u' <min> ' ' <max>
+              requests a (positive) random number which follows the
+              uniform distribution between <min> and <max>.
+
+            '%e' <min> ' ' <max> ' ' <mean>
+              requests a posititive random number which follows the
+              exponential distribution of the <mean> between <min> and <max>.
+            '%n' <min> ' ' <max> ' ' <mean> ' ' <variance2>
+              requests a posititive random number which follows the
+              normal distribution of the <mean> between <min> and
+              <max>, whose variance is sqrt (<variance2>).
+
+        where each of <min>, <max>, <mean> and <variance2> is an
+        unsigned integer.
+
+       <key>
+        names the cell to be added to the schedule list.
+
+       <script>
+        is a single token which includes the script to be run.
+
+       <argument>
+        is one of the arguments which is given to the script.
+
+    (D) NOTES
+        <time> must specifies a future time with respect to current
+        simulation time.
+
+        <time> must be lexically a single token when it is specified
+        with an unsigned integer or an integer with '+' sign, though
+        it must be 3 to 5 tokens, when specified as randomly generated
+        time, according to type of radom number generation method.
+
+        It possibly takes very long time to generate a random <time> value
+        when it merely occurs for tempolary generated random number to
+        resides between <min> and <max>. In the worst case the
+        generation never finishes.
+
+        The seed of random generator is randomly set on each time
+        SECONDS is invoked, so different simulation results may appears
+        from the same script.
+
+        On the call of <script>, the eval command is invoked with
+        applied to its first argument with <script> and to the rest
+        arguments with <argument>.
+
+        You can simulate mathematical queue models such as M/M/1 by
+        using the schedule functionalities with the execution time
+        specified with %e, as well as writing SFL stage which
+        describes the behavior of the queue.
+
+        New schedule cell created with sch_add command is added to the
+        tail of schedule list. Use sch_mv command to relocate it or
+        move it to other list.
+
+    (E) SEE ALSO
+        2.4.1 schedule functionalities
+        2.5 execution of simulation
+        forward command
+        sch_rmv command
+        sch_mv command
+        schedule command
+        eval command

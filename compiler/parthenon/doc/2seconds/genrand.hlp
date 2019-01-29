@@ -1,0 +1,23 @@
+NAME:
+	genrand
+
+SYNOPSIS:
+	genrand <key>
+
+DESCRIPTION:
+	Genrand command generates a random number with the generator
+	identified with the specified key.
+
+	<key> is a name and identifies a generator, which
+	has been created with mkrand command.
+
+EXAMPLES:
+	2SECONDS> mkrand ran 3 7 U 1 1000
+	2SECONDS> genrand ran
+	820
+
+NOTES:
+
+SEE ALSO:
+	MKRAND(command)
+	SCH_ADD(command)

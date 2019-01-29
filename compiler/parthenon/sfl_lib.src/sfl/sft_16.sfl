@@ -1,0 +1,52 @@
+/******************************************
+* (C)Copyright by N.T.T 1993(unpublished) *
+* All rights are reserved.                *
+******************************************/
+module sft_16 {
+    input       left_right ;
+    input       sign ;
+    input       amt<4> ;
+    input       in<16> ;
+    output      out<16> ;
+    sel_v       pad ;
+    sel_v       tmp3<16>, tmp2<16>, tmp1<16> ;
+    instrin     do ;
+    instrself   sftl8 , sftr8 , pass8 ;
+    instrself   sftl4 , sftr4 , pass4 ;
+    instrself   sftl2 , sftr2 , pass2 ;
+    instrself   sftl1 , sftr1 , pass1 ;
+    instruct do par {
+        pad = in<15> & sign ;
+        any {
+            left_right : par {
+                any { amt<3> : sftl8() ;  else : pass8() ;  }
+                any { amt<2> : sftl4() ;  else : pass4() ;  }
+                any { amt<1> : sftl2() ;  else : pass2() ;  }
+                any { amt<0> : sftl1() ;  else : pass1() ;  }
+            }
+            else : par {
+                any { amt<3> : sftr8() ;  else : pass8() ;  }
+                any { amt<2> : sftr4() ;  else : pass4() ;  }
+                any { amt<1> : sftr2() ;  else : pass2() ;  }
+                any { amt<0> : sftr1() ;  else : pass1() ;  }
+            }
+        }
+    }
+    instruct sftl8 out = tmp3<7:0> || 0b00000000 ;
+    instruct sftr8 out = pad || pad || pad || pad
+                       || pad || pad || pad || pad
+                       || tmp3<15:8> ;
+    instruct pass8 out = tmp3 ;
+
+    instruct sftl4 tmp3 = tmp2<11:0> || 0b0000 ;
+    instruct sftr4 tmp3 = pad || pad || pad || pad || tmp2<15:4> ;
+    instruct pass4 tmp3 = tmp2 ;
+
+    instruct sftl2 tmp2 = tmp1<13:0> || 0b00 ;
+    instruct sftr2 tmp2 = pad || pad || tmp1<15:2> ;
+    instruct pass2 tmp2 = tmp1 ;
+
+    instruct sftl1 tmp1 = in<14:0> || 0b0 ;
+    instruct sftr1 tmp1 = pad || in<15:1> ;
+    instruct pass1 tmp1 = in ;
+}

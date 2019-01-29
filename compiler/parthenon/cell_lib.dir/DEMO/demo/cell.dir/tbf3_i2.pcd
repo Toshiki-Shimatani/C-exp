@@ -1,0 +1,22 @@
+;***************************************************
+;* (C)Copyright by NTT DATA Corp.1994(unpublished) *
+;*                        All rights are reserved. *
+;***************************************************
+
+(def-module tbf3_i2 power 15 area 1.0 gates 5 
+
+	(def-pin i   type input    load 0.066)
+	(def-pin enb type input    load 0.056 note clock)
+	(def-pin z   type tristate load 0.094)
+
+	(def-symbol TRI_STATE2 enb i z)
+
+	(def-function z (ts_buf- ^enb i))
+
+	(def-delay /i   /z (+ 0.68 (* 0.66 ~z)))
+	(def-delay \enb /z (+ 0.94 (* 0.67 ~z)))
+	(def-delay /enb %z 1.1)
+
+	(def-constraint drive (- 3.0 ~z) type max)
+	(def-constraint drive (- ~z    0 ) type min)
+)

@@ -1,0 +1,19 @@
+;***************************************************
+;* (C)Copyright by NTT DATA Corp.1994(unpublished) *
+;*                        All rights are reserved. *
+;***************************************************
+
+(def-module inv- power 1.4 area 0.37 gates 1
+
+	(def-pin in   type input  load 0.14)
+	(def-pin nout type output load 0.068)
+
+        (def-symbol INVERTER in nout)
+
+	(def-function ^nout in)
+
+	(def-delay /in /nout (+ 0.10 (* 2.0 ~nout)))
+	(def-delay %in %nout (+ 0.10 (* 2.0 ~nout)))
+
+	(def-constraint drive (- 0 ~nout) type max)
+)

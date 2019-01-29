@@ -1,0 +1,52 @@
+;***************************************************
+;* (C)Copyright by NTT DATA Corp.1994(unpublished) *
+;*                        All rights are reserved. *
+;***************************************************
+
+(def-module tsk_sreg power 40 area 5.9 gates 20
+
+	(def-pin set        type input  load 0.25)
+	(def-pin reset      type input  load 0.13)
+	(def-pin scan_in    type input  load 0.13 note scan_in)
+	(def-pin scan_enb   type input  load 0.13 note scan_enb)
+	(def-pin m_clock    type input  load 0.12 note clock)
+	(def-pin s_clock    type input  load 0.12 note clock)
+	(def-pin scan_clock type input  load 0.12 note clock)
+	(def-pin p_reset    type input  load 0.17)
+	(def-pin out        type output load 0.21)
+	(def-pin nout       type output load 0.089)
+	(def-pin scan_out   type output load 0.21 note scan_out)
+
+	(def-symbol REGISTER set reset m_clock s_clock p_reset scan_in scan_enb scan_clock out nout scan_out)
+
+	(def-logic out (free_reg
+			(or set (and ^reset out)) 0)
+	)
+	(def-logic ^nout    out)
+	(def-logic scan_out out)
+
+	(def-function out        (scan_reg---1 m_clock s_clock p_reset set reset scan_in scan_enb scan_clock))
+	(def-function ^nout      (scan_reg---1 m_clock s_clock p_reset set reset scan_in scan_enb scan_clock))
+	(def-function scan_out   (scan_reg---1 m_clock s_clock p_reset set reset scan_in scan_enb scan_clock))
+
+	(def-delay /m_clock /out         (+ 1.6 (* 1.8 ~out)))
+	(def-delay /m_clock /nout        (+ 2.0 (* 1.8 ~nout)))
+	(def-delay /m_clock /scan_out    (+ 1.6 (* 1.8 ~scan_out)))
+
+	(def-constraint set_setup   (- (+ /m_clock ?cycle) /set     2.6) type setup)
+	(def-constraint reset_setup (- (+ /m_clock ?cycle) /reset   2.6) type setup)
+	(def-constraint prs_setup   (- (+ /m_clock ?cycle) /p_reset 1.1) type setup)
+
+	(def-constraint set_hold    (- /set     /m_clock 0)   type hold)
+	(def-constraint reset_hold  (- /reset   /m_clock 0)   type hold)
+	(def-constraint prs_hold    (- /p_reset /m_clock 1.7) type hold)
+
+	(def-constraint freq  (- ?cycle 12))
+
+	(def-constraint drive (- 1.1 ~out)      type max)
+	(def-constraint drive (- ~out 0)        type min)
+	(def-constraint drive (- 1.1 ~nout)     type max)
+	(def-constraint drive (- ~nout 0)       type min)
+	(def-constraint drive (- 1.1 ~scan_out) type max)
+	(def-constraint drive (- ~scan_out 0)   type min)
+)

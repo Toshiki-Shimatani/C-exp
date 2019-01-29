@@ -1,0 +1,197 @@
+opt command
+
+(A) FUNCTION
+
+    Opt command optimizes whole circuit using pcd library to decrease
+    unsatisfied constraints. The optimization is done with sequential
+    applications of the followings in this order.
+    (1) power up   :  strengthens drive powers specified against static load.
+    (2) speed up   :  makes events' arrival time sooner.
+    (3) speed down :  makes events' arrival time later.
+    (4) power down :  weakens drive powers specified against static load.
+
+(B) SYNOPSIS
+
+    opt [ <n> ]         executes above (1)-(3) and (4) is replaced
+                        with only reporting warning messages.
+
+    opt delay [ <n> ]  	executes all of the above (1)-(4)
+
+(C) PARAMETERS
+
+    <n>
+      specifies the maximum number of parallelization in the power up
+      optimization (see (F) DETAILS ON CIRCUIT IMPROVEMENT (1-1-1),
+      step 2). It must be greater than 0 or is regarded as 1 (no
+      parallelizing) if not specified.
+
+(D) NOTES
+    
+    This command improves whole circuit with applying above
+    (1)-(4) in this order, trying to decrease the currently
+    unsatisfied constraints that can be shown with lctf or hist
+    command.
+
+    Each of (1)-(4) is followed by the delay and load calculation,
+    as can be done with lcalc and dcalc commands, that evaluate
+    up-to-date set of unsatisfied constraints.
+
+    There will possibly remain a room for further optimization even if
+    this command is once finished, and it will also be possible that
+    this command changes a statisfied constraint to be unsatisfied, as
+    a result of improvements on another constrains.
+    These mean that this command shoud be repeatedly appelied until
+    either no more unsatisfied constraints exist or no more way to
+    improve is found.
+
+    If there is a special submodule which cannot be rectified, frzs
+    command must be used before the first use of this
+    command to freeze the module. Freezing and unfreezing operations
+    are not guaranteed to work correct if this command has been used.
+
+    There is no way to undo the optimization with this command other
+    than restarting opt_map.
+
+(E) SEE ALSO
+    lib command
+    lcalc command
+    dcalc command
+    lctf command
+    hist command
+
+
+(F) DETAILS ON CIRCUIT IMPROVEMENT
+  (1) power up
+    What this process does is classified by the type of improving
+    terminal as follows:
+    (1-1) For an output terminal on a replaceable pcd submodule.
+
+      (1-1-1) When the terminal is not tristate:
+        step 1 :
+         If the pcd does not have any output terminal with drive power
+         less than 0, it is tried to replace with other pcd to satisfy
+         the unsatisfied constraint.
+         Otherwise it is first replaced with other pcd having drive
+         power greater than 0, and a warning is cautioned if the
+         replace does not improve the unsatisfied constraints (the
+         improvement will usually be tried later in this power up
+         process).
+
+        step 2 :
+         If the pcd is with single output and was not improved in step
+         1, it is tried to make copies of the pcd to distribute the
+         unsatisfied load to them.
+         The try, however, is cancelled if either of the followings
+         occurs:
+          a) greater than n copies are required to satisfy the
+             constraints,
+          b) or the copies cause another unsatisfaction on input side
+             of the pcd.
+
+        step 3 
+          If neither of step 1 and 2 could improve anything, it is
+          tried to insert a tree of sufficient number of buffers
+          between the terminal and its destination net.
+          A message is signaled if the try failed to improve anything
+          due to either of the followings:
+           a) the terminal is too weak to drive one buffer,
+           b) or provided buffer is too weak for the improvement.
+
+      (1-1-2) When the terminal is tristate:
+          It is tried to replace the pcd with others.
+          A message is signaled if the try failed to improve anything
+          due to the lack of sufficient pcd.
+
+    (1-2) For an input terminal on top module and an output terminal
+          on a pcd module which cannot be replaced due to any reason
+          such as no sufficient pcd exists or the pcd is frozen.
+
+      (1-2-1) When the terminal is not tristate:
+          It is tried to insert a tree of sufficient number of buffers
+          between the terminal and its destination net.
+          A message is signaled if the try failed to improve anything
+          due to either of the followings:
+           a) the terminal is too weak to drive one buffer,
+           b) or provided buffer is too weak for the improvement.
+          A warning is signaled if an improvement is required in a
+          frozen submodule.
+
+      (1-2-2) When the terminal is not tristate:
+          A message is signaled to inform that no improvement is
+          possible.
+
+    Improvement with buffer insertion requires that a pcd is
+    registered in library which has "buffer" or "clock_buf" function.
+
+
+  (2) speed up
+
+    Each of the replaceable pcd submodules in the propagation path of
+    improving event is tried to be replaced, giving precedence to the
+    one which seems to give greater improvement. The try continues
+    until the constraint is satisfied.
+
+    A message is signaled if the sequence of try failed to satisfy the
+    constraint, that means cycle time must be longer.
+
+  (3) speed  down
+    This process is skipped with a warning being signaled if the form
+    without "dealy" parameter was used (see SYNOPSIS above).
+
+    This process has historically been optional because delay increase
+    by automatically inserted buffers with this process does not
+    always resut in or continue to the better optimization. In trivial
+    bad case, this process is unexpectedly applied due to incorrectly
+    assigned events.
+
+    Giving explicitly the "delay" parameter enables this process to be
+    applied, where how the process improves is classified by
+    the type of output terminal which drives the sink net in the
+    improving event route. The detail is as follows:
+
+    (3-1) For a non-tristate terminal:
+      It is tried to make the event arrival time later with connecting
+      a series of buffers with sufficient length to either of the
+      following terminals:
+      a) an output terminal on a pcd which drives the sink net (i.e.,
+         the net which connects to the improving terminal) in the
+         event route.
+         A warning is signaled if an improvement is required in a
+         frozen submodule.
+
+    (3-2) For a non-tristate terminal:
+      A message is signaled to inform that no improvement is possible.
+
+    Improvement with buffer insertion requires a pcd is registered in
+    library which satisfies both of the followings:
+     a) it has "buffer" or "clock_buf" function,
+     b) and it can propagate delays of the event from its input to its
+        output.
+
+  (4) power down
+    An output terminal on a replaceable pcd submodule is tried to
+    improve with replacing the pcd.
+
+    A message is signaled if further improvement is no longer possible
+    due to such reasons as follows:
+     a) no more candidates exist for the replacement,
+     b) or the pcd is frozen.
+
+   ** Notes
+   * Pcd replacements during either of (1-1-1) step 1, (1-1-2), (2) or (4)
+     do not change the hierarchy of submodules.
+
+   * New pcd modules inserted during (1-1-1) step 2 are put in the same
+     module as the original pcd resides in.
+
+   * The buffer inserted during either of (1-1-1) step 3, (1-2-1), (3-1)
+     is put in either of the following modules:
+    (a) (if it is connected to an input on top module) top module,
+    (b) (if it is connected to an output on a pcd in an unfrozen
+        submodule) the same module as the pcd resides in,
+    (c) or (if it is connected to an output on a pcd in a frozen
+        submodule) the module in the lowest level among those unfrozen
+        in the module path from top to the pcd.
+   * Improvements during either of (1-1-1) step 2, (1-1-1) step 3 or
+     (1-2-1) may rename some terminals or add new terminals on
+     involved submodules.

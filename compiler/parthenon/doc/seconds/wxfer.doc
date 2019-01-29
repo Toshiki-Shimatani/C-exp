@@ -1,0 +1,23 @@
+wxfer command
+
+    (A) FUNCTION
+        Wxfer command detects "the writer behaviors" that may be the
+        source of transfer to the specified facility, and reports on
+        each of them with the condition when the transfer occurs.
+
+    (B) SYNOPSIS
+
+         wxfer <facility>
+
+    (C) PARAMETERS
+        <facility>
+        specifies the name of facility on which the write
+        cross-reference is reported.
+        It must be a facility with value, such as register or
+        terminal.
+
+    (D) NOTES
+
+    (E) SEE ALSO
+        2.1 internal representation of SFL
+        rxfer command

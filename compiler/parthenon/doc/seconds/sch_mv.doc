@@ -1,0 +1,42 @@
+sch_mv command
+
+    (A) FUNCTION
+        Sch_mv command relocate a cell in schedule list.
+
+    (B) SYNOPSIS
+
+         sch_mv <time> <key> <new_time> [ <after> ]
+
+    (C) PARAMETERS
+        <time>
+        identifies the list which includes the cell to be relocated.
+        It should be either an unsigned integer or an integer with
+        '+' sign, where the latter specifies the specified number of
+        times later with respect to current time.
+
+        <key>
+        identifies the cell to be relocated.
+
+        <new_time>
+        identifies the list to which the cell is relocated.
+        It should be either an unsigned integer or an integer with
+        '+' sign, where the latter specifies the specified number of
+        times later with respect to current time.
+
+        <after>
+        specifies the position to which the cell is relocated. The
+        position is specified with ID of a target cell. The relocated
+        cell is inserted at immediately after the target cell.
+        The cell is relocated at the top of the list when <after> is
+        not spcified, or at the tail when the spcified <after> does not
+        exist in the list.
+
+    (D) NOTES
+        <new-time> must specifies a future time with respect to
+        current simulation time.
+
+    (E) SEE ALSO
+        2.4.1 schedule functionalities
+        sch_rmv command
+        sch_add command
+        schedule command

@@ -1,0 +1,41 @@
+ help
+
+        Print a list of all commands.
+
+ help <command_type>
+
+        Print summary for the type of commands. 
+        (e.g., 'help misc')
+        (This command invokes system command 'more'.)
+
+ help <command_name>
+
+        Print detailed information for the command.
+        (This command invokes system command 'more'.)
+
+
+
+        HELP_PATH is defined as $(PARTHENON)/doc.dir/onset.dir
+        HELP_PATH specifies the directory where HELP.TBL exists.
+
+        HELP.TBL should be written as follows.
+
+        <help argument name>  <path_name of help file>
+        <help argument name>  <path_name of help file>
+        <help argument name>  <path_name of help file>
+                 :                     :
+                 :                     :
+
+        Where, path_name should be rerative path_name from HELP_PATH
+
+        (example of HELP.TBL)
+         ONSET           Onset.hlp
+         Onset           Onset.hlp
+         onset           Onset.hlp
+         input           input/Input.hlp
+         in_pla          input/in_pla.hlp
+         in_nlif         input/in_nlif.hlp
+         in_blif         input/in_blif.hlp
+
+        In this case, you can read a help file "HELP_PATH/Onset.hlp" when you
+        type "help ONSET", "help Onset", or "help onset".

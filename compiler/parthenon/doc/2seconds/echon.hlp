@@ -1,0 +1,27 @@
+NAME:
+	echon
+
+SYNOPSIS:
+	echon [<token> ...]
+	echon
+
+DESCRIPTION:
+	Echon command outputs the given token(s) to speaking-stream.
+
+	The seconds synopsis (without any arguments) outputs
+	NOTHING.
+
+EXAMPLES:
+	2SECONDS> echon check test ; echo file
+	check testfile
+	2SECONDS> echon
+	2SECONDS>
+
+NOTES:
+	* In the stream the tokens will be delimited by ONE blank,
+	  but NOT teminated by a NEWLINE.
+
+SEE ALSO:
+	ECHO(command)
+	ECHOC(command)
+	ECHOCN(command)

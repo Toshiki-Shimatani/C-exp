@@ -1,0 +1,16 @@
+lmc command
+
+    (A) FUNCTION
+        Lmc command lists every registered module classes.
+
+    (B) SYNOPSIS
+
+         lmc
+
+    (C) PARAMETERS
+
+    (D) NOTES
+
+    (E) SEE ALSO
+        sflload command
+        sflread command

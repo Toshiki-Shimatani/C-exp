@@ -1,0 +1,7 @@
+(def-timing default 
+    (def-reset  p_reset 0 ) 
+    (def-clk m_clock scan_clock scan_enb )
+;                clk /-set observ active flag
+    (def-nrm ( 1 100 11 ) )
+    (def-scn ( 1 011 11 ) )
+) 

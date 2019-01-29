@@ -1,0 +1,33 @@
+  lib command
+
+  (A) FUNCTION
+
+  Lib command reads in a set of cells to be used for circuit
+  optimization.
+
+  (B) SYNOPSIS
+
+  lib { <directory name> }
+
+  (C) PARAMETERS
+
+  directory name: tells name(s) of the directory which contains cell data.
+
+  (D) NOTES
+
+  * Duplicate reads of same cells results in that the latter read is
+    ignored, with a warning message cautioned.
+
+  * There must not be any files other than pcd files of cells in the
+    specified directory.
+
+  * The first synopsis (i.e., without any parameters) lists all the cells
+    registered in the opt_map's internal library database.
+
+  * Cell registration into the above database occurs at opt_map's
+    startup: all the pcd files that opt_map reads in are registered in
+    the database.
+
+  (E) SEE ALSO
+
+  sort

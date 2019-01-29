@@ -1,0 +1,17 @@
+# Usage: let <var-name> <command>
+#
+define var $1 ;	shift		# pickup variable name
+define envf env.$PID\.$CNUM
+define tmpf tmp.$PID\.$CNUM
+speakp $envf
+abort
+abort 255                       # make sure not to abort
+speak $tmpf                     # change speaking stream to temporal file
+eval "$ARGL"                    # execute command
+define status $STATUS           # get exit severity
+speakx                          # restore the speaking stream
+rmacro local $tmpf
+setenv $var "$local"
+$envf
+delete "$tmpf" "$envf"          # remove temporal file
+leave $status                   # return with severity command

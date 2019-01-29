@@ -1,0 +1,19 @@
+#Usage: call dir script
+
+if ( eq  ( size ( string "$STACK_DEPTH" ) ) 0 ) setenv STACK_DEPTH  0
+let base setbase
+setbase D
+let expr expr ( add $STACK_DEPTH 1 )
+let expr expr ( substr ( string $expr ) ( add ( rindex ( string $expr ) ( string % ) ) 1 ) 0 )
+$base
+setenv STACK_DEPTH $expr
+
+define tmpfile /tmp/2sec$PID\.$STACK_DEPTH
+speakp $tmpfile
+dir               # or "echo dir $DIR"
+echo 'leave $1'
+speakx
+dir $1
+define script $2
+shift 2
+listenx $script $ARGL

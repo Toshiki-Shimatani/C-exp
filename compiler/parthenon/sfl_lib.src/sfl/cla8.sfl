@@ -1,0 +1,27 @@
+/******************************************
+* (C)Copyright by N.T.T 1993(unpublished) *
+* All rights are reserved.                *
+******************************************/
+%i "../int_h/cla4.h"
+module cla8 {
+    input       cin ;
+    input       in1<8> ;
+    input       in2<8> ;
+    output      out<8> ;
+    output      gout ;
+    output      pout ;
+    sel_v       cry<2> ;
+    cla4        cla41 ;
+    cla4        cla40 ;
+    instrin     do ;
+    instruct do par {
+        cry = ((cin&cla40.pout)
+              |     cla40.gout)
+           || cin ;
+        out = cla41.do(cry<1>,in1<7:4>,in2<7:4>).out
+           || cla40.do(cry<0>,in1<3:0>,in2<3:0>).out ;
+        gout =  (cla40.gout&cla41.pout)
+               |            cla41.gout ;
+        pout = cla40.pout&cla41.pout ;
+    }
+}

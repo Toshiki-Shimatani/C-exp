@@ -1,0 +1,36 @@
+ＭＫＲＡＮＤ
+
+
+機　能　　　乱数を指定し,その発生器を作成します。
+
+形　式　　　ｍｋｒａｎｄ　キー　SEED1　SEED2　U　MIN  MAX
+　　　　　　ｍｋｒａｎｄ　キー　SEED1　SEED2　E　MIN  MAX　MEAN
+　　　　　　ｍｋｒａｎｄ　キー　SEED1　SEED2　N　MIN  MAX　MEAN　VARIANT2
+
+パラメータ　キー：乱数発生器の識別名を指定します。
+　　　　　　SEED1：種１を指定します。
+　　　　　　SEED2：種２を指定します。
+　　　　　　オプション：乱数指定方法を指定します。
+　　　　　　　　　　　　U：一様分布,E：指数分布,N：正規分布
+　　　　　　MIN：レンジの最小値を指定します。
+　　　　　　MAX：レンジの最大値を指定します。
+　　　　　　MEAN：平均値を指定します。
+　　　　　　VARIANT2：分散値の２乗を指定します。
+
+実行例　　　2SECONDS> mkrand ran_u 1 2 U 1 1000
+　　　　　　2SECONDS> mkrand ran_e 3 4 E 1 1000 2
+　　　　　　2SECONDS> mkrand ran_n 5 7 N 1 1000 4 3
+　　　　　　2SECONDS> mkrand
+　　　　　　mkrand 'ran_n' D5 D7 n D1 D1000 D4 3
+　　　　　　mkrand 'ran_u' D1 D2 u D1 D1000
+　　　　　　mkrand 'ran_e' D3 D4 e D1 D1000 D2
+　　　　　　2SECONDS> genrand ran_u
+　　　　　　85 
+
+注意事項　　・SEED1,SEED2,MIN,MAX,MEAN,VARIANT2には,いずれも符号無しの整
+　　　　　　　数を指定します。
+　　　　　　・タイムの乱数による指定で,乱数がMINとMAXの間に入る確率が低いと,適当な値
+　　　　　　　を得るのに,非常に時間のかかることがあります。
+
+関連事項　　GENRANDコマンド
+　　　　　　SCH_ADDコマンド

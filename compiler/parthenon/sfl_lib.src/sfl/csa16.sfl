@@ -1,0 +1,18 @@
+/******************************************
+* (C)Copyright by N.T.T 1993(unpublished) *
+* All rights are reserved.                *
+******************************************/
+%i "../int_h/csa_16.h"
+module csa16 {
+    input       in1<16> ;
+    input       in2<16> ;
+    input       in3<16> ;
+    output      out1<16> ;
+    output      out2<16> ;
+    csa_16      csa ;
+    instrin     do ;
+    instruct do par {
+        out1 = csa.do(in1,in2,in3).out1 ;
+        out2 = csa.out2<14:0> || 0b0 ;
+    }
+}

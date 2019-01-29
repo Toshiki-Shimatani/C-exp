@@ -1,0 +1,8 @@
+; ****************************************************
+; ***** sample script for blif-input nld-output  *****
+; ***** (delay mode)                             *****
+; ****************************************************
+verbose $2
+in_blif $1.blif
+delay.scr
+out_nld $1.nld

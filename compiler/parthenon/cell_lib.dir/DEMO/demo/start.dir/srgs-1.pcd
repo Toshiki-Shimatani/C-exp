@@ -1,0 +1,49 @@
+;***************************************************
+;* (C)Copyright by NTT DATA Corp.1994(unpublished) *
+;*                        All rights are reserved. *
+;***************************************************
+
+(def-module srgs-1 power 36 area 5.8 gates 19
+
+	(def-pin in         type input  load 0.14)
+	(def-pin scan_in    type input  load 0.14  note scan_in)
+	(def-pin clk_enb    type input  load 0.14)
+	(def-pin scan_enb   type input  load 0.14  note scan_enb)
+	(def-pin m_clock    type input  load 0.12  note clock)
+	(def-pin s_clock    type input  load 0.12  note clock)
+	(def-pin scan_clock type input  load 0.12  note clock)
+	(def-pin p_reset    type input  load 0.17)
+	(def-pin out        type output load 0.089)
+	(def-pin nout       type output load 0.21)
+	(def-pin scan_out   type output load 0.089 note scan_out)
+
+	(def-symbol REGISTER in clk_enb m_clock s_clock p_reset scan_in scan_enb scan_clock out nout scan_out)
+
+	(def-logic out (free_reg
+			(or (and clk_enb in) (and ^clk_enb out)) 1)
+	)
+	(def-logic ^nout    out)
+	(def-logic scan_out out)
+
+	(def-function out        (scan_reg_ws-1 m_clock s_clock p_reset clk_enb in scan_in scan_enb scan_clock))
+	(def-function ^nout      (scan_reg_ws-1 m_clock s_clock p_reset clk_enb in scan_in scan_enb scan_clock))
+	(def-function scan_out   (scan_reg_ws-1 m_clock s_clock p_reset clk_enb in scan_in scan_enb scan_clock))
+
+	(def-delay /m_clock /out       (+ 2.0 (* 1.8 ~out)))
+	(def-delay /m_clock /nout      (+ 1.6 (* 1.8 ~nout)))
+	(def-delay /m_clock /scan_out  (+ 2.0 (* 1.8 ~scan_out)))
+
+	(def-constraint in_setup  (- (+ /m_clock ?cycle) /in      1.7) type setup)
+	(def-constraint enb_setup (- (+ /m_clock ?cycle) /clk_enb 1.3) type setup)
+	(def-constraint prs_setup (- (+ /m_clock ?cycle) /p_reset 1.1) type setup)
+
+	(def-constraint in_hold   (- /in      /m_clock 0)    type hold)
+	(def-constraint enb_hold  (- /clk_enb /m_clock 0.38) type hold)
+	(def-constraint prs_hold  (- /p_reset /m_clock 1.7)  type hold)
+
+	(def-constraint freq  (- ?cycle 12))
+
+	(def-constraint drive (- 0 ~out)      type max)
+	(def-constraint drive (- 0 ~nout)     type max)
+	(def-constraint drive (- 0 ~scan_out) type max)
+)

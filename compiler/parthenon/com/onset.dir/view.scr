@@ -1,0 +1,24 @@
+; **************************************************
+; ***** sample script for circuit diagram view *****
+; *****             using nld_ps and ghostview *****
+; ***** (library: DEMO/demo)                   *****
+; **************************************************
+!rm -r _tmp_onv > /dev/null 2>&1
+!mkdir _tmp_onv > /dev/null 2>&1
+out_nld _tmp_onv/$.nld
+;; K.Nagami modified: Wed May 24 19:54:18 2000
+;; V2.3 -> ver.`parthenon_which -v`
+;; \$PARTHENON -> `parthenon_which -d`
+!nld_ps \
+ -o _tmp_onv/$.ps \
+ -c "PARTHENON ver.`parthenon_which -v`" \
+ -r "2.3" \
+ -p 1.2 \
+ -s A4 \
+ $ _tmp_onv \
+ `parthenon_which -d`/cell_lib.dir/DEMO/demo/start.dir \
+ `parthenon_which -d`/cell_lib.dir/DEMO/demo/start_ex.dir \
+ `parthenon_which -d`/cell_lib.dir/DEMO/demo/cell.dir \
+ `parthenon_which -d`/cell_lib.dir/DEMO/demo/cell_ex.dir \
+ `parthenon_which -d`/sfl_lib.dir > /dev/null 2>&1
+!ghostview -landscape -magstep 0 -a4 _tmp_onv/$.ps 

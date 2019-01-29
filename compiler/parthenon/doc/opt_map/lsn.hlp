@@ -1,0 +1,19 @@
+  lsn command
+
+  (A) FUNCTION
+
+  Lsn command lists all the submodules in current module.
+
+  (B) SYNOPSIS
+
+  lsn
+
+  (C) PARAMETERS
+
+  None.
+
+  (D) NOTES
+
+  (E) SEE ALSO
+
+  ls

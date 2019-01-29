@@ -1,0 +1,80 @@
+init command
+
+(A) FUNCTION
+    Init command initializes events and delay calculation.
+
+(B) SYNOPSIS
+
+    (1) init
+      does following initializations around event and delay calculation:
+      (i)   removes all the events set to terminals in top module,
+      (ii)  makes every net as uncalculated and set normal attribute to it,
+      (iii) and updates every net's load (i.e., sum of the terminal's load
+            which belogs to the net), as lcalc command does.
+
+    (2) init pin [value]
+      This form is used to evaluate only delay path legth, aligning
+      all events' start time with 0 to ignore their relative temporal orders.
+      It initializes events as follows:
+      (i)   sets rising and falling events, both start at 0, to input
+            terminals in top module,
+      (ii)  and sets source attribute to all the net which is connected to
+            an input terminal in top module, and sets normal attribute to
+            all the net which is connected to an output or tristate teminal.
+      (iii) The 'value', if specified, replaces 0 in the above explanations.
+
+    (3) init p_inhi
+      This form is used to do delay evaluation in which delay
+      propagation from tristate terminals are ignored.
+      It changes net's attribute as follows:
+
+      (i)   sets inhibit attribute to the net which is connected to a
+            tristate terminal in current module.
+
+(C) PARAMETERS
+    None.
+
+(D) NOTES
+
+    Be carefull that this command varies in its functionarities
+    depending on each of the forms 1, 2, or 3 the command is invoked in.
+
+    Opt_map initializes the given circuit on its startup as init
+    (form 1) does.
+
+    Opt_map internally uses following 5 net attributes. This command
+    summarizes sums of the attributed nets for each attributes.
+
+       normal  : means other than any of the followings (this attribute
+                 is set on startup, by this command or by unset command).
+
+       in_calc : means the net is in delay calculation (this attribute
+                 is temporally set in delay calculation).
+
+       source  : means the net sources any event, and the net is origin
+                 of delay calculation (this attribute is set by this
+                 command of set command).
+
+       inhibit : means the net is inhibit to propagate delays in delay
+                 calculation (this attribute is set by this command,
+                 by inhi command, or when a loop is detected in delay
+                 calculation).
+
+       sink    : means any event is terminated at the net (this attribute
+                 is set in delay calculation).
+
+    In_calc attribute is never reported unless delay calculation is
+    interrupted.
+
+    Inhibit attribute needs not to be used as long as there is no specific delay
+    propagation that needs to be ignored. Delay calculation inclucing
+    the net attributed inhibit must be carefully validated in its meaning.
+
+    Delay calculation is done with dcalc or opt commands.
+
+(E) SEE ALSO
+    lcalc command
+    dcalc command
+    inhi command
+    set command
+    unset command

@@ -1,0 +1,24 @@
+  clock command
+
+  (A) FUNCTION
+
+  Clock event arrival conditions of all terminals with clock
+  attributes.
+
+  (B) SYNOPSIS
+
+  clock
+
+  (C) PARAMETERS
+
+  None.
+
+  (D) NOTES
+
+  * The command checks the conditions that a terminal with clock
+    attribute has an incoming rising event path and an incoming
+    falling one, and does not have any other event path.
+
+  * Violation of the condition will cause an error.
+
+  (E) SEE ALSO

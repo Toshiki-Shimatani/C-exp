@@ -1,0 +1,3 @@
+ in_nlif <path_name>
+
+        Read a network in NLIF format.

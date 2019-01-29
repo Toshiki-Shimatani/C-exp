@@ -1,0 +1,5 @@
+ out_nld [<path_name>]
+
+        Write the network in NLD format for PARTHENON.
+
+        If <path_name> is not specified, output is written to standard output.

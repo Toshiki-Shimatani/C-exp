@@ -1,0 +1,11 @@
+ map
+
+        Apply technology mapping on the network using the library 2 of
+        MCNC '89.
+
+        The network with complex gates and simple gates is created by this
+        command.
+
+        The network without complex gates is created by "unmap" command
+        from the mapped network.
+

@@ -1,0 +1,9 @@
+#Usage: return status
+define tmpfile /tmp/2sec$PID\.$STACK_DEPTH
+let base setbase
+setbase D
+let expr expr ( sub $STACK_DEPTH 1 )
+let expr expr ( substr ( string $expr ) ( add ( rindex ( string $expr ) ( string % ) ) 1 ) 0 )
+$base
+setenv STACK_DEPTH $expr
+listenx $tmpfile $1

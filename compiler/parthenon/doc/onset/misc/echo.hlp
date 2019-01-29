@@ -1,0 +1,8 @@
+ echo [<string>]
+
+        Print the string.
+
+    '$','$0','$1', ... in the <string> are replaced by the value of arguments.
+    '\' can be used as an escape letter.
+
+    The value of arguments are shown by "print_args" command.

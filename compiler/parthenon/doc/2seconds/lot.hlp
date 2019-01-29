@@ -1,0 +1,23 @@
+NAME:
+	lot
+
+SYNOPSIS:
+	lot
+
+DESCRIPTION:
+	Lot command reports the terminals which satisfies either
+	condition of the followings:
+	 * the terminal resides in top module.
+	 * the terminal resides in non-top module and is not bound to
+	   any other terminal.
+
+EXAMPLES:
+	2SECONDS> lot
+	/dti    ( term-input )
+	/dto    ( term-output )
+	/start  ( instr-input )
+
+NOTES:
+
+SEE ALSO:
+	REQUEST(command)	

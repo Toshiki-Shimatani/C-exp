@@ -1,0 +1,22 @@
+echo command
+
+    (A)  FUNCTION
+
+         Echo command puts a given token out as it is.
+
+    (B)  SYNOPSIS
+
+         echo  { <toekn> }
+
+    (C) PARAMETERS
+        <token>
+          specifies token(s) to be put out.
+
+    (D)  NOTES
+         A sequence of the tokens is put out which delimited with a
+         space character and ended with a newline character.
+
+    (E)  SEE ALSO
+
+
+

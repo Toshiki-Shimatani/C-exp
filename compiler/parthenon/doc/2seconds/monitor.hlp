@@ -1,0 +1,47 @@
+NAME:
+	monitor
+
+SYNOPSIS:
+	monitor on
+	monitor off
+	monitor do
+	monitor
+
+DESCRIPTION:
+	Monitor commands provides operations on monitor.
+
+	The first synopsis activates the monitor, which controls a
+	break in forward command according to the conditions
+	registered in monitor list.
+
+	The second inactivates the monitor.
+
+	The third immediatly evaluates and prints the values of
+	monitor cells in the list.
+
+	The last reports whether the monitor is turned on.
+
+EXAMPLES:
+	2SECONDS> monitor
+	monitor on ;
+	2SECONDS> monitor off ; monitor
+	monitor off ;
+	2SECONDS> monitor on ; mon_add mon ( eq /start %B8%00000000 ) 
+	2SECONDS> monitor do
+	mon    true
+
+NOTES:
+	* 'monitor do' will evaluate and report all the values of
+	  active monitor cells, regardless of whether the monitor is
+	  turned off (by 'monitor off').
+	* The system variable MONSTAT always keeps the newest monitor
+	  value which changes due to either forward breaking or
+	  'monitor do'.
+	* On 2SECONDS's invokation the monitor switch is turned on.
+
+SEE ALSO:
+	MON_ADD(command)
+	MON_ON(command)
+	MON_OFF(command)
+	MON_RMV(command)
+	MON_STAT(command)

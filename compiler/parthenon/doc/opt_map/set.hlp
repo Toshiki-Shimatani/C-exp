@@ -1,0 +1,80 @@
+set command
+
+(A) FUNCTION
+    Set command adds any of rising-, falling-, unstable event and
+    load that is set to specified terminal in top module.
+
+(B) SYNOPSIS
+
+    (1) set /<pin> <value>  adds rising event.
+    (2) set \<pin> <value>  adds falling event.
+    (3) set %<pin> <value>  adds unstable event.
+    (4) set ~<pin> <value>  adds load.
+
+(C) PARAMETERS
+    <pin>
+      tells a name of terminal for the addition.
+      All the terminals in current module (i.e., top module: see the
+      note below) are subject to the remval if the pin name is
+      omitted.
+
+    <value>
+      specifies a time of event to be set in either of (1), (2) or
+      (3), or a value of load in (4).
+      <value> must be a non-negative fraction number, which is regarded as
+              0 by default.
+
+(D) NOTES
+
+  For all forms:
+    The command is effective only if current module is top module.
+
+    All the events and load are subject to be added regardless of what
+    type the specified terminal is.
+
+    The value which is set with the command can be reported with net
+    command.
+
+    The command is invalidated if the specified terminal does not
+    connect to any net.
+
+  For (1), (2), (3):
+    An event is internally stored on the terminal (actually on the net
+    which includes the terminal), as max- and min values of the time
+    when the (rising, falling, or unstable) event occurs.
+
+    Each terminal is initialized as being without any events either on
+    starup or after init command application. Then the first
+    application of this command sets an identical values to the max-
+    and min. The two values will be updated independently with
+    following applications of the command, except for the application
+    with a value between current values of max- and min, where the two
+    values do not change.
+
+    Note that init pin command sets a pair of rising and falling
+    events both timed 0 to every input terminal in top module.
+
+    Unset command can be used to remove a specific event.
+    The most rigit way to renew an existing event with new values of
+    max- and min is to use this command after removing the event with
+    unset command.
+
+    Using the command to add an event to a terminal (i.e., a net)
+    internally attaches source attribute to the terminal, which is
+    then regarded as a start point of delay calculation. This means
+    that a tristate terminal in top module is regarded as an input in
+    delay calculation if it is with any events, otherwise it is
+    regarded as an output terminal.
+
+  For (4):
+    The load can be removed with unset command and the removal is
+    equivalent to setting value 0 to load with this command.
+    Changing load of a terminal with this command does not cause
+    updating load of the net (i.e., sum of terminals' load among the
+    net) which connects to the terminal. Use lcalc command to update
+    the load.
+
+(E) SEE ALSO
+    unset command
+    net command
+    init command

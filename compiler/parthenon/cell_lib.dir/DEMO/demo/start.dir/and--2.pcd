@@ -1,0 +1,25 @@
+;***************************************************
+;* (C)Copyright by NTT DATA Corp.1994(unpublished) *
+;*                        All rights are reserved. *
+;***************************************************
+
+(def-module and--2 power 5.5 area 0.49 gates 2
+
+	(def-pin in1 type input  load 0.12)
+	(def-pin in2 type input  load 0.12)
+	(def-pin out type output load 0.086)
+
+        (def-symbol AND in1 in2 out)
+
+	(def-function out (and
+		in1
+		in2
+	))
+
+	(def-delay /in1 /out (+ 0.52 (* 1.8 ~out)))
+	(def-delay /in2 /out (+ 0.52 (* 1.8 ~out)))
+	(def-delay %in1 %out (+ 0.52 (* 1.8 ~out)))
+	(def-delay %in2 %out (+ 0.52 (* 1.8 ~out)))
+
+	(def-constraint drive (- 0 ~out) type max)
+)

@@ -1,0 +1,104 @@
+  rmaaa コマンド
+
+  (A) 機能
+
+  電源ピンに接続された、and 、nand 、or 、nor 、eor 、enor  をより入力数の小
+  さいゲートに変換する。
+
+  (B) 形式
+
+  rmaaa < グローバル high ピン名 > < グローバル low ピン名 >
+
+  (C) パラメータ
+
+  < グローバル high ピン名 > ： グローバル high ピンの名前
+
+  < グローバル low ピン名 > ： グローバル low ピンの名前
+
+  (D) 注意事項
+
+  ●rmaaa  コマンドはコンスタントの表現がグロバールピンとなっている時のみ有
+     効です。
+
+  ●本コマンドの前に rma コマンドを実行してください。
+
+  ●本コマンドに続けて rmaa 、rm コマンドを実行してください。
+
+  ●結局 rma 、rmaaa 、rmaa 、rm コマンドの順にコマンドを実行してください。
+
+  ●rm 系のコマンドは opt コマンドの前に実行してください。
+
+  ●対象ゲートの認識
+
+・ pcd モジュールのファンクションが 1 個で、
+
+    (def-function <out_pin_name> (and <in_pin_name> <in_pin_name> <in_pin_name>...))
+
+       または
+
+    (def-function ^<out_pin_name> (or ^<in_pin_name> ^<in_pin_name> ^<in_pin_name>...))
+
+   である時、and と識別されます。
+
+・ pcd モジュールのファンクションが 1 個で、
+
+    (def-function <out_pin_name> (or <in_pin_name> <in_pin_name> <in_pin_name>...))
+
+       または
+
+    (def-function ^<out_pin_name> (and ^<in_pin_name> ^<in_pin_name> ^<in_pin_name>...))
+
+   である時、or と識別されます。
+
+・ pcd モジュールのファンクションが 1 個で、
+
+    (def-function ^<out_pin_name> (and <in_pin_name> <in_pin_name> <in_pin_name>...))
+
+       または
+
+    (def-function <out_pin_name> (or ^<in_pin_name> ^<in_pin_name> ^<in_pin_name>...))
+
+   である時、nand と識別されます。
+
+・ pcd モジュールのファンクションが 1 個で、
+
+    (def-function ^<out_pin_name> (or <in_pin_name> <in_pin_name> <in_pin_name>...))
+
+       または
+
+    (def-function <out_pin_name> (and ^<in_pin_name> ^<in_pin_name> ^<in_pin_name>...))
+
+   である時、 nor と識別されます。
+
+・ pcd モジュールのファンクションが 1 個で、
+
+    (def-function <out_pin_name> (eor <in_pin_name> <in_pin_name> <in_pin_name>...))
+
+       または
+
+    (def-function <out_pin_name> (eor ^<in_pin_name> ^<in_pin_name> ^<in_pin_name>...))
+
+   である時、 eor と識別されます。
+
+・ pcd モジュールのファンクションが 1 個で、
+
+    (def-function ^<out_pin_name> (eor <in_pin_name> <in_pin_name> <in_pin_name>...))
+
+       または
+
+    (def-function ^<out_pin_name> (eor ^<in_pin_name> ^<in_pin_name> ^<in_pin_name>...))
+
+   である時、 enor と識別されます。
+
+  ●変更の内容
+
+・全ての変更は freeze されていない nld モジュール内でのみ起こります。
+
+  (E) 関連事項
+
+  rm 、rma 、rmaa 、reph 、repl
+
+ ● freeze の範囲について
+
+  ある nld モジュールが freeze されている時、 そのなかに含まれるモジュールは
+  全て freeze されます。

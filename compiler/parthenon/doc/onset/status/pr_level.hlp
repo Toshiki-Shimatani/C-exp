@@ -1,0 +1,5 @@
+ print_level
+
+        Print the logic levels of the network using a characterristic table 
+        with gate-IDs.
+        Logic levels after technology mapping are estimated to show this table.

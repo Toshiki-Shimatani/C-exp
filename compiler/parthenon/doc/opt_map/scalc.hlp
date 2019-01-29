@@ -1,0 +1,50 @@
+  scalc command
+
+  (A) FUNCTION
+
+  Scalc command calculates sums of power, gates and area for every
+  submodule, and determines the type of interface pins in each nld submodule.
+
+  (B) SYNOPSIS
+
+  scalc
+
+  (C) PARAMETERS
+
+  None.
+
+  (D) NOTES
+
+  * It may takes unexpectedly long time to determine type of interface
+    pins, which can be divided with scalc command that does the same
+    calculation only on current submodule.
+
+  * Opt_map treats internal data that are deduced with other
+    data and are not always updated. Such informations are: load of net
+    updated by lcalc command, delay time updated by dcalc command,
+    values of power, gates, and area updated by scalc command and type
+    of interface pins in a nld module.
+
+  * Both of move and lp commands reports on power, gates, area and
+    type of interface pins with their up-to-date values.
+
+  * Type of an interface pin is determined depending on what pins of
+    pcd modules are connected to the net which connects to the pin
+    internally. Details are summarized as follows:
+
+    Originally global---------------------------------------->global
+    Pcd's output pin is connected---------------------------->output
+    Pcd's bidirect pin is connected-------------------------->bidirect
+    Pcd's tristate and input pins are connected-------------->bidirect
+    Only pcd's tristate pin is connected--------------------->bidirect
+    Only pcd's input pin is connected------------------------>input
+    No pcd's pin is connected-------------------------------->unused
+
+    The type is further changed to, when another interface pin is
+    connected, as output_connected, bidirect_connected,
+    tristate_connected, input_connected and unused_connected,
+    respectively.
+
+  (E) SEE ALSO
+
+  scalcm, move, lp

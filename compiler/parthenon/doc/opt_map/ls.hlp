@@ -1,0 +1,19 @@
+  ls command
+
+  (A) FUNCTION
+
+  Ls command lists all the submodule in current module.
+
+  (B) SYNOPSIS
+
+  ls <class name>
+
+  (C) PARAMETERS
+
+  class name: tells a class name to list only submodules of the class.
+
+  (D) NOTES
+
+  (E) SEE ALSO
+
+  lsn

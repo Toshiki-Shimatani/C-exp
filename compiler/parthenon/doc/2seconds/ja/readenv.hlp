@@ -1,0 +1,19 @@
+Name:
+	readenv
+Usage:
+	readenv <var> <file-name>
+
+Function:
+	Sets the environment variable '<var>' as the contents of a file.
+
+Example:
+	2SECONDS> readenv foo afile
+	2SECONDS> echo $foo
+	Hello!
+	2SECONDS> exec
+	% echo $foo
+	Hello!
+	
+
+Author:
+	Ryo nomura

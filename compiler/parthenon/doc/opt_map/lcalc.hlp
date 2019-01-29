@@ -1,0 +1,27 @@
+lcalc command
+
+(A) FUNCTION
+    Lcalc command enumerates each net in a circuit and calculates the
+    load sum of pins connected to the net, which results in
+    the load of the net.
+
+(B) SYNOPSIS
+
+    lcalc
+
+(C) PARAMETERS
+    None.
+
+(D) NOTES
+    When set command updates a load of pin, this command must be
+    preceded to delay calculations or constraints verifications.
+
+    Opt command may do the same load calculation, when needed, as this
+    command does. Even if the opt command rectified the circuit, it
+    keeps load values updated. So succeeding lcalc command need not to
+    be used.
+
+(E) SEE ALSO
+    init command
+    set command
+    opt command

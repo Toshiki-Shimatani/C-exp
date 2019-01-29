@@ -1,0 +1,6 @@
+ print_gate [n]
+
+        Print the type and inputs of the gate.
+
+        The ID number of a gate can be specified. If n is not specified,
+        information for all gates are printed.

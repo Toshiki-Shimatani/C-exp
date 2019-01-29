@@ -1,0 +1,34 @@
+  trace_b command
+
+  (A) FUNCTION
+
+  Trace_b command reports a pair of maximum- and minimum delay routes
+  that sink specified pin.
+
+  (B) SYNOPSIS
+
+  trace_b / <pin name>
+  trace_b \ <pin name>
+  trace_b % <pin name>
+
+  (C) PARAMETERS
+
+  /: means 'rising'.
+  \: means 'falling'.
+  %: means 'unstable'.
+
+  pin name: tells a path name of a pin, like /mod_a/mod_b/mod_c/pin.
+
+  (D) NOTES
+
+  * The command requires delay calculation has been done with dcalc command.
+
+  * Pin name can be either an absolute path which starts with '/' or a
+    relative path which starts with a name of pin of submodule.
+
+  * The event specification, like '/', '\', or '%', means the type of
+    event at an arrival.
+
+  (E) SEE ALSO
+
+  dcalc, trace_f

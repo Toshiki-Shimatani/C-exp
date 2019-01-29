@@ -1,0 +1,19 @@
+[script]  execute script file, i.e., a sequence of commands
+ <path_name> ............. execute script file
+
+    If <path_name> is not exist, $PARTHENON/com/onset.dir/<path_name> is 
+    used for the script file.
+
+    User's script file should be written as follows.
+       ************* script file format ***********************************
+       <command>             You can write one command in each line.
+       <command>;<comment>   Any string after ';' is ignored.
+       ;<comment>            This line is ignored.
+       <path_name>           Call another script file. (nesting of script)
+       !<string>             Invoke process. (<string> is given to sh as input)
+
+
+    '$','$0','$1', ... are replaced by the value of arguments.
+    '\' can be used as an escape letter.
+
+    The value of arguments are shown by "print_args" command.

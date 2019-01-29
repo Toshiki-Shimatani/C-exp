@@ -1,0 +1,28 @@
+NAME:
+	tree
+
+SYNOPSIS:
+	tree <facility>
+	tree
+
+DESCRIPTION:
+	Tree command reports the detailed status of the specified
+	facility along with its all descendents.
+
+	The second synopsis reports on all facilities.
+
+EXAMPLES:
+	2SECONDS> tree /start
+	/start  (instr-input)   <1>    [1]
+	2SECONDS> tree
+	/
+	/irq
+	/memory
+	/memory.adrs   (term-input)   <16>    [1]
+	...
+
+NOTES:
+
+SEE ALSO:
+	LC(command)
+	LCN(command)

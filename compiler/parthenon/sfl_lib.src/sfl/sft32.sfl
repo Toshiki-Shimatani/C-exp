@@ -1,0 +1,17 @@
+/******************************************
+* (C)Copyright by N.T.T 1993(unpublished) *
+* All rights are reserved.                *
+******************************************/
+%i "../int_h/sft_32.h"
+module sft32 {
+    input       a<32> ;
+    input       b<5> ;
+    output      out<32> ;
+    sft_32      sft32 ;
+    instrin     sll ;
+    instrin     srl ;
+    instrin     sra ;
+    instruct sll out = sft32.do(0b1,0b0,b,a).out ;
+    instruct srl out = sft32.do(0b0,0b0,b,a).out ;
+    instruct sra out = sft32.do(0b0,0b1,b,a).out ;
+}

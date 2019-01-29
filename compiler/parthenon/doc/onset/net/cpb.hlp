@@ -1,0 +1,9 @@
+ cpb [n]
+        Apply Critical Path Breaking and Resynthesis to reduce the delay 
+        time of the network with simple gates.
+
+        Argument, n, should be 1 to 4, and default value is 1.
+        If value of n is larger, the effect of CPB increases.
+
+        Value 1 is recommended for Area Minimization.
+        Value 4 is recommended for Delay Minimization.

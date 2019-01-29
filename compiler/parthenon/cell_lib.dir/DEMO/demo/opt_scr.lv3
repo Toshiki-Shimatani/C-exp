@@ -1,0 +1,40 @@
+;********************************************************
+;*       sample script file for OPT_MAP ver 2.3         *
+;*         apply ONSET in the flat top-module           *
+;*               (break all hierarchy)                  *
+;*        max InputpiN inputs in eclosed nlds           *
+;********************************************************
+
+echo ####### flat #############################
+flat
+
+echo ####### apply ONSET on the flatten top-module ########
+echo --- enclose -------------------------------
+encia InputpiN
+dise 2
+scalc
+
+;; K.Nagami modified: Wed May 24 15:47:32 2000
+eachn "@
+  !echo @"--------- submodule $S ------------@",@
+  !mkdir TargeT._dr,@
+  blif TargeT._dr,@
+  !onset -f `parthenon_which -d`/com/onset.dir/b2n_area.scr TargeT._dr/$C off,@
+  ina TargeT._dr,@
+  flat,@
+  !rm -r TargeT._dr,@
+  scalcm@
+" TargeT._tp
+TargeT._tp
+
+echo --- disclose -------------------------------
+dise
+
+echo ####### after ONSET ###################
+rm
+scalc
+echo --- statistics summary --------------------
+move
+echo --- component summary ---------------------
+lc
+

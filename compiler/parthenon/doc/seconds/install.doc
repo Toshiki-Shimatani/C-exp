@@ -1,0 +1,31 @@
+install command
+
+    (A)  FUNCTION
+         Install command adds specified module to simulation image
+         at specified postion.
+
+    (B)  SYNOPSIS
+
+         install  <module-class>  <position>
+
+    (C)  PARAMETERS
+         <module-class>
+          specifies the module to be added to simulation image,
+          with the class name of the module which must be regsitered
+          as a module class.
+
+         <position>
+          tells where the module should be added in simulation
+          image, which must be specified with name of a submodule facility.
+
+    (D)  NOTES
+         The <position> parameter of the first use of this command
+         must be the root ('/') of simulation image.
+
+         Each of the facilities in a module added to simulation image
+         with this command is initialized as follows:
+          1) memory        : every bit of every word is 'u',
+          2) register/task : every bit is '0',
+          3) stage/segment : their first state.
+
+    (E) SEE ALSO

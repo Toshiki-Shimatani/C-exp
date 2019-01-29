@@ -1,0 +1,24 @@
+NAME:
+	readenv
+
+SYNOPSIS:
+	readenv <var> <file-name>
+
+DESCRIPTION:
+	Readenv script sets the environment variable '<var>' as the
+	contents of a file.
+
+EXAMPLE:
+	2SECONDS> readenv foo afile
+	2SECONDS> echo $foo
+	Hello!
+	2SECONDS> exec
+	% echo $foo
+	Hello!
+
+NOTES:
+
+SEE ALSO:	
+
+AUTHOR:
+	Ryo nomura

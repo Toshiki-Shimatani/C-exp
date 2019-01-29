@@ -1,0 +1,18 @@
+time command
+
+    (A) FUNCTION
+        Time command reports to the speaking file on the current time.
+
+    (B) SYNOPSIS
+
+         time
+
+    (C) PARAMETERS
+        None.
+
+    (D) NOTES
+        This comand is equivalent with 'echo $time' or 'print "%t\n".
+
+    (E) SEE ALSO
+        2.5 execution of simulation
+        forward command

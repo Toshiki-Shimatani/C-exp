@@ -1,0 +1,40 @@
+  insg command
+
+  (A) FUNCTION
+
+  Insg command simply inserts a global pin of specified name.
+
+  (B) SYNOPSIS
+
+  insg <global pin name>
+
+  (C) PARAMETERS
+
+  global pin name: tells a name of the global be to be inserted.
+
+  (D) NOTES
+
+  * The command first assures that the specified pin name does not
+    conflict with either name of pin (i.e., pins in top module and all
+    submodules) or name of submodule. Note that name of an existing
+    global pin does not cause the confliction.
+
+  * After the above assurance the command inserts global pins of
+    specified name into top module and all the submodules except for
+    those frozen. During the insertion it does not add the global pin to
+    the module which already have an existing global pin of same name.
+    The command does only insertion, and it does not do any other
+    action including connecting the pins.
+
+  * This command is intended to be used to add a global pin to all modules.
+    Its typical usage is as follows:
+
+ 	rephf VDD
+ 	replf VSS
+	rma VDD VSS
+	rmaa VDD VSS
+	rm
+	insg VDD
+	insg VSS
+
+  (E) SEE ALSO

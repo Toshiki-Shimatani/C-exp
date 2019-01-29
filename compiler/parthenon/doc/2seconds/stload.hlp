@@ -1,0 +1,28 @@
+NAME:
+	stload
+
+SYNOPSIS:
+	stload <module> <filename>
+
+DESCRIPTION:
+	Stload command restores the simulation status of specified
+	module from the one stored in the specified file.
+
+	The <module> is a module to be resotred, while the <filename>
+	identifies the file including the status record.
+
+EXAMPLES:
+	2SECONDS> stload / sflcpu.st
+
+NOTES:
+	* File reading will terminate on error of greater severity
+	  than 200.
+	* In addition to the above errors, the reading will terminate
+	  on errors named 'X??'.
+	* On errors named 'I??' and with smaller severity than 200,
+	  the reading will get all the values except for the ones that
+	  cause the errors.
+
+SEE ALSO:
+	STCMP(command)
+	STSAVE(command)

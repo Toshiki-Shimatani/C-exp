@@ -1,0 +1,22 @@
+lcn command
+
+    (A)  FUNCTION
+         Lcn enumerates each child of specified facility with its
+         name.
+
+    (B)  SYNOPSIS
+
+         lcn [ { <facility> } ]
+
+    (C)  PARAMETERS
+         <facility>
+           specifies the facility to enumerate children.
+           The one at cuurent position is specified if the <facility>
+           is not specified.
+
+    (D)  NOTES
+         Nothing is shown if the <faility> is a leaf.
+
+    (E)  SEE ALSO
+         lc command
+

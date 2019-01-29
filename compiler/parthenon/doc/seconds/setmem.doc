@@ -1,0 +1,34 @@
+memset command
+
+    (A) FUNCTION
+        Memset command set values to a contiguos address area in a
+        memory facility
+
+    (B) SYNOPSIS
+
+         memset  <memory>  <address>  { <value> }
+
+    (C) PARAMETERS
+        <memory>
+        specifies the facility to be set with values.
+        It must be a memory facility.
+
+        <address>
+        must be an unsigned integer which specifies the start address
+        of the area.
+
+        <value>
+        specifies the values in sequence. Each value must be a bit
+        string constant.
+        If the lengths of a value and the facility's word does not
+        match, the value is extended with 0 at MSB or truncated at MSB.
+
+    (D) NOTES
+        Memory in SFL is initialzed by install command with 'u' on
+        every bits.
+        Use set command for other type of facility.
+
+    (E) SEE ALSO
+        set command
+        memclr command
+

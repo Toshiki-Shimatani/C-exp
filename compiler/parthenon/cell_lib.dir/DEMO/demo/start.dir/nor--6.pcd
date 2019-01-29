@@ -1,0 +1,41 @@
+;***************************************************
+;* (C)Copyright by NTT DATA Corp.1994(unpublished) *
+;*                        All rights are reserved. *
+;***************************************************
+
+(def-module nor--6 power 16 area 1.4 gates 6
+
+	(def-pin in1  type input  load 0.12)
+	(def-pin in2  type input  load 0.12)
+	(def-pin in3  type input  load 0.12)
+	(def-pin in4  type input  load 0.12)
+	(def-pin in5  type input  load 0.12)
+	(def-pin in6  type input  load 0.12)
+	(def-pin nout type output load 0.082)
+
+        (def-symbol NOR in1 in2 in3 in4 in5 in6 nout)
+
+	(def-function ^nout (or
+		in1
+		in2
+		in3
+		in4
+		in5
+		in6
+	))
+
+	(def-delay /in1 /nout (+ 1.5 (* 1.8 ~nout)))
+	(def-delay /in2 /nout (+ 1.5 (* 1.8 ~nout)))
+	(def-delay /in3 /nout (+ 1.5 (* 1.8 ~nout)))
+	(def-delay /in4 /nout (+ 1.5 (* 1.8 ~nout)))
+	(def-delay /in5 /nout (+ 1.5 (* 1.8 ~nout)))
+	(def-delay /in6 /nout (+ 1.5 (* 1.8 ~nout)))
+	(def-delay %in1 %nout (+ 1.5 (* 1.8 ~nout)))
+	(def-delay %in2 %nout (+ 1.5 (* 1.8 ~nout)))
+	(def-delay %in3 %nout (+ 1.5 (* 1.8 ~nout)))
+	(def-delay %in4 %nout (+ 1.5 (* 1.8 ~nout)))
+	(def-delay %in5 %nout (+ 1.5 (* 1.8 ~nout)))
+	(def-delay %in6 %nout (+ 1.5 (* 1.8 ~nout)))
+
+	(def-constraint drive (- 0 ~nout) type max)
+)

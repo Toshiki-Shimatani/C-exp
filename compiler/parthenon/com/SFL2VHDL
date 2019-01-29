@@ -1,0 +1,65 @@
+#!/bin/sh
+
+# usage: SFL2VHDL src.sfl dst.vhdl [-h|--help]
+#  src.sfl : name of source SFL file.
+#  dst.vhdl: name of destination VHDL file.
+
+parthenon_bindir=`parthenon_which -b`
+parthenon_libexecdir=`parthenon_which -e`
+parthenon_libdir=`parthenon_which -l`
+parthenon_datadir=`parthenon_which -d`
+img="${parthenon_libdir}/com/vhdl.img"
+pl="${parthenon_datadir}/com/vhdl.pl ${parthenon_datadir}/com/trns.pl"
+
+srcfile=''
+dstfile=''
+author='false'
+help='false'
+for arg in "$@"; do
+ case ${arg} in
+ -h | --help) help='true';;
+ -a | --author) author='true';;
+ *)
+ if [ x"${srcfile}" = x ]; then
+  srcfile="${a}"
+ else
+  if [ x"${dstfile}" = x ]; then
+   dstfile="${a}"
+  fi
+ fi
+ ;;
+ esac
+done
+
+if [ x"${author}" = x"true" ]; then
+ cat <<EOF
+
+SFL2VHDL, an SFL->VHDL converter.
+Designed and programmed on 1997/07/07 by Kiyoshi Oguri,
+he is responsible for this program.
+
+EOF
+fi
+
+if [ x"${help}" = x"true" ]; then
+ cat <<EOF
+
+usage: SFL2VHDL src.sfl dst.vhdl [-h|--help]
+ src.sfl : name of source SFL file.
+ dst.vhdl: name of destination VHDL file.
+
+EOF
+exit 1
+fi
+
+${parthenon_libexecdir}/parthenon_banner -p SFL2VHDL
+if [ -f ${img} ]; then
+  ${parthenon_bindir}/prolog -i ${img} <<EOF
+?-main('$1','$2',m_clock,'''1''',p_reset,'''0''').
+EOF
+else
+  ${parthenon_bindir}/prolog ${pl} <<EOF
+?-image_save('vhdl.img'),main('$1','$2',m_clock,'''1''',p_reset,'''0''').
+EOF
+fi
+

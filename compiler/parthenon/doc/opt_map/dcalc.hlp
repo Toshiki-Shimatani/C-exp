@@ -1,0 +1,77 @@
+dcalc command
+
+(A) FUNCTION
+
+    Dcalc command calculates propagation time of every event from delay
+    expression of each PCD module, with specified event time as
+    starting point. It holds maximum and minum event arrival time for
+    each net. If loop is specified and if delay loop is detedted,
+    displays the detailed information.
+
+(B) SYNOPSIS
+
+    dcalc       caclculates propagation time of every event with specified
+                event time as starting point.
+
+  dcalc loop	also calculates the propagation times, along with a
+                detailed report of information on detected delay
+                loops.
+
+(C) PARAMETERS
+  None.
+
+(D) NOTES
+    Dcalc command requires that load of each net has been calculated
+    by lcalc command or othe meanings, and event has been correctly
+    set by set command or other meanings.
+
+    The command does the delay calculation in the following steps:
+   (1) Attribute all nets as normal, except for those with
+          source or inhibit attribute.
+   (2) Mark all nets as uncalculated, except fot those with source
+          attribute.
+      (3) Simulate all possible propagation of events, starting with
+          the events set at nets with source attributes, and associates
+          each net with max- and minimum of event arrival times.
+      (4) Set sink attribute to the net at which an event ended its
+          propagation.
+      (5) On detection of delay loop, continue the calculation after
+          reporting the names of submodules and input- and output
+          terminals, along with setting inhibit attributes to the net
+          which caused the looped propagation.
+          Report also event propagation path to the net associated
+          with the detected delay loop and all the terminals connected
+          to the net to which the propagation directs, when the
+          command is invoked with 'loop' option.
+      (6) Report warning message when a propagation path is detected
+          to be directed to a net with source attribute. In such case
+          the event does not propagate to the source net (and delay of
+          the net does not change).
+
+    Delay loop will be detected when a net appears twice in a event
+    propagation path, i.e., a net which is enumerated, based
+    on delay specifications of a submodule (pcd), as one of event
+    propagation destinations also exists in propagation path of the event.
+
+    Inhibit attribute that was set to a net on a delay loop detection
+    remains on the net. So reinvoking the command will not reproduce
+    the detection. To reproduce it, you need to initialize attribute
+    of all nets by init command and reassign events by set
+    command or other meanings, before reinvoking the command.
+
+    See init command for attributes of net used in opt_map.
+
+    See path command and net command for the information of delay path and 
+    connected terminals which is reported when the command is invoked with
+    'loop' option.
+
+    Opt command will possibly do the same calculation as this command does,
+    in the cource of its process. Opt command keeps consistency of
+    delay values before and after it rectifies circuit: you need not
+    to invoke this command after each invocation of opt command.
+
+(E) SEE ALSO
+  lcalc command
+  init command
+  set command
+  opt command

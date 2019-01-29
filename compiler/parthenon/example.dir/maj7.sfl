@@ -1,0 +1,98 @@
+/******************************************
+* (C)Copyright by N.T.T 1993(unpublished) *
+* All rights are reserved.                *
+******************************************/
+declare csa3 {
+    input       in1<3> ;
+    input       in2<3> ;
+    input       in3<3> ;
+    output      out1<3> ;
+    output      out2<3> ;
+    instrin     do ;
+    instr_arg do(in1,in2,in3);
+}
+
+declare cla3 {
+    input       in1<3> ;
+    input       in2<3> ;
+    output      out<3> ;
+    instrin     do ;
+    instr_arg do(in1,in2);
+}
+
+module maj7 {
+    input in<7>;
+    output maj;
+    instrin do;
+    csa3 csa0, csa1, csa2, csa3, csa4;
+    cla3 cla;
+    /*---------------------------------------*/
+    sel_v t0<3>, t1<3>, t2<3>, t3<3>, t4<3>, t5<3>, t6<3>;
+    /*---------------------------------------*/
+    sel_v u0<3>, u1<3>, u2<3>, u3<3>;
+    /*---------------------------------------*/
+    sel_v v0<3>, v1<3>;
+    /*---------------------------------------*/
+    sel_v w0<3>, w1<3>;
+    /*---------------------------------------*/
+    sel_v x0<3>, x1<3>;
+    /*---------------------------------------*/
+    instruct do par {
+        /*---------------------------------------*/
+        t0 = 0b00 || in<0>;
+        t1 = 0b00 || in<1>;
+        t2 = 0b00 || in<2>;
+        t3 = 0b00 || in<3>;
+        t4 = 0b00 || in<4>;
+        t5 = 0b00 || in<5>;
+        t6 = 0b00 || in<6>;
+        /*---------------------------------------*/
+        u0 = csa0.do(t0, t1, t2).out1;
+        u1 = csa0.out2;
+        u2 = csa1.do(t3, t4, t5).out1;
+        u3 = csa1.out2;
+        /*---------------------------------------*/
+        v0 = csa2.do(t6, u0, u1).out1;
+        v1 = csa2.out2;
+        /*---------------------------------------*/
+        w0 = csa3.do(u2, u3, v0).out1;
+        w1 = csa3.out2;
+        /*---------------------------------------*/
+        x0 = csa4.do(v1, w0, w1).out1;
+        x1 = csa4.out2;
+        /*---------------------------------------*/
+        maj = cla.do(x0,x1).out<2>;
+    }
+}
+
+module csa3 {
+    input       in1<3> ;
+    input       in2<3> ;
+    input       in3<3> ;
+    output      out1<3> ;
+    output      out2<3> ;
+    instrin     do ;
+    instruct do par {
+        out1 = in1 @ in2 @ in3 ;
+        out2 = ((in1 & in2) | (in2 & in3) | (in3 & in1))<1:0> || 0b0 ;
+    }
+}
+
+module cla3 {
+    input       in1<3> ;
+    input       in2<3> ;
+    output      out<3> ;
+    sel_v       g<3> ;
+    sel_v       p<3> ;
+    sel_v       cry<3> ;
+    instrin     do ;
+    instruct do par {
+        g = in1 & in2 ;
+        p = in1 | in2 ;
+        cry = ((g<0>&p<1>)
+              |      g<1>)
+           || g<0>
+           || 0b0 ;
+        out = in1 @ in2 @ cry ;
+    }
+}

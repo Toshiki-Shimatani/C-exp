@@ -1,0 +1,94 @@
+setp command
+
+(A) FUNCTION
+    Setp command sets any of rising-, falling-, unstable event and
+    load to specified terminal in top module.
+
+(B) SYNOPSIS
+
+    (1) setp /<pin> <value>  sets rising event.
+    (2) setp \<pin> <value>  sets falling event.
+    (3) setp %<pin> <value>  sets unstable event.
+    (4) setp ~<pin> <value>  sets load.
+    (5) setp /      <value>  sets rising event.
+    (6) setp \      <value>  sets falling event.
+    (7) setp %      <value>  sets unstable event.
+    (8) setp ~      <value>  sets load.
+
+(C) PARAMETERS
+    <pin>
+      tells a name of terminal for the setting.
+
+      All the 'meaningful' (see below) terminals in current module
+      (i.e., top module: see the note below) are subject to the
+      setting if the pin name is omitted. Pin name can be in a regular
+      expression.
+
+    <value>
+      specifies a time of event to be set in either of (1), (2) or
+      (3), or a value of load in (4).
+      <value> must be a non-negative fraction number and cannot be
+      omitted.
+
+(D) NOTES
+
+  For all forms:
+    The command is effective only if current module is top module.
+
+    Setp command acts only on output and bidirect terminals for load
+    or input and bidirect terminals for other events, unlike the set
+    comand that acts on any terminals regardress of their type.
+    In checking whether the specified terminal is 'meaningful' in the
+    above sense, the terminal is regarded as the original type
+    assigned on opt_map's startup. The nld modules generated either by
+    SFLEXP or with write_org_type command are not confusing because they
+    preserve terminal type in SFL semantics. Those, however, generated
+    with write command are slightly unsafe for this command in the
+    sense that they may include changed types from input, for example,
+    to input_connected, because this command does not act on the type
+    with '_connected'.
+
+    The value which is set with the command can be reported with net
+    command.
+
+    The command is invalidated if the specified terminal does not
+    connect to any net.
+
+  For (1), (2), (3):
+    An event is internally stored on the terminal (actually on the net
+    which includes the terminal), as max- and min values of the time
+    when the (rising, falling, or unstable) event occurs.
+
+    Each terminal is initialized as being without any events either on
+    starup or after init command application. Then the first
+    application of this command sets an identical values to the max-
+    and min. The two values will be updated independently with
+    following applications of the command, except for the application
+    with a value between current values of max- and min, where the two
+    values do not change.
+
+    Note that init pin command sets a pair of rising and falling
+    events both timed 0 to every input terminal in top module.
+
+    Unset command can be used to remove a specific event.
+    The most rigit way to renew an existing event with new values of
+    max- and min is to use this command after removing the event with
+    unset command.
+
+    Using the command to add an event to a terminal (i.e., a net)
+    internally attaches source attribute to the terminal, which is
+    then regarded as a start point of delay calculation.
+
+  For (4):
+    The load can be removed with unset command and the removal is
+    equivalent to setting value 0 to load with this command.
+    Changing load of a terminal with this command does not cause
+    updating load of the net (i.e., sum of terminals' load among the
+    net) which connects to the terminal. Use lcalc command to update
+    the load.
+
+(E) SEE ALSO
+    unset command
+    net command
+    init command
+    set command

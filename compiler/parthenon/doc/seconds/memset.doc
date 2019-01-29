@@ -1,0 +1,38 @@
+memset command
+
+    (A) FUNCTION
+
+        Memset command fills an area of specified memory facility
+        starting from specified address with specified sequence of
+        values.
+
+    (B) SYNOPSIS
+
+        memset  <memory>  <address>  { <value> }
+
+    (C) PARAMETERS
+        <memory>
+         specifies the faiclity to be filled, which must be a memory.
+
+        <address>
+         specifies the start address of the area as an unsigned integer.
+
+        <value>
+         specifies a value in the sequence to fill, as a bit string
+         constant.
+         The string is prepended with 0s or truncated if its length
+         is respectively shorter or longer than the width of memory
+         facility.
+
+    (D) NOTES
+        A memory facility in SFL is installed with being initialized
+        as every bit being 'u'.
+
+        Set command must be used for any facilities other than memory.
+
+    (E) SEE ALSO
+        set  command
+        memclr command
+
+
+

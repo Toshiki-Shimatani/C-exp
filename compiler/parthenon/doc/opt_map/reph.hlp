@@ -1,0 +1,66 @@
+  reph command
+
+  (A) FUNCTION
+
+  Reph command replaces pcd modules that represent constant high with
+  global pins of specified name.
+
+  (B) SYNOPSIS
+
+  reph <global pin name>
+
+  (C) PARAMETERS
+
+  global pin name: tells a name of global pin.
+
+  (D) NOTES
+
+  * A pcd module that can represent high level constant (called
+    'constant pcd' in the following) is identified by its function
+    such as:
+
+    (def-function <constant_high_pin_name> (true))
+
+    where constant_high_pin_name can be arbitrary name. A constant pcd
+    cannot have any other functions.
+
+  * This command first inserts global pins into each of unfrozen nld
+    modules. This is done regardless of whether the module has
+    constant pcd.
+
+    The inserted global pins may actually be unnecessary. Such
+    unnecessary global pins remain until being removed with rm
+    command.
+
+    Specified pin name is checked to be unique among all the pin names
+    and submodule names.
+
+  * This command then looks for the pin which satisfies all of the
+    followings:
+    1) it is in an unfrozen nld module (called module A),
+    2) it is connected to an unfrozen constant pcd in the module A,
+    3) and it is in either of a pcd module or a frozen nld module in
+       the module A.
+    This command re-connects each of such pins to a global pin in the
+    module A.
+
+    This command removes each of the pins that satisfies all of the
+    followings:
+    1) it is on an unforzen nld module other than top module,
+    2) and it is connected to an unfrozen constant pcd in the module.
+
+    This command looks for the pin which satisfies all of the followings
+    and re-connects it to a global pin:
+    1) it is on unfrozen top module,
+    2) and it is connected to an unfrozen pcd module.
+
+  * This command finally removes all the constant pcds that are in an
+    unfrozen nld module and were used in the module.
+
+  (E) SEE ALSO
+
+  repl, rephf, rm
+
+ * Scope of freezing.
+  Any modules are frozen in a frozen nld module.
+

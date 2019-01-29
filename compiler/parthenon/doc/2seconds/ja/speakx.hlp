@@ -1,0 +1,31 @@
+ＳＰＥＡＫＸ
+
+
+機　能　　　以後のコマンドの出力先(speaking-stream)を切り換えます。
+
+形　式　　　ｓｐｅａｋｘ
+
+パラメータ　なし　
+
+実行例　　　2SECONDS> speakp 2seconds.sim.msg
+　　　　　　2SECONDS> echo abc
+　　　　　　2SECONDS> speakp
+　　　　　　2SECONDS> speakx
+　　　　　　2SECONDS> exec 'cat 2seconds.sim.msg'
+　　　　　　abc
+　　　　　　speakpa '2seconds.sim.msg' ;
+　　　　　　speakpa ' ' ;
+　　　　　　2SECONDS> speakp
+　　　　　　speakpa ' ' ;
+　　　　　　2SECONDS> echo def
+　　　　　　def
+　　　　　　2SECONDS>
+
+注意事項　　・スタック領域にプッシュしてあった出力先(speaking-stream)がポップされ,それが新
+　　　　　　　たな出力先になります。
+
+関連事項　　SPEAKコマンド
+　　　　　　SPEAKAコマンド
+　　　　　　SPEAKPコマンド
+　　　　　　SPEAKPAコマンド
+

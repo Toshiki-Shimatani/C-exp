@@ -1,0 +1,28 @@
+claim command
+
+    (A) FUNCTION
+
+        Claim command changes the destination of error messages
+        (claiming-stream) by the later use of commands to specebfied
+        file or standard error.
+
+    (B) SYNOPSIS
+
+        claim  [ <file> ]
+
+    (C) PARAMETERS
+      <file>
+        tells a path of destination file for the error messages. The
+        path should follow the rules of native file system. It is
+        regarded as stderr of SECONDS' process if the <file> is not
+        specified.
+
+    (D) NOTES
+
+      An existing file of specified name is overwritten.
+
+      A new file is created if the specified file does not exist.
+
+    (E) SEE ALSO
+      claima command
+      speak command

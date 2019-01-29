@@ -1,0 +1,5 @@
+ out_nlif [<path_name>]
+
+        Write the network in NLIF format.
+
+        If <path_name> is not specified, output is written to standard output.

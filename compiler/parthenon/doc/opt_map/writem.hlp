@@ -1,0 +1,27 @@
+  writem command
+
+  (A) FUNCTION
+
+  Writem command writes out a netlist of current module to standard
+  output.
+
+  (B) SYNOPSIS
+
+  writem
+
+  (C) PARAMETERS
+
+  None.
+
+  (D) NOTES
+
+  * The command produces distinct nld modules of different classes for
+    those unfrozen in current module that were of same class
+    on opt_map's startup.
+
+  * The set of pcd modules used in the circuit may be changed by opt
+    command, but each pcd module's class name is not changed.
+
+  (E) SEE ALSO
+
+  write, last, lastm

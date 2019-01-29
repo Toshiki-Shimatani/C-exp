@@ -1,0 +1,29 @@
+;***************************************************
+;* (C)Copyright by NTT DATA Corp.1994(unpublished) *
+;*                        All rights are reserved. *
+;***************************************************
+
+(def-module nand--3 power 4.9 area 0.74 gates 3
+
+	(def-pin in1  type input  load 0.17)
+	(def-pin in2  type input  load 0.17)
+	(def-pin in3  type input  load 0.17)
+	(def-pin nout type output load 0.11)
+
+        (def-symbol NAND in1 in2 in3 nout)
+
+	(def-function ^nout (and
+		in1
+		in2
+		in3
+	))
+
+	(def-delay /in1 /nout (+ 0.24 (* 1.8 ~nout)))
+	(def-delay /in2 /nout (+ 0.24 (* 1.8 ~nout)))
+	(def-delay /in3 /nout (+ 0.24 (* 1.8 ~nout)))
+	(def-delay %in1 %nout (+ 0.24 (* 1.8 ~nout)))
+	(def-delay %in2 %nout (+ 0.24 (* 1.8 ~nout)))
+	(def-delay %in3 %nout (+ 0.24 (* 1.8 ~nout)))
+
+	(def-constraint drive (- 0 ~nout) type max)
+)

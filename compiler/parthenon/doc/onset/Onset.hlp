@@ -1,0 +1,154 @@
+Program ONSET for PARTHENON Version 2.2
+(Optimizer for logic Networks Supported by Extension of Transduction method)
+
+    ONSET is a program for synthesis or minimization of multi-level logic 
+    networks.  It synthesizes a multi-level network for a given multiple-
+    output function expressed in a sum-of-product form (i.e., a 2-level 
+    network), or it minimizes a given multi-level network.  The resultant 
+    multi-level network consists of NAND and NOR gates with up to 4 inputs, 
+    XOR and XNOR gates with 2 inputs, and AOI and OAI gates with up to 6 
+    inputs.
+    ONSET extends the Transduction method which was developped in the
+    University of Illinois at Urbana-Champaign.
+
+usage:
+        onset [options] [args]
+
+options:
+    -f file    Run under the control of the specified command script file.
+
+    If -f option is omitted, "onset" runs in interactive mode accepting
+    commands from standard input.
+
+arguments:
+    Arguments can be referred by "$n" (e.g., $1, $2, $3 ...) in command script.
+
+
+command summary:
+        The commands are summarized below according to their function.
+
+-------------------------------------------------------------------------------
+                    Input Commands
+-------------------------------------------------------------------------------
+ in_pla <path_name> ...... read a network in PLA format, make an initial 
+                           multi-level network
+ in_nlif <path_name> ..... read a network in NLIF format
+ in_blif <path_name> ..... read a network in BLIF format
+
+-------------------------------------------------------------------------------
+                    Output Commands
+-------------------------------------------------------------------------------
+ out_pla [<path_name>] ... write the network in PLA format (default stdout)
+ out_nlif [<path_name>] .. write the network in NLIF format (default stdout)
+ out_blif [<path_name>] .. write the network in BLIF format (default stdout)
+ out_blifs [<path_name>] . write the network in another BLIF format (df stdout)
+ out_nld [<path_name>] ... write the network in NLD format (default stdout)
+
+-------------------------------------------------------------------------------
+                    Network Manipulation Commands
+-------------------------------------------------------------------------------
+ prefact ................. apply factoring and local optimization
+ sgs ..................... apply Simple Gate Substitution
+ condis .................. apply Connectable, Disconnectable transformation
+                           without AND, OR gates  
+ condisa ................. apply Connectable, Disconnectable transformation
+                           for all gates  
+ gm ...................... apply Gate Merging
+ cpb [n] ................. apply Critical Path Breaking and Resynthesis
+                           (n: breaking level 1 to 4, default 1)
+ map ..................... apply technology mapping (MCNC lib2)
+ sgsm .................... apply Simple Gate Substitution for mapped netwok
+ pruning ................. apply MSPF pruning
+ constant ................ create constant-1 or constant-0 gates for outputs
+ unmap ................... change to the unmapped network with simple gates
+ resynthesis ............. synthesize the whole network from output functions
+
+-------------------------------------------------------------------------------
+                    Network Status Commands
+-------------------------------------------------------------------------------
+ print_names ............. print network name and external pin names
+ print_cost .............. print cost information
+ print_level ............. print gate-IDs according to their logic level
+ print_gate [n] .......... print type and inputs of the gate
+ print_givenf [name] ..... print given functions of the output
+ print_givenf_cube [name]  print given functions of the output by cube format
+ print_outf [n] .......... print functions of the output gate 
+ print_outf_cube [n] ..... print functions of the output gate by cube format
+ print_func [n] .......... print functions of the gate
+ print_func_cube [n] ..... print functions of the gate by cube format
+ print_cspf [n] .......... print CSPFs of the gate
+ print_cspf_cube [n] ..... print CSPFs of the gate by cube format
+ print_args .............. print the value of arguments
+
+-------------------------------------------------------------------------------
+                    Miscellaneous Commands
+-------------------------------------------------------------------------------
+ help .................... print a list of all commands
+ help <command_type> ..... print summary for the type of commands
+                           (invoke system command 'more')
+ help <command_name> ..... print detailed information for the command
+                           (invoke system command 'more')
+ echo [<string>] ......... print string
+ bye ..................... exit onset
+ name <new_name>.......... change the name of the current network
+ verbose [on|off]......... print cost info. in network manipulation command
+
+ !<string> ............... invoke process (<string> is given to sh as input)
+ <path_name> ............. execute the script file
+
+    If <path_name> is not exist, $PARTHENON/com/onset.dir/<path_name> is 
+    used for the script file.
+
+     ------------------------------------------------------------------
+                        Script File Format 
+     ------------------------------------------------------------------
+     <command>             You can write one command in each line.
+     <command>;<comment>   Any string after ';' is ignored.
+     ;<comment>            This line is ignored.
+     <path_name>           Call another script file. (nesting of script)
+     !<string>             Invoke process.
+
+    '$','$0','$1', ... are replaced by the value of arguments.
+    '\' can be used as an escape letter.
+
+examples:
+        Read a file "sample.pla", synthesize the initial network, minimize,
+        map, print status, write in NLD format, and write in BLIF format.
+
+            % onset
+            onset> in_pla  sample.pla
+            onset> print_cost
+            onset> prefact
+            onset> sgs
+            onset> condis
+            onset> sgs
+            onset> gm
+            onset> condisa
+            onset> cpb 1
+            onset> map
+            onset> sgsm
+            onset> constant
+            onset> print_cost
+            onset> out_nld  sample.nld
+            onset> out_blif sample.blif
+            onset> bye
+            %
+
+        When there is a complete script file "sample.scr", onset can be run
+        as a background process.
+
+            % echo sample.scr | onset > sample.log &
+
+        Also, you can use -f option.
+ 
+            % onset -f sample.scr >sample.log &
+
+limitations:
+        Number of input in the network should be less than 32.
+
+bugs:
+        Some format error in the input file may cause problems.
+
+copyright:
+        Nippon Telegraph and Telephone Corporation
+

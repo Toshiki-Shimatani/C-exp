@@ -1,0 +1,20 @@
+  lca command
+
+  (A) FUNCTION
+
+  Lca lists each submoudle's class under current module (i.e., not
+  only in curret module).
+
+  (B) SYNOPSIS
+
+  lca
+
+  (C) PARAMETERS
+
+  None.
+
+  (D) NOTES
+
+  (E) SEE ALSO
+
+  lc

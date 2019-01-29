@@ -1,0 +1,6 @@
+define abort $ABORT ; abort $FATAL   ;
+define dir   $DIR   ; dir $1 ; shift ;
+"$ARGV" ;
+define status $STATUS ;
+abort $abort ; dir $dir ;
+leave $status

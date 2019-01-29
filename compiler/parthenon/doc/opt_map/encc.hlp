@@ -1,0 +1,48 @@
+  encc command
+
+  (A) FUNCTIONS
+
+  Encc command changes relationship between modules from coordination
+  to subordination.
+
+  (B) SYNOPSIS
+
+  encc <submodule name of the module to be parent> {<class name of modules to be children>}
+
+  (C) PARAMETERS
+
+  Submodule name of the module to be parent.
+  Class name(s) of modules to be children.
+
+  (D) NOTES
+
+  * Message will be cautioned when submodules of specified class don't
+    exist.
+
+  * Submodule to be parent will possibly be added with terminals when
+    they are needed. Their names are in either form:
+
+    (name of the child submodule)_(pin name in the submodule)
+
+    or
+
+    (name of the child submodule)_<a number>_(pin name in the submodule)
+
+    The latter name is used to avoid possible name confliction with
+    existing terminals.
+
+  * Original terminals in the submodule to be parent will never be
+    removed.
+
+  * Submodule to be parent will never be added with global terminals.
+
+  * Submodule to be parent is required to be unfrozen, and so is the
+    module which includes modules to be parent or children.
+
+  * Enclosing many children may cause that unnecessary terminals
+    remain in parent module. Such terminals can be removed by rm
+    command.
+
+  (E) SEE ALSO
+
+   make, encs, disc, diss, flat

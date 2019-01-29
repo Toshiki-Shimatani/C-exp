@@ -1,0 +1,19 @@
+;***************************************************
+;* (C)Copyright by NTT DATA Corp.1994(unpublished) *
+;*                        All rights are reserved. *
+;***************************************************
+
+(def-module ninv- power 4.7 area 0.37 gates 1
+
+	(def-pin in  type input  load 0.11)
+	(def-pin out type output load 0.083)
+
+        (def-symbol BUFFER in out)
+
+	(def-function out in)
+
+	(def-delay /in /out (+ 0.51 (* 1.9 ~out)))
+	(def-delay %in %out (+ 0.51 (* 1.9 ~out)))
+
+	(def-constraint drive (- 0 ~out) type max)
+)

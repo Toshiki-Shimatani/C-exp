@@ -1,0 +1,27 @@
+ＭＯＮ＿ＳＴＡＴ
+
+
+機　能　　　現在のモニター条件を表示します。
+
+形　式　　　ｍｏｎ＿ｓｔａｔ　キー
+
+パラメータ　キー：モニターセルの識別名を指定します。
+
+実行例　　　2SECONDS> monitor do
+　　　　　　mon2  true
+　　　　　　mon1  false
+　　　　　　2SECONDS> mon_stat mon2
+　　　　　　true
+　　　　　　2SECONDS> mon_stat
+　　　　　　false
+
+注意事項　　・モニター条件は,true(真)ならば"B1",false(偽)ならば"B0",unknown(不定)ならば"Bu"
+　　　　　　　を出力します。
+　　　　　　・キーが省略された場合,全モニターセルの論理和を出力します。
+　　　　　　・システム変数MONSTATにも同じ条件が格納されます。
+
+関連事項　　MONITORコマンド
+　　　　　　MON_ADDコマンド
+　　　　　　MON_ONコマンド
+　　　　　　MON_OFFコマンド
+　　　　　　MON_RMVコマンド

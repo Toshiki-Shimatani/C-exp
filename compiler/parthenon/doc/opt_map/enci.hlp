@@ -1,0 +1,68 @@
+  enci command
+
+  (A) FUNCTION
+
+  Enci command generates a new submodule in submodule, to which
+  appropriate numbers of existing pcd modules are moved for the new
+  submodule having less input terminals than specified.
+
+  (B) SYNOPSIS
+
+  enci <# input pins> [<module name>]
+
+  (C) PARAMETERS
+
+  # input pins:
+    upper limit of input terminals that the new submodule has.
+
+  module name:
+    name of a pcd module forced to be included.
+
+  (D) NOTES
+
+  * Following conditions are required for a pcd module to be included:
+     1. It has one output terminal.
+     2. Expression in its def-function specification does not have
+        <operator>, or does not have any <operator> other than 'and',
+        'or', 'eor' or 'buffer'.
+        Note: 'nand', 'nor', and 'inverter' are subject to be
+        included, because their def-function's expressions consist of
+        'and', 'or', and '', respectively, which is attributed with
+        negation.
+   
+  * Message will be cautioned when specified pcd module does not exist.
+
+  * Class name of the newly generated submodule is:
+
+    (class name of current module)_subc<a number>
+
+  * Module name of the newly generated submodule is in either of:
+
+    (module name of current module)_subm<a number>
+
+    or
+
+    (class name of current module)_subm<a number
+
+  * Each terminal in the newly generated submoulde has a name:
+
+    (name of the pcd module to be included)_(terminal name in the pcd module to be included)
+
+    or
+
+    (name of the pcd module to be included)_(a number)_(terminal name in the pcd module to be included)
+    
+    The latter name is used to avoid possible name confliction with
+    existing terminals.
+
+  * Submodule to be generated will never be added with global terminals.
+
+  * Warning will be cautioned when the unconnected terminal is
+    detedted, which can be removed by rm command.
+
+  * Current module is required to be unfrozen. Frozen pcd modules will
+    not be enclosed.
+
+  (E) SEE ALSO
+
+   encia, encid, onset, make, encc, encs, disc, diss, flat

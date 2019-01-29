@@ -1,0 +1,121 @@
+  rmaa コマンド
+
+  (A) 機能
+
+  rm  コマンドと組み合わせて用いることにより、 冗長な  ninv 、 and 、 or  や
+  inv/nand/nor-inv/nand/nor の冗長部分を削除します。
+　rmaaa コマンドの機能により本コマンドの機能は実質上、冗長な ninv と inv の
+　削除だけになりました。
+
+  (B) 形式
+
+  rmaa < グローバル high ピン名 > < グローバル low ピン名 >
+
+  (C) パラメータ
+
+  < グローバル high ピン名 > ： グローバル high ピンの名前
+
+  < グローバル low ピン名 > ： グローバル low ピンの名前
+
+  (D) 注意事項
+
+  ●rmaa コマンドはコンスタントの表現がグロバールピンとなっている時のみ有効
+    です。
+
+  ●本コマンドの前に rmaaa コマンドを実行してください。
+
+  ●rmaa コマンドに続けて rm コマンドを実行してください。
+
+  ●結局 rma 、rmaaa 、rmaa 、rm コマンドの順にコマンドを実行してください。
+
+  ●rm 系のコマンドは opt コマンドの前に実行してください。
+
+  ●対象ゲートの認識
+
+・ pcd モジュールのファンクションが 1 個で、
+
+    (def-function <out_pin_name> <in_pin_name>) または
+    (def-function ^<out_pin_name> ^<in_pin_name>)
+
+である時、ninv と識別されます。
+
+・ pcd モジュールのファンクションが 1 個で、
+
+    (def-function ^<out_pin_name> <in_pin_name>) または
+    (def-function <out_pin_name> ^<in_pin_name>)
+
+である時、inv と識別されます。
+
+・ pcd モジュールのファンクションが 1 個で、
+
+    (def-function <out_pin_name> (and <in_pin_name> <in_pin_name> <in_pin_name>...))
+
+       または
+
+    (def-function ^<out_pin_name> (or ^<in_pin_name> ^<in_pin_name> ^<in_pin_name>...))
+
+    である時、and と識別されます。
+
+・ pcd モジュールのファンクションが 1 個で、
+
+    (def-function <out_pin_name> (or <in_pin_name> <in_pin_name> <in_pin_name>...))
+
+       または
+
+    (def-function ^<out_pin_name> (and ^<in_pin_name> ^<in_pin_name> ^<in_pin_name>...))
+
+  である時、or と識別されます。
+
+・ pcd モジュールのファンクションが 1 個で、
+
+    (def-function ^<out_pin_name> (and <in_pin_name> <in_pin_name> <in_pin_name>...))
+
+       または
+
+    (def-function <out_pin_name> (or ^<in_pin_name> ^<in_pin_name> ^<in_pin_name>...))
+
+  である時、nand と識別されます。
+
+・ pcd モジュールのファンクションが 1 個で、
+
+    (def-function ^<out_pin_name> (or <in_pin_name> <in_pin_name> <in_pin_name>...))
+
+       または
+
+    (def-function <out_pin_name> (and ^<in_pin_name> ^<in_pin_name> ^<in_pin_name>...))
+
+   である時、nor と識別されます。
+
+  ●削除の内容
+
+・ ninv の出力側のネットを入力側のネットにマージします。
+
+・ 2 入力 and の一方の入力がコンスタント high に接続されている時、出力側のネ
+   ットをもう一方の入力側のネットにマージします。
+
+・ 2 入力 or の一方の入力がコンスタント low に接続されている時、出力側のネッ
+   トをもう一方の入力側のネットにマージします。
+
+・インバータと等価である以下のゲート
+
+    ・ inv
+    ・ 2 入力 nand の一方の入力がコンスタント high に接続されているもの
+    ・ 2 入力 nor の一方の入力がコンスタント low に接続されているもの
+
+  が同一 nld モジュール内で 2 個シリーズに接続されている時、 2 個目のゲート
+  の出力側に接続されているネットを 1 個目のゲートの入力側のネットにマージし
+  ます。
+
+・以上の結果、出力が使われなくなったゲートは rm コマンドにより削除されます。
+
+・全ての変更は freeze されていない nld モジュール内でのみ起こります。
+
+  (E) 関連事項
+
+  rm 、rma 、reph 、repl
+
+ ● freeze の範囲について
+
+  ある nld モジュールが freeze されている時、 そのなかに含まれるモジュールは
+  全て freeze されます。
+

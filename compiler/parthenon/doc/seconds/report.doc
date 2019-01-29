@@ -1,0 +1,37 @@
+report command
+
+    (A) FUNCTION
+        Report command shows status of the report list, enables or
+        disables the report functionality, or immediately does the
+        reports.
+
+    (B) SYNOPSIS
+
+         report  [" on " | " off " | " do "]
+
+    (C) PARAMETERS
+        on
+         enables the reports on each clock.
+
+        off
+         disables the reports on each clock.
+
+        do
+         immediately puts out the reports to speaking-stream,
+         The reports are put out, except for the ones that are
+         disabled with rpt_off command, even if the per-clock
+         reporting is disabled.
+
+        (without any parameters)
+         The status of current report list is put out to
+         speaking-stream.
+
+    (D) NOTES
+        The reporting is enabled on SECONDS' startup.
+
+    (E) SEE ALSO
+        rpt_on command
+        rpt_off command
+        rpt_add command
+        rpt_rmv command
+        rpt_mv command

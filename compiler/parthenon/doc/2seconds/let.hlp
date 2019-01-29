@@ -1,0 +1,22 @@
+NAME:
+	let
+
+SYNOPSIS:
+	let <var> <command>
+
+DESCRIPTION:
+	Let script defines the variable <var> as the output of
+	<command>.
+
+EXAMPLES:
+	2SECONDS> let all lmc
+	2SECONDS> sflsave $all archive
+
+NOTES:
+	* You do not have to enclose <command> by quotes,
+	  even if <command> consists of multiple tokens.
+
+SEE ALSO:
+
+AUTHOR:
+	Ryo Nomura

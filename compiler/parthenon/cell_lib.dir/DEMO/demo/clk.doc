@@ -1,0 +1,37 @@
+        1. edge trigger type
+
+p_reset  ~~~~~~~|___|~~~~~~~~~~~~~~~~~~~~~~~~~~
+(active low)
+                                          +?cycle
+m_clock                 |~~~~~\___________|~~~~~\_____
+(positive edge)
+                                                        +?cycle
+b_clock                               |~~~~~|___________|~~~~~|_____
+(active high)
+                                              +?cycle
+input                  _____XXXXXXXXXX~~~~~~~~XXXXXXXXXX_____
+
+                                                  +?cycle
+output                     _____XXXX~~~~~~~~~~~~~~XXXX_____
+
+
+
+        2. master-slave type
+
+p_reset  ~~~~~~~|___|~~~~~~~~~~~~~~~~~~~~~~~~~~
+(active low)
+                                       +?cycle
+m_clock              \__|~~~~~~~~~~~~~~\__|~~~~~
+(active low)
+                                           +?cycle
+s_clock                  |__/~~~~~~~~~~~~~~|__/~~~~~
+(active low)
+                                                        +?cycle
+b_clock                               |~~~~~|___________|~~~~~|_____
+(active high)
+                                              +?cycle
+input                  _____XXXXXXXXXX~~~~~~~~XXXXXXXXXX_____
+
+                                                  +?cycle
+output                     _____XXXX~~~~~~~~~~~~~~XXXX_____
+

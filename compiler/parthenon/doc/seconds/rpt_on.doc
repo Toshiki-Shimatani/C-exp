@@ -1,0 +1,25 @@
+rpt_on command
+
+    (A) FUNCTION
+        Rpt_on command enables the report on specified facilities.
+
+    (B) SYNOPSIS
+
+         rpt_on  { <key> }
+
+    (C) PARAMETERS
+        <key>
+         identifies the cell, in the report list, to be enabled.
+
+    (D) NOTES
+        A report is enabled on its registration with rpt_add command.
+
+        Rpt_mv command does not enable nor disable a report.
+
+    (E) SEE ALSO
+        rpt_mv command
+        rpt_off command
+        report command
+        rpt_add command
+        rpt_rmv command
+

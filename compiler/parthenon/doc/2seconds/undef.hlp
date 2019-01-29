@@ -1,0 +1,23 @@
+NAME:
+	undef
+
+SYNOPSIS:
+	undef <variable>
+
+DESCRIPTION:
+	Undef command deletes the specified local variable,
+	which is identified with the name <variable>.
+
+EXAMPLES:
+	2SECONDS> define abc "echo ntt data" ; define
+	define 'abc'    'echo ntt data' ;
+	2SECONDS> undef abc ; define
+	2SECONDS>
+
+NOTES:
+	* Environment variables cannot be deleted.
+
+SEE ALSO:
+	DEFINE(command)
+	SETENV(command)
+	RMACRO(command)

@@ -1,0 +1,48 @@
+memclr command
+
+    (A) FUNCTION
+
+        Memclr command fills a specified area of specified memory
+        facility with a specified value.
+
+    (B) SYNOPSIS
+
+        memclr  <memory>  <start>  <end>  <value>
+
+    (C) PARAMETERS
+        <memory>
+         specifies the faiclity to be filled, which must be a memory.
+
+        <start>
+        <end>
+         specify an area in the memory to be filled.
+         The <start> must be an unsigned integer, while the <end>
+         may be either signed- or unsigned interger.
+         A signed <end> specifies the end address of area as sum of
+         <start> and <end>.
+
+        <value>
+         specifies the filling value as a bit string constant.
+         The string is prepended with 0s or truncated if its length
+         is respectively shorter or longer than the width of memory
+         facility.
+
+    (D) NOTES
+        A memory facility in SFL is installed with being initialized
+        as every bit being 'u'.
+        
+        Set command must be used for any facilities other than memory.
+
+        A usage:
+
+         SFL> memclr memory 30 10 0
+
+        fills the 'memory' with 0 from address 10 to address 30:
+        neither of the area from 0 to 10 nor the one from 30 to the
+        tail is filled.
+
+    (E) SEE ALSO
+        set command
+        memset command
+
+

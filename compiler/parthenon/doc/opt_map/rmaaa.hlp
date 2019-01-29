@@ -1,0 +1,85 @@
+  rmaaa command
+
+  (A) FUNCTION
+
+  Rmaaa command shrinks the arity of inputs on either gate of 'and',
+  'nand, 'or', 'nor' 'eor' or 'enor' that is connected with constant pin.
+
+  (B) SYNOPSIS
+
+  rmaa <name of global high pin> <name of global low pin>
+
+  (C) PARAMETERS
+
+  <name of global high pin> : specifies the name of global pin which
+                              represents high constant.
+  <name of global low  pin> : specifies the name of global pin which
+                              represents low constant.
+
+  (D) NOTES
+  * This command works only if the constants are represented by global
+    pins (i.e., not by pcd modules).
+
+  * This command should be preceded with rma command.
+
+  * Rmaa and rm commands should follow this command in this order.
+
+  * That is, this command is intended to be used in the sequence of
+    rma, rmaaa, rmaa, and rm.
+
+  * The above sequence must be applied before using opt command.
+
+  * How this command identifies each of the modules to be removed:
+
+** A pcd module is identified with 'and' if it has a single
+   function which is either of the followings:
+    a) (def-function <out_pin_name>
+        (and  <in_pin_name>  <in_pin_name>  <in_pin_name>...))
+    b) (def-function ^<out_pin_name>
+        (or  ^<in_pin_name> ^<in_pin_name> ^<in_pin_name>...))
+
+** A pcd module is identified with 'or' if it has a single
+   function which is either of the followings:
+    a) (def-function  <out_pin_name>
+        (or   <in_pin_name>  <in_pin_name>  <in_pin_name>...))
+    b) (def-function ^<out_pin_name>
+        (and ^<in_pin_name> ^<in_pin_name> ^<in_pin_name>...))
+
+** A pcd module is identified with 'nand' if it has a single
+   function which is either of the followings:
+    a) (def-function ^<out_pin_name>
+        (and  <in_pin_name>  <in_pin_name>  <in_pin_name>...))
+    b) (def-function  <out_pin_name>
+        (or  ^<in_pin_name> ^<in_pin_name> ^<in_pin_name>...))
+
+** A pcd module is identified with 'nor' if it has a single
+   function which is either of the followings:
+    a) (def-function ^<out_pin_name>
+        (or   <in_pin_name>  <in_pin_name>  <in_pin_name>...))
+    b) (def-function  <out_pin_name>
+        (and ^<in_pin_name> ^<in_pin_name> ^<in_pin_name>...))
+
+** A pcd module is identified with 'eor' if it has a single
+   function which is either of the followings:
+    a) (def-function <out_pin_name>
+        (eor  <in_pin_name>  <in_pin_name>  <in_pin_name>...))
+    b) (def-function <out_pin_name>
+        (eor ^<in_pin_name> ^<in_pin_name> ^<in_pin_name>...))
+
+** A pcd module is identified with 'enor' if it has a single
+   function which is either of the followings:
+    a) (def-function ^<out_pin_name>
+        (eor  <in_pin_name>  <in_pin_name>  <in_pin_name>...))
+    b) (def-function ^<out_pin_name>
+        (eor ^<in_pin_name> ^<in_pin_name> ^<in_pin_name>...))
+
+  * Descritions on the removal:
+
+** The above change can occur only in unfrozen nld modules.
+
+  (E) SEE ALSO
+
+  rm, rma, rmaa, reph, repl
+
+ * Scope of freezing.
+  Any modules are frozen in a frozen nld module.

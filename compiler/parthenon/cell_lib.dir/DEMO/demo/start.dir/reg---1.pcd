@@ -1,0 +1,40 @@
+;***************************************************
+;* (C)Copyright by NTT DATA Corp.1994(unpublished) *
+;*                        All rights are reserved. *
+;***************************************************
+
+(def-module reg---1 power 23 area 3.4 gates 12
+
+	(def-pin set     type input  load 0.25)
+	(def-pin reset   type input  load 0.13)
+	(def-pin m_clock type input  load 0.12 note clock)
+	(def-pin s_clock type unused)
+	(def-pin p_reset type input  load 0.17)
+	(def-pin out     type output load 0.21)
+	(def-pin nout    type output load 0.089)
+
+	(def-symbol REGISTER set reset m_clock s_clock p_reset out nout)
+
+	(def-logic out (free_reg
+			(or set (and ^reset out)) 0)
+	)
+	(def-logic ^nout out)
+
+	(def-function out   (reg---1 m_clock p_reset set reset))
+	(def-function ^nout (reg---1 m_clock p_reset set reset))
+
+	(def-delay /m_clock /out    (+ 1.6 (* 1.8 ~out)))
+	(def-delay /m_clock /nout   (+ 2.0 (* 1.8 ~nout)))
+
+	(def-constraint set_setup   (- (+ /m_clock ?cycle) /set     2.6) type setup)
+	(def-constraint reset_setup (- (+ /m_clock ?cycle) /reset   2.6) type setup)
+	(def-constraint prs_setup   (- (+ /m_clock ?cycle) /p_reset 1.1) type setup)
+
+	(def-constraint set_hold    (- /set     /m_clock 0   ) type hold)
+	(def-constraint reset_hold  (- /reset   /m_clock 0   ) type hold)
+	(def-constraint prs_hold    (- /p_reset /m_clock 1.70) type hold)
+	(def-constraint freq  (- ?cycle 12))
+
+	(def-constraint drive (- 0 ~out)  type max)
+	(def-constraint drive (- 0 ~nout) type max)
+)

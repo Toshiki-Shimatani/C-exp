@@ -1,0 +1,26 @@
+ldir command
+
+    (A)  FUNCTION
+         Ldir command shows the contents of specified directory in
+         native file system.
+
+    (B)  SYNOPSIS
+
+         ldir  { <pathname> }
+
+    (C)  PARAMETERS
+         <pathname>
+           specifies the pathname to the directory which should follow
+           the rules of native file system.
+           Current working directory of SECONDS' process is specified
+           if no <pathname> is given.
+
+    (D)  NOTES
+         Ldir command does not recognize any wildcard.
+
+    (E)  SEE ALSO
+         exec command
+         dir command
+
+
+

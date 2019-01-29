@@ -1,0 +1,40 @@
+  diss command
+
+  (A) FUNCTION
+
+  Diss command expands only one layer in module hierarchy.
+
+  (B) SYNOPSIS
+
+  diss { <name of the submodule to be expanded> }
+
+  (C) PARAMETERS
+
+  Name(s) of the submodule(s) to be expanded.
+
+  (D) NOTES
+
+  * Message will be cautioned when the specified submodule does
+    not exist.
+
+  * Current submodule will possibly be added with global terminals
+    when they are needed. Their names are identical with those
+    attached to the submodule to be expanded.
+
+  * Each of submodules in the submodule to be expanded will be renamed
+    as:
+
+    (submodule name to be exapanded)_(its old name)
+
+    or
+
+    (submodule name to be exapanded)_(a number)_(its old name)
+
+    The latter name is used to avoid possible name confliction with
+    existing submodules.
+
+  * Current module is required to be unfrozen, and so is the module to
+    be exapnded.
+
+  (E) SEE ALSO
+   make, encc, encs, disc, flat

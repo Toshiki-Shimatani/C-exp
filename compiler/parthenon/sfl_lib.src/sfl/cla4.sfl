@@ -1,0 +1,42 @@
+/******************************************
+* (C)Copyright by N.T.T 1993(unpublished) *
+* All rights are reserved.                *
+******************************************/
+module cla4 {
+    input       cin ;
+    input       in1<4> ;
+    input       in2<4> ;
+    output      out<4> ;
+    output      gout ;
+    output      pout ;
+    sel_v       g<4> ;
+    sel_v       p<4> ;
+    sel_v       cry<4> ;
+    instrin     do ;
+    instruct do par {
+        g = (in1<3> & in2<3>)
+         || (in1<2> & in2<2>)
+         || (in1<1> & in2<1>)
+         || (in1<0> & in2<0>) ;
+        p = (in1<3> | in2<3>)
+         || (in1<2> | in2<2>)
+         || (in1<1> | in2<1>)
+         || (in1<0> | in2<0>) ;
+        cry = ((cin&p<0>&p<1>&p<2>)
+              |    (g<0>&p<1>&p<2>)
+              |         (g<1>&p<2>)
+              |               g<2>)
+           || ((cin&p<0>&p<1>)
+              |    (g<0>&p<1>)
+              |          g<1>)
+           || ((cin&p<0>)
+              |     g<0>)
+           || cin ;
+        out = in1 @ in2 @ cry ;
+        gout = (g<0>&p<1>&p<2>&p<3>)
+              |     (g<1>&p<2>&p<3>)
+              |          (g<2>&p<3>)
+              |                g<3> ;
+        pout = p<0>&p<1>&p<2>&p<3> ;
+    }
+}

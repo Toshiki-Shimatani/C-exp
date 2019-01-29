@@ -1,0 +1,27 @@
+  lv command
+
+  (A) FUNCTION
+
+  Lv command lists all global variables as well as their values.
+
+  (B) SYNOPSIS
+
+  lv
+
+  (C) PARAMETERS
+
+  None.
+
+  (D) NOTES
+
+  * The term 'variable' means a variable described in pcd, which is
+    then included in pcd modules read in on opt_map's startup or by
+    lib command. Variables are identified only by their names (i.e.,
+    no scope exists).
+
+  * The command reports the variable's value as 'UNSET' which is not
+    already set.
+
+  (E) SEE ALSO
+
+  setv, unsetv

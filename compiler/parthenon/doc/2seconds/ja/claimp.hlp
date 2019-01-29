@@ -1,0 +1,28 @@
+ＣＬＡＩＭＰ
+
+
+機　能　　　以後のコマンドの,エラーメッセージの出力先(claiming-stream)を切り換えます。
+
+形　式　　　ｃｌａｉｍｐ　ファイル
+
+パラメータ　ファイル：エラーメッセージを出力するファイルのパス名を指定します。
+　　　　　　　　　　　パス名は,ファイルシステムでの指定方法に従います。
+
+実行例　　　2SECONDS> claimp 2seconds.error.msg
+　　　　　　2SECONDS> echoc abc
+　　　　　　2SECONDS> exec 'cat 2seconds.error.msg'
+　　　　　　abc
+　　　　　　2SECONDS> claimp
+　　　　　　claimpa '2seconds.error.msg' ;
+　　　　　　claimpa' ' ;
+　　　　　　2SECONDS>
+
+注意事項　　・現在の出力先(claiming-stream)を,スタック領域にプッシュします。
+　　　　　　・ファイルを省略すると,claiming-streamのstock状態が表示されます。
+　　　　　　・指定されたファイルが既に存在する場合,そのファイルはトランケートされます。
+　　　　　　・指定されたファイルが存在しない場合,ファイルが新たに作成されます。
+
+関連事項　　CLAIMコマンド
+　　　　　　CLAIMAコマンド
+　　　　　　CLAIMPAコマンド
+　　　　　　CLAIMXコマンド

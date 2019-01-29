@@ -1,0 +1,7 @@
+pcd_dir PatH/cell_lib.dir/DEMO/demo/cell.dir
+dir TargeT.4th
+nldread TargeT.nld
+tpg
+tpg_data TargeT.tpd
+tpg_verify TargeT.tpv
+bye

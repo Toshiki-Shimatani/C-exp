@@ -1,0 +1,10 @@
+[misc]  miscellaneous commands
+ help .................... print a list of all commands
+ help <command_type> ..... print summary for the type of commands
+                           (invoke system command 'more')
+ help <command_name> ..... print detailed information for the command
+                           (invoke system command 'more')
+ echo [<string>] ......... print string
+ bye ..................... exit onset
+ name <new_name>.......... change the name of the current network
+ verbose [on|off]......... print cost info. in network manipulation command

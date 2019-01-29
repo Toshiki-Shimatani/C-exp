@@ -1,0 +1,31 @@
+;***************************************************
+;* (C)Copyright by NTT DATA Corp.1994(unpublished) *
+;*                        All rights are reserved. *
+;***************************************************
+
+(def-module aoi--221 power 13 area 1.1 gates 5
+
+	(def-pin a1   type input  load 0.11)
+	(def-pin a2   type input  load 0.11)
+	(def-pin b1   type input  load 0.11)
+	(def-pin b2   type input  load 0.11)
+	(def-pin c    type input  load 0.11)
+	(def-pin nout type output load 0.073)
+
+	(def-symbol AOI221 a1 a2 b1 b2 c nout)
+
+	(def-function  ^nout (or (and a1 a2) (and b1 b2) c))
+
+	(def-delay /a1 /nout (+ 0.96 (* 1.6 ~nout)))
+	(def-delay /a2 /nout (+ 0.96 (* 1.6 ~nout)))
+	(def-delay /b1 /nout (+ 0.97 (* 1.6 ~nout)))
+	(def-delay /b2 /nout (+ 0.97 (* 1.6 ~nout)))
+	(def-delay /c  /nout (+ 1.1  (* 1.6 ~nout)))
+	(def-delay %a1 %nout (+ 0.96 (* 1.6 ~nout)))
+	(def-delay %a2 %nout (+ 0.96 (* 1.6 ~nout)))
+	(def-delay %b1 %nout (+ 0.97 (* 1.6 ~nout)))
+	(def-delay %b2 %nout (+ 0.97 (* 1.6 ~nout)))
+	(def-delay %c  %nout (+ 1.1  (* 1.6 ~nout)))
+
+	(def-constraint drive (- 0 ~nout) type max)
+)

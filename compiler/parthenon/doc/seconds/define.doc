@@ -1,0 +1,38 @@
+define command
+
+    (A) FUNCTION
+         Define command defines a script-macro.
+
+    (B) SYNOPSIS
+
+          define <name> [ <string> ]
+
+    (C) PARAMETERS
+      <name>
+         tells a name of the new script-macro.
+      <string>
+         specifies the string to be defined as the contents of
+         specified script-macro. The script-macro is forced to be
+         undefined if the string is not specified.
+
+    (D) NOTES
+      The 'ARGC' is name of a reserved script-macro which SECONDS defines.
+
+      The name with a single number is used as an argument-macro and
+      cannot be used to define to be expanded to specified string.
+
+      A script-macro defined with this command is effective only in
+      the script where the macro is defined.
+
+      If a macro name is used in the string expanded to from another
+      macro and the name is not defined there, the name is regarded as
+      of an environment-macro.
+
+      The same name of a script-macro is defined as an
+      environment-macro, the name is expanded to the string
+      defined with the script-macro.
+
+      An environment-macro can be defined with setenv command.
+
+    (E) SEE ALSO
+       setenv command

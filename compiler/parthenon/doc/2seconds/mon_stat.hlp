@@ -1,0 +1,37 @@
+NAME:
+	mon_stat
+
+SYNOPSIS:
+	mon_stat <key>
+	mon_stat
+
+DESCRIPTION:
+
+	Mon_stat command immediately evaluates and prints a monitor
+	cell's value, which is a conditionexpression on which forward
+	command must breaks, in the monitor list. The <key> is a name
+	which identifies the cell in the list.
+
+	The second synopsis (without any arguments) prints a
+	logical sum (OR) of all the cell in monitor list.
+
+EXAMPLES:
+	2SECONDS> monitor do
+	mon2  true
+	mon1  false
+	2SECONDS> mon_stat mon2
+	true
+	2SECONDS> mon_stat
+	false
+
+NOTES:
+	* Evaluation will result in any of 'B1' (true), 'B0' (false)
+	  and 'Bu' (unknown).
+	* Evaluated value will be stored in the system variable MONSTAT.
+
+SEE ALSO:
+	MONITOR(command)
+	MON_ADD(command)
+	MON_ON(command)
+	MON_OFF(command)
+	MON_RMV(command)

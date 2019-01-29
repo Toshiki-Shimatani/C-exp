@@ -1,0 +1,158 @@
+NAME:
+	expr
+
+SYNOPSIS:
+	expr <expression>
+
+DESCRIPTION:
+	Expr command evaluates the given expression and prints the
+	evaluated value. The expression must follow a Lisp-like
+	postfix notation, which can be overviewed with a reference at
+	the end of this help. SFL facilitie can also be given as an
+	expression.
+
+EXAMPLES:
+	2SECONDS> expr ( and %B4%1111 %B4%0000 )
+	%B4%0000
+	2SECONDS> expr ( concat ( string abc ) ( string def ) )
+	' abcdef '
+	2SECONDS>
+
+NOTES:
+	* A bit vector constant can be noted in the following
+	  notation:
+	   %<base><width>%<digit-sequence>
+	  where:
+	   <base> : specifies the constant's base from:
+	    B (Binary)
+	    D (Decimal)
+	    O (Octal)
+	    X (heXadecimal)
+
+	   <width> : defines the number of digits (in the specified
+	             base) the constant has.
+	   <digit-sequence> : is a sequence of characters, each of
+	                      which can be one of the followings:
+	     A digit in the specified base, like 0, 1, ..
+	     'u' : a digit with unknown value.
+	     '?' : a digit without care (don't care value).
+
+	  When <width> is omitted and the base is any of B, O, X, the
+	  constant's bit-width will be determined according to the
+	  length of <digit-sequence> and the bit-width of a digit in
+	  the base. When <width> is omitted and the base is D, the
+	  length will be 32.
+	* The 'string' functor can gives a string constant.
+	* The evaluated value is stored in the system variable EXPR.
+
+SEE ALSO:
+	EXPRN(command)
+	SETBASE(command)	
+
+
+EXPRESSIONS QUICK REFERENCE:
++-------------------------------------------------------------------------------------------+
+|   Functor        |                                 Returns                                |
++-------------------------------------------------------------------------------------------+
+|( now )           |  current time.                                                         |
++-------------------------------------------------------------------------------------------+
+|( null )          |'not-driven'                                                            |
++-------------------------------------------------------------------------------------------+
+|( insull )        | B1 if e is 'not -driven'.                                              |
++-------------------------------------------------------------------------------------------+
+|( has0 e )        | B1 if e has bit-value '0'.                                             |
++-------------------------------------------------------------------------------------------+
+|( has1 e )        | B1 if e has bit-value '1'.                                             |
++-------------------------------------------------------------------------------------------+
+|( hasu e )        | B1 if e has bit-value 'u'.                                             |
++-------------------------------------------------------------------------------------------+
+|( hasdc e )       | B1 if e has bit-value '?'(don't care).                                 |
++-------------------------------------------------------------------------------------------+
+|( parity e )      | exclusive-or of all bit-values in e.                                   |
++-------------------------------------------------------------------------------------------+
+|( size e )        | bit-length of e.                                                       |
++-------------------------------------------------------------------------------------------+
+|( comp e1 )       | bitwise complement of e.                                               |
++-------------------------------------------------------------------------------------------+
+|( and e1 e2 )     | bitwise and of e1 and e2.                                              |
++-------------------------------------------------------------------------------------------+
+|( or e1 e2 )      | bitwise or of e1 and e2.                                               |
++-------------------------------------------------------------------------------------------+
+|( xor e1 e2 )     | bitwise exclusive-or of e1 and e2.                                     |
++-------------------------------------------------------------------------------------------+
+|( exp e1 e2 )     | enlarge the e1 to e2 bits prepending MSB values.                       |
++-------------------------------------------------------------------------------------------+
+|( substr e1 e2 )  | substring of the e1  from e2 to e3.                                    |
++-------------------------------------------------------------------------------------------+
+|( concat e1 e2 )  | concatenates e2 to e1 on the right.                                    |
++-------------------------------------------------------------------------------------------+
+|( merge e1 e2 )   | replace e1's bits by e2's expect '?' bits.                             |
++-------------------------------------------------------------------------------------------+
+|( match e1 e2 )   | B1 if merged value of e1 and e2 is same value e1.                      |
++-------------------------------------------------------------------------------------------+
+|( eq e1 e2 )      | B1 if e1 == e2.                                                        |
++-------------------------------------------------------------------------------------------+
+|( ne e1 e2 )      | B1 if e1 ! = e2.                                                       |
++-------------------------------------------------------------------------------------------+
+|( gt e1 e2 )      | B1 if e1 > e2.                                                         |
++-------------------------------------------------------------------------------------------+
+|( ge e1 e2 )     | B1 if e1 >= e2.                                                         |
++-------------------------------------------------------------------------------------------+
+|( lt e1 e2 )     | B1 if e1 < e2.                                                          |
++-------------------------------------------------------------------------------------------+
+|( le e1 e2 )     | B1 if e1 <= e2.                                                         |
++-------------------------------------------------------------------------------------------+
+|( add e1 e2 )    | e1 + e2.                                                                |
++-------------------------------------------------------------------------------------------+
+|( sub e1 e2 )    | e1 - e2.                                                                |
++-------------------------------------------------------------------------------------------+
+|( mul e1 e2 )    | e1 * e2.                                                                |
++-------------------------------------------------------------------------------------------+
+|( div e1 e2 )    | e1 / e2.                                                                |
++-------------------------------------------------------------------------------------------+
+|( mod e1 e2 )    | e1 % e2.                                                                |
++-------------------------------------------------------------------------------------------+
+|( tasks S )      | number of active tasks in the srtage S.                                 |
++-------------------------------------------------------------------------------------------+
+|( ntasks S )     | number of active tasks on the next cycle in the stage S.                |
++-------------------------------------------------------------------------------------------+
+|( width F )      | bit-length of the facility F ,for state-valued facilities it returns 0. |
++-------------------------------------------------------------------------------------------+
+|( length M )     | words of the memory M ,for scolor facilities it returns 1.              |
++-------------------------------------------------------------------------------------------+
+|( writing F )    | B1 if the facility F is updated(register-type) or driven(terminal-type).|
++-------------------------------------------------------------------------------------------+
+|( staying S )    | B1 if the current state of S is out of any segments.                    |
++-------------------------------------------------------------------------------------------+
+|( staying G )    | B1 if the current state of a stage is in the segment G.                 |
++-------------------------------------------------------------------------------------------+
+|( nstaying S )   | B1 if the next state of S is out of any segments.                       |
++-------------------------------------------------------------------------------------------+
+|( nstaying G )   | B1 if the next state of a stage is in the segment G                     |
++-------------------------------------------------------------------------------------------+
+|( starting T )   | B1 if the task T is being invoked.                                      |
++-------------------------------------------------------------------------------------------+
+|( starting S )   | B1 if one of the tasks in stage S is being invoked.                     |
++-------------------------------------------------------------------------------------------+
+|( ending T )     | B1 if the task T is terminating.                                        |
++-------------------------------------------------------------------------------------------+
+|( ending S )     | B1 if one of the tasks in stage S is terminating.                       |
++-------------------------------------------------------------------------------------------+
+|( ref F )        | the current value of the scolar facility F.                             |
++-------------------------------------------------------------------------------------------+
+|( next F )       | the next value of the scolar facility F.                                |
++-------------------------------------------------------------------------------------------+
+|( mref M i )     | the memory content of address i of memory M.                            |
++-------------------------------------------------------------------------------------------+
+|( mnext M i )    | the next value for address i of memory M.                               |
++-------------------------------------------------------------------------------------------+
+|( mwriting M i ) | B1 if address i of memory M is being updated.                           |
++-------------------------------------------------------------------------------------------+
+|( cond e1 e2 e3 )| if e1 become B1 then e2 ,othewise e3.                                   |
++-------------------------------------------------------------------------------------------+
+|( index e1 e2 )  | the left-most position of substring matched to regular expression e2.   |
++-------------------------------------------------------------------------------------------+
+|( rindex e1 e2 ) | the right-most position of substring matched to regular expression e2.  |
++-------------------------------------------------------------------------------------------+
+|( string e )     | string leteral e.                                                       |
++-------------------------------------------------------------------------------------------+

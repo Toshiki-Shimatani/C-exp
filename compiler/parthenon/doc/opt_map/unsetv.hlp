@@ -1,0 +1,21 @@
+  unsetv command
+
+  (A) FUNCTION
+
+  Unsetv command removes value of a global variable.
+
+  (B) SYNOPSIS
+
+  unsetv ? <variable name>
+
+  (C) PARAMETERS
+
+  <variable name>: tells a name of variable which is included in
+                   either of the circuit read in on opt_map's starup
+                   or a library read in with lib command.
+
+  (D) NOTES
+
+  (E) SEE ALSO
+
+  lv, setv

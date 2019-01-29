@@ -1,0 +1,28 @@
+ＣＬＡＩＭＸ
+
+
+機　能　　　以後のコマンドの,エラーメッセージの出力先(claiming-stream)を切り換えます。
+
+形　式　　　ｃｌａｉｍｘ
+
+パラメータ　なし
+
+実行例　　　2SECONDS> claimp 2seconds.error.msg
+　　　　　　2SECONDS> echoc abc
+　　　　　　2SECONDS> claimp
+　　　　　　claimpa '2seconds.error.msg' ;
+　　　　　　claimpa ' ' ;
+　　　　　　2SECONDS> claimx
+　　　　　　2SECONDS> claimp
+　　　　　　claimpa ' ' ;
+　　　　　　2SECONDS> echoc def
+　　　　　　def
+　　　　　　2SECONDS>
+
+注意事項　　・スタック領域にプッシュしてあった出力先(claiming-stream)がポップされ,それが新
+　　　　　　　たな出力先になります。
+
+関連事項　　CLAIMコマンド
+　　　　　　CLAIMAコマンド
+　　　　　　CLAIMPコマンド
+　　　　　　CLAIMPAコマンド

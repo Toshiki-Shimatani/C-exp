@@ -1,0 +1,56 @@
+APOLLOCAP
+
+USAGE
+
+  %  apollocap [-p ] [-e <escape> ] <command>
+
+FUNCTION
+
+  Apollocap can help some of the cases in that the specified <command>
+  does not correctly work with its I/O operations in a pad under Apollo's
+  display manager.
+
+  Ex.
+   1) The program which utilizes select() system call with a File
+      Descriptor associated with the pad.
+   2) The program which handles controlling terminal (/dev/tty).
+
+OPTIONS
+  -p  should be specified with if the command's process or its
+      descendants require tty interfaces (like /bin/csh). In that case
+      a couple of ttys (/dev/ptyb?, /dev/ttyp?) is required.
+
+  -e  specifies the character to cause a transition from raw mode to
+      cooked mode. The character should be specified as a decimal
+      number with the <escape>, which is regarded as ESC (27) if not
+      specified.
+
+
+PARAMETERS
+  <command>
+      tells a command line consists of the program executed in
+      apollocap environment and arguments to be given to it.
+      The line should be a sequence of tokens delimited with spaces,
+      where the first token represents the name of program and the rest
+      represent the arguments. The name should be in fullpath, except
+      for the one in working directry.
+
+MODE
+  Apollocap has the following two modes. The interrupt character makes
+  a trasition from cooked-mode to raw-mode, while the escape character
+  makes the opposite transition.
+
+    cooked-mode
+      Usual functionalities of a pad under the display manager are
+      available. It requires a care to send a signal to the process of
+      <command> with either the interrupt- (^C) or quit (^\ or ^Q)
+      character: the character must be preceded to by a quit
+      character to avoid the interrupt character making the mode
+      transition.
+
+    raw-mode
+      The usual functionalities are not available. That is, input
+      characters will be passed to the program as they are (without
+      echo). It should be done in this mode to do actions such as
+      passing a password. The escape character makes transition from
+      this mode to cooked-mode.

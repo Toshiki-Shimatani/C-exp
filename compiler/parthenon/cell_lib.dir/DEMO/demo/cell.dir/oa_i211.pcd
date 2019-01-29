@@ -1,0 +1,30 @@
+;***************************************************
+;* (C)Copyright by NTT DATA Corp.1994(unpublished) *
+;*                        All rights are reserved. *
+;***************************************************
+
+(def-module oa_i211 power 11 area 0.98 gates 4
+  
+    (def-pin a1 type input load 0.11)
+    (def-pin a2 type input load 0.11)
+    (def-pin b type input load 0.11)
+    (def-pin c type input load 0.11)
+    (def-pin zn type output load 0.068)
+
+    (def-symbol OAI211 a1 a2 b c zn)
+
+    (def-function ^zn (and (or a1 a2) b c))
+
+    (def-delay /a1 /zn (+ 1.2 (* 1.7 ~zn)))
+    (def-delay /a2 /zn (+ 1.3 (* 1.8 ~zn)))
+    (def-delay /b  /zn (+ 0.99 (* 1.8 ~zn)))
+    (def-delay /c  /zn (+ 0.99 (* 1.8 ~zn)))
+
+    (def-delay %a1 %zn (+ 1.2 (* 1.7 ~zn)))
+    (def-delay %a2 %zn (+ 1.3 (* 1.8 ~zn)))
+    (def-delay %b  %zn (+ 0.99 (* 1.8 ~zn)))
+    (def-delay %c  %zn (+ 0.99 (* 1.8 ~zn)))
+
+    (def-constraint drive (- 1.1 ~zn) type max)
+    (def-constraint drive (- ~zn 0) type min)
+)

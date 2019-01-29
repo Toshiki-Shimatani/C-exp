@@ -1,0 +1,37 @@
+NAME:
+	getsvrt
+
+SYNOPSIS:
+	getsvrt <error-name>:<command-name>
+	getsvrt <error-name>
+	getsvrt             :<command-name>
+
+DESCRIPTION:
+	Getsvrt command prints the severity value which has been set
+	to the given error.
+	An error is identified with a pair of command and error
+	names: the first argument tells the pair in the notation
+	delimited by a ':'.
+
+EXAMPLES:
+	2SECONDS> setsvrt D01:listen 100
+	2SECONDS> setsvrt D01:eval 100
+	2SECONDS> setsvrt X01:listen 100
+	2SECONDS> getsvrt D01:listen
+	setsvrt D01:listen 100 ;
+	2SECONDS> getsvrt :listen  <--- <error-name> is omitted.
+	setsvrt X01:listen 100 ;
+	setsvrt D01:listen 100 ;
+	2SECONDS> getsvrt D01      <--- <command-name> is omitted.
+	setsvrt D01:listen 100 ;
+	setsvrt D01:eval100 ;
+	2SECONDS>
+
+NOTES:
+	* The command reports only the severity values that have been
+	  set with setsvrt command.
+	* Either of the <error-name> or <command-name> can be omitted.
+	  When both are omitted, nothing will be printed.
+	
+SEE ALSO:
+	SETSVRT(command)

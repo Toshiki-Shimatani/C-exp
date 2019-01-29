@@ -1,0 +1,39 @@
+NAME:
+	speakpa
+
+SYNOPSIS:
+	speakpa <filename>
+	speakpa
+
+DESCRIPTION:
+	Speakpa command changes the output stream for error messages to
+	the specified file. The file must be specified with its
+	pathname, according to the system's rule.
+
+	The second synopsis (without any arguments) prints current
+	status of the speaking-stream stack.
+
+EXAMPLES:
+	2SECONDS> speakp 2seconds.sim.msg
+	2SECONDS> echon abc
+	2SECONDS> speakx
+	2SECONDS> speakpa 2seconds.sim.msg
+	2SECONDS> echo def
+	2SECONDS> speak
+	2SECONDS> exec 'cat 2seconds.sim.msg'
+	abcdef
+	2SECONDS> speakpa
+	speakpa ' ' ;
+	speakpa ' ' ;
+	2SECONDS>
+
+NOTES:
+	* Speakp pushes current speaking-stream into the stack.
+	* If specified file already exists, the file will be
+	  APPENDED, otherwise a new file will be created.
+
+SEE ALSO:
+	SPEAK(command)
+	SPEAKA(command)
+	SPEAKP(command)
+	SPEAKX(command)

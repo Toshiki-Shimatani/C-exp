@@ -1,0 +1,38 @@
+NAME:
+	claimpa
+
+SYNOPSIS:
+	claimpa <filename>
+	claimpa
+
+DESCRIPTION:
+	Claimpa command changes the output stream for error messages to
+	the specified file. The file must be specified with its
+	pathname, according to the system's rule.
+
+	The second synopsis (without any arguments) prints current
+	status of the claiming-stream stack.
+
+EXAMPLES:
+	2SECONDS> claimp 2seconds.error.msg
+	2SECONDS> echocn abc
+	2SECONDS> claimx
+	2SECONDS> claimpa 2seconds.error.msg
+	2SECONDS> echoc def
+	2SECONDS> exec 'cat 2seconds.error.msg'
+	abcdef
+	2SECONDS> claimpa
+	claimpa '2seconds.error.msg' ;
+	claimpa' ' ;
+	2SECONDS>
+
+NOTES:
+	* Claimp pushes current claiming-stream into the stack.
+	* If specified file already exists, the file will be
+	  APPENDED, otherwise a new file will be created.
+
+SEE ALSO:
+	CLAIM(command)
+	CLAIMA(command)
+	CLAIMP(command)
+	CLAIMX(command)

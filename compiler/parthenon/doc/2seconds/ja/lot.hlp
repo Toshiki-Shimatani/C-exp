@@ -1,0 +1,18 @@
+ＬＯＴ
+
+
+機　能　　　最外部の端子と結合されていない(インストールされていない)サブモジュールの端子を
+　　　　　表示します。
+
+形　式　　　ｌｏｔ
+
+パラメータ　なし
+
+実行例　　　2SECONDS> lot　　　　　　
+　　　　　　/dti    ( term-input )
+　　　　　　/dto    ( term-output )
+　　　　　　/start  ( instr-input )
+
+注意事項　　なし
+
+関連事項　　REQUESTコマンド

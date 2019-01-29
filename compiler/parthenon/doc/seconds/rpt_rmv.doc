@@ -1,0 +1,22 @@
+rpt_rmv command
+
+    (A) FUNCTION
+        Rpt_mv command removes specified report cell from the report
+        list.
+
+    (B) SYNOPSIS
+
+         rpt_rmv  <key>
+
+    (C) PARAMETERS
+        <key>
+         identifies the report cell to removed fromthe report list.
+
+    (D) NOTES
+
+    (E) SEE ALSO
+        rpt_on command
+        rpt_off command
+        report  command
+        rpt_add command
+        rpt_mv command

@@ -1,0 +1,43 @@
+NAME:
+	error
+
+SYNOPSIS:
+	error <error-name> <default-severity> <format> [<facility> ...]
+
+DESCRIPTION:
+	Error command notifies 2SECONDS that an user-defined error has
+	occured. The notification can be customized with the following
+	arguments:
+	<error-name>      : is the name of the error.
+	<default-severity>: specifies the error's severity
+	                    (from 0 to 300).
+	<format>          : defines a message format in the same way as
+	                    the print command.
+	<facility>        : tells the actual facility for the placeholders
+	                    in the format.
+
+EXAMPLES:
+	2SECONDS> claim 2seconds.error.msg
+	2SECONDS> error ER01 200 "command not found\n"
+	2SECONDS> exec 'cat 2seconds.error.msg'
+	Error(200):ER01:error(20):Genesis: command not found
+	2SECONDS>
+
+NOTE:
+	* Message by the command will be put to claiming-stream.
+	* Setsvrt command can also set the severity of the error by
+	  the error command which means:
+	  * <default-severity> is ignored if the setsvrt command has
+	    been used for error command.
+	  * Setsvrt command can be used with 'error' as command name,
+	    to set the error command's severity.
+	* If the severity (i.e., <default-severity> or one which has
+	  been set by setsvrt command) is less than the message
+	  severity, nothing will be put to the stream.
+
+SEE ALSO:
+	ABORT(command)
+	BREAK(command)
+	MESSAGE(command)
+	SETSVRT(command)
+	GETSVRT(command)

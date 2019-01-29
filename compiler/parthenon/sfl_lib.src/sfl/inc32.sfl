@@ -1,0 +1,25 @@
+/******************************************
+* (C)Copyright by N.T.T 1993(unpublished) *
+* All rights are reserved.                *
+******************************************/
+%i "../int_h/inc_8.h"
+module inc32 {
+    input       in<32> ;
+    output      out<32> ;
+    inc_8       inc3 ;
+    inc_8       inc2 ;
+    inc_8       inc1 ;
+    inc_8       inc0 ;
+    sel_v       cry<4> ;
+    instrin     do ;
+    instruct do par {
+        cry =  (inc2.p & inc1.p & inc0.p)
+            || (inc1.p & inc0.p)
+            || (inc0.p)
+            || (0b1) ;
+        out =  inc3.do(cry<3>,in<31:24>).out
+            || inc2.do(cry<2>,in<23:16>).out
+            || inc1.do(cry<1>,in<15:08>).out
+            || inc0.do(cry<0>,in<07:00>).out ;
+    }
+}

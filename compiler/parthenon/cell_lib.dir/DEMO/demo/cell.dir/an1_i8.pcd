@@ -1,0 +1,41 @@
+;***************************************************
+;* (C)Copyright by NTT DATA Corp.1994(unpublished) *
+;*                        All rights are reserved. *
+;***************************************************
+
+(def-module an1_i8 power 24 area 1.8 gates 8
+  
+    (def-pin a1 type input load 0.11)
+    (def-pin a2 type input load 0.11)
+    (def-pin a3 type input load 0.11)
+    (def-pin a4 type input load 0.11)
+    (def-pin a5 type input load 0.11)
+    (def-pin a6 type input load 0.11)
+    (def-pin a7 type input load 0.11)
+    (def-pin a8 type input load 0.11)
+    (def-pin z type output load 0.069)
+
+    (def-symbol AND a1 a2 a3 a4 a5 a6 a7 a8 z)
+
+    (def-function z (and a1 a2 a3 a4 a5 a6 a7 a8))
+   
+    (def-delay /a1 /z (+ 1.5 (* 1.8 ~z)))
+    (def-delay /a2 /z (+ 1.5 (* 1.8 ~z)))
+    (def-delay /a3 /z (+ 1.5 (* 1.8 ~z)))
+    (def-delay /a4 /z (+ 1.5 (* 1.8 ~z)))
+    (def-delay /a5 /z (+ 1.5 (* 1.8 ~z)))
+    (def-delay /a6 /z (+ 1.5 (* 1.8 ~z)))
+    (def-delay /a7 /z (+ 1.5 (* 1.8 ~z)))
+    (def-delay /a8 /z (+ 1.5 (* 1.8 ~z)))
+    (def-delay %a1 %z (+ 1.5 (* 1.8 ~z)))
+    (def-delay %a2 %z (+ 1.5 (* 1.8 ~z)))
+    (def-delay %a3 %z (+ 1.5 (* 1.8 ~z)))
+    (def-delay %a4 %z (+ 1.5 (* 1.8 ~z)))
+    (def-delay %a5 %z (+ 1.5 (* 1.8 ~z)))
+    (def-delay %a6 %z (+ 1.5 (* 1.8 ~z)))
+    (def-delay %a7 %z (+ 1.5 (* 1.8 ~z)))
+    (def-delay %a8 %z (+ 1.5 (* 1.8 ~z)))
+
+	(def-constraint drive (- 1.1 ~z) type max)
+	(def-constraint drive (- ~z 0) type min)
+)

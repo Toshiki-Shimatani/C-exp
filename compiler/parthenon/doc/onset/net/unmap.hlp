@@ -1,0 +1,8 @@
+ unmap
+
+        The network with simple gates is created by this command from the
+        mapped network.
+
+        Various network manipulation commands (e.g, condis, gm, ...) can be 
+        applied again to the unmapped network.
+

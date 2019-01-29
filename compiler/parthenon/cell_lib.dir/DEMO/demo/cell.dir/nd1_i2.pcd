@@ -1,0 +1,23 @@
+;***************************************************
+;* (C)Copyright by NTT DATA Corp.1994(unpublished) *
+;*                        All rights are reserved. *
+;***************************************************
+
+(def-module nd1_i2 power 3.4 area 0.49 gates 2
+  
+    (def-pin a1 type input load 0.16)
+    (def-pin a2 type input load 0.16)
+    (def-pin zn type output load 0.10)
+
+    (def-symbol NAND a1 a2 zn)
+
+    (def-function ^zn (and a1 a2))
+
+    (def-delay /a1 /zn (+ 0.15 (* 1.8 ~zn)))
+    (def-delay /a2 /zn (+ 0.15 (* 1.8 ~zn)))
+    (def-delay %a1 %zn (+ 0.15 (* 1.8 ~zn)))
+    (def-delay %a2 %zn (+ 0.15 (* 1.8 ~zn)))
+
+	(def-constraint drive (- 1.1 ~zn) type max)
+	(def-constraint drive (- ~zn 0) type min)
+)

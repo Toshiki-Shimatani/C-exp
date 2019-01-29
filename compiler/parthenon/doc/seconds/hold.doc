@@ -1,0 +1,26 @@
+hold command
+
+    (A)  FUNCTION
+         Hold command fixes the value of specified facility.
+
+    (B)  SYNOPSIS
+
+         hold  <facility>
+
+    (C)  PARAMETERS
+        <facility>
+         specifies the name of facility to be inhibit to update.
+
+    (D)  NOTES
+         Facilities applied with this command can be updated with
+         set, memset and memclr commands.
+
+         Both of the data- and instruct terminals must be assigned
+         value with set command before applying this command to them.
+
+    (E)  SEE ALSO
+         set command
+         release command
+
+
+

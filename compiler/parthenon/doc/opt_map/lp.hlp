@@ -1,0 +1,28 @@
+  lp command
+
+  (A) FUNCTION
+
+  Lp command lists all pins in current module.
+
+  (B) SYNOPSIS
+
+  lp
+
+  (C) PARAMETERS
+
+  None.
+
+  (D) NOTES
+
+  * The command reports the information which is deduced with other
+    data and is not always up-to-date. Such informations are: load of
+    net updated by lcalc command, delay time updated by dcalc command,
+    values of power, gates, and area updated by scalc command and type
+    of interface pins in a nld module.
+
+  * Update value of pin type can be reported by succeding lp command
+    to scalc command.
+
+  (E) SEE ALSO
+
+  scalc, scalcm

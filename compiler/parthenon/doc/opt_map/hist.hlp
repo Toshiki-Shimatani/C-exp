@@ -1,0 +1,82 @@
+hist command
+
+(A) FUNCTION
+    Hist command reports statistical information on delays or others
+    over whole circuit.
+
+(B) SYNOPSIS
+
+        (1-1) hist net / [<n>]  reports time distribution
+                                of rising events in nets.
+
+        (1-2) hist net \ [<n>]  reports time distribution
+                                of falling events in nets.
+
+        (1-3) hist net % [<n>]  reports time distribution
+                                of unstable events in nets.
+
+        (1-4) hist net ~ [<n>]  reports load distribution.
+
+        (2-1) hist path / [<n>] reports arrival time distribution
+                                of rising events on the sink of delay paths.
+
+        (2-2) hist path \ [<n>] reports arrival time distribution
+                                of falling events on the sink of delay paths.
+
+        (2-3) hist path ^ [<n>] reports arrival time distribution
+                                of unstable events on the sink of delay paths.
+
+        (3-1) hist lctf [<n>]   reports distribution of errors against constraints.
+
+(C) PARAMETERS
+    <n>
+      tells the number of levels the histgram should be divided into
+      (1<=n<=100), which will be regarded as 10 by default.
+
+(D) NOTES
+
+  For all synopsis:
+
+    Reporting on loads by the command requires to be preceded by a use
+    of lcalc or opt command, which does actual calculation of
+    information to be reported.
+
+    Reporting on delays by the command requires to be preceded by a
+    use of dcalc or opt command, which does actual calculation of
+    information to be reported.
+
+    Scalling factor of the histgram to be reported will be normalized
+    for itself.
+
+  For synopsis(1-1) (1-2) (1-3):
+    Statistical informations on the specified event over whole nets
+    will be reported for each of max- and min value.
+
+  For synopsis (1-4):
+    Statistical information on the load over whole nets will be reported.
+
+  For synopsis (2-1) (2-2) (2-3):
+    Statistical informations on the specified event over sink nets of
+    delay propagation paths will be reported for each of max- and min value.
+    
+    Maximum arrival time does not always mean that the path has
+    maximum propagation delay. Evaluating the latter propagation delay
+    requires the following 3 steps: 1) give temporally an identical
+    start time to all events by using init pin command or others, 2)
+    use dcalc command to calculate delays, 3) and use this command to
+    summary the delays. (Note: any commands related to constraints
+    cannot be used after the steps, until the correct set of event
+    times are reassigned.)
+
+  For synopsis (3-1):
+    Statistical informations on errors in current module against
+    constraints are reported, being classified with what kind
+    of improvements (power up, speed up, speed down or power down) is
+    needed.
+
+(E) SEE ALSO
+    net command
+    path command
+    lctf command
+    dcalc command
+    init command

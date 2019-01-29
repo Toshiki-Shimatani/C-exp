@@ -1,0 +1,40 @@
+exec command
+
+    (A)  FUNCTION
+         Exec command forks a child process which runs a shell on
+         specified command.
+
+    (B)  SYNOPSIS
+
+         exec  [ <command> ]
+
+    (C)  PARAMETERS
+        <command>
+          specifies a command given to the shell. It must be a single
+          token.
+
+          The shell executes the <command> if specified.
+          Otherwise the shell waits for inputs.
+
+          What shell is used depends on the value of environmental
+          variable SHELL as follows:
+
+                Value of the SHELL               Used shell
+                  /com/sh                         /com/sh
+                  /bin/sh                         /bin/sh
+                  /bin/csh                        /bin/sh (not /bin/csh)
+
+    (D) NOTES
+        Each of stdin, stdout and stderr assigned to the child process
+        is same as that of SECONDS and they cannot be redirected with
+        listen, speak or claim command.
+
+        It is not possible in the child process to change the working
+        directory and an environmental variable of SECONDS'
+        process. Use dir and setenv command, respectively, to change
+        them.
+
+    (E) SEE ALSO
+        dir command
+        ldir command
+        setenv command

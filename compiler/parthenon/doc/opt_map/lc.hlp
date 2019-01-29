@@ -1,0 +1,19 @@
+  lc command
+
+  (A) FUNCTION
+
+  Lc command lists each submodule's class in current module.
+
+  (B) SYNOPSIS
+
+  lc
+
+  (C) PARAMETERS
+
+  None.
+
+  (D) NOTES
+
+  (E) SEE ALSO
+
+  lca

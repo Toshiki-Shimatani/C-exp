@@ -1,0 +1,41 @@
+maxn command
+
+(A) FUNCTION
+    Maxn command reports delay propagation paths to a net which gives
+    maximum arrival time of specified event.
+
+(B) SYNOPSIS
+
+    (1) maxn / [<n>] reports delay propagation paths of rising events.
+    (2) maxn \ [<n>] reports delay propagation paths of falling events.
+    (3) maxn % [<n>] reports delay propagation paths of unstable events.
+
+(C) PARAMETERS
+    <n>
+      tells how many delay propagation paths to be reported, which is
+      regarded as 1 by default (i.e., only the propagation path which gives
+      maximum arrival time is reported).
+
+(D) NOTES
+    Only the net with sink attribute and having an arrival event of
+    specified type is subject to be reported.
+
+    Delay propagation path and net attributes are described in the
+    helps of path command and init command, respectively.
+
+    This command must be preceded by delay calculation done by dcalc
+    command or opt command, in order to report correct delay propagation paths.
+
+    Maximum arrival time does not always mean that the path has
+    maximum propagation delay. Evaluating the latter propagation delay
+    requires the following 3 steps: 1) give temporally an identical
+    start time to all events by using init pin command or others, 2)
+    use dcalc command to calculate delays, 3) and use this command to
+    list the delays. (Note: any commands related to constraints
+    cannot be used after the steps, until the correct set of event
+    times are reassigned.)
+
+(E) SEE ALSO
+    path command
+    dcalc command
+    init command

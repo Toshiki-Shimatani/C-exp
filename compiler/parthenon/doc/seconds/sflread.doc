@@ -1,0 +1,60 @@
+sflread command
+
+    (A) FUNCTION
+        Sflread command reads an SFL source file in and translate it
+        into module class representations.
+
+    (B) SYNOPSIS
+
+         sflread <sflsource> sflread <sflsource> -exp
+
+    (C) PARAMETERS
+       <sflsource>
+       specifies the name of SFL source file.
+
+    (D) NOTES
+        The module class cannot be directly simulated: you must build
+        a simulation image by using install command.
+      
+        An error in the SFL source file produces a message such as:
+
+         Error detected ! Shall I open the edit pad ? Type <CR> if ready.
+
+        You can go on with typing <CR>. Editor program will be invoked
+        with opening the file. Exit the editor after correcting the
+        errors, then you will be waited by a prompt. Choices for the
+        prompt are:
+
+            r.: retry
+            a.: abort
+            h.: help
+
+        where 'retry' retries reading the file, 'abort' aborts the
+        sflexp command. During this session you may encounter a
+        message such as:
+
+         prolog: syntax error at LINE=2, COLUMN=0
+
+        Input <CR> sometimes until the prompt ':' appears, then
+        continue the session.
+
+        Correct SFL source file does not lead the above session.
+
+        Sflread command takes longer time than sflload command: it is
+        convenient, after reading an SFL source file, to save each of
+        the modules into file as a module class.
+
+
+        Using this command as
+
+         sflread <sflsource> -exp
+
+        enables the use of such SFL constructs as memory or '+'
+        operators that can be used only in SFL's circuit composite in
+        the SFL's rule.
+
+    (E) SEE ALSO
+        2.1 internal representation of SFL
+        sflload command
+        sflsave command
+        install command

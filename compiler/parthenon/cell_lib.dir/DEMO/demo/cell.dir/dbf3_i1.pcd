@@ -1,0 +1,19 @@
+;***************************************************
+;* (C)Copyright by NTT DATA Corp.1994(unpublished) *
+;*                        All rights are reserved. *
+;***************************************************
+
+(def-module dbf3_i1 power 10 area 0.61 gates 3 cell_name bf3_i1
+  
+    (def-pin i type input load 0.13)
+    (def-pin z type output load 0.11)
+
+    (def-function z (buffer i))
+
+    (def-delay /i /z (+ 0.56 (* 0.61 ~z)))
+    (def-delay %i %z (+ 0.56 (* 0.61 ~z)))
+
+	(def-constraint drive (- 3.3 ~z) type max)
+	(def-constraint drive (- ~z 0) type min)
+    (def-symbol BUFFER i z)
+)

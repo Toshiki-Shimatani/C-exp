@@ -1,0 +1,28 @@
+  make command
+
+  (A) FUNCTION
+
+  Make command adds an submodule to current module.
+
+  (B) SYNOPSIS
+
+  make <class name> <submodule name>
+
+  (C) PARAMETERS
+
+  class name    : tells a name of class to specify what class of submodule
+                  to be added.
+  submodule name: tells a name of the submodule to be added.
+
+  (D) NOTES
+
+  * Class name of the submodule to be added must be unique over whole
+    circuit.
+
+  * Name of the submodule to be added must be unique in current module.
+
+  * Current module must be unfrozen.
+
+  (E) SEE ALSO
+
+  encc, encs, disc, diss, flat

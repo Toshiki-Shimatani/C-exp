@@ -1,0 +1,30 @@
+/******************************************
+* (C)Copyright by N.T.T 1993(unpublished) *
+* All rights are reserved.                *
+******************************************/
+%i "../int_h/alu_16.h"
+module alu16 {
+    input       a<16> ;
+    input       b<16> ;
+    output      out<16> ;
+    output      ov ;
+    output      z ;
+    alu_16      alu16 ;
+    instrin     add ;
+    instrin     sub ;
+    instrin     and ;
+    instrin     or ;
+    instrin     xor ;
+    instruct add par {
+        out = alu16.do(0b1,0b0,0b0,0b0,0b1,0b0,a,b).out ;
+        ov = alu16.ovf ;
+    }
+    instruct sub par {
+        out = alu16.do(0b1,0b1,0b0,0b0,0b1,0b1,a,b).out ;
+        ov = alu16.ovf ;
+        z = alu16.eq ;
+    }
+    instruct and out = alu16.do(0b0,0b0,0b1,0b0,0b0,0b0,a,b).out ;
+    instruct or out = alu16.do(0b0,0b0,0b0,0b1,0b0,0b0,a,b).out ;
+    instruct xor out = alu16.do(0b0,0b0,0b0,0b0,0b1,0b0,a,b).out ;
+}

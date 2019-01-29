@@ -1,0 +1,21 @@
+lc command
+
+    (A)  FUNCTION
+         Lc command reports on specified facility with its type and
+         name.
+
+    (B)  SYNOPSIS
+
+         lc [ { <facility> } ]
+
+    (C)  PARAMETERS
+         <facility>
+           specifies the facility to report on, which is regarded as
+           the one at current postion if not specified.
+
+    (D)  NOTES
+         If the <facility> is not a leaf, this command also reports on
+         its children.
+
+    (E)  SEE ALSO
+         lcn command

@@ -1,0 +1,39 @@
+;***************************************************
+;* (C)Copyright by NTT DATA Corp.1994(unpublished) *
+;*                        All rights are reserved. *
+;***************************************************
+
+(def-module dt_reg power 18 area 3.0 gates 10
+
+	(def-pin in      type input  load 0.12)
+	(def-pin clk_enb type input  load 0.14)
+	(def-pin m_clock type input  load 0.12 note clock)
+	(def-pin out     type output load 0.21)
+	(def-pin nout    type output load 0.089)
+
+	(def-symbol REGISTER in clk_enb m_clock out nout)
+
+	(def-logic out (free_reg
+			(or (and clk_enb in) (and ^clk_enb out)) X)
+	)
+	(def-logic ^nout out)
+
+	(def-function out   (reg-1 m_clock clk_enb in))
+       	(def-function ^nout (reg-1 m_clock clk_enb in))
+
+	(def-delay /m_clock /out  (+ 1.6 (* 1.8 ~out)))
+	(def-delay /m_clock /nout (+ 2.0 (* 1.8 ~nout)))
+
+	(def-constraint in_setup  (- (+ /m_clock ?cycle) /in      1.3) type setup)
+	(def-constraint enb_setup (- (+ /m_clock ?cycle) /clk_enb 1.3) type setup)
+
+	(def-constraint in_hold   (- /in      /m_clock 0.38) type hold)
+	(def-constraint enb_hold  (- /clk_enb /m_clock 0.38) type hold)
+
+	(def-constraint freq  (- ?cycle 12))
+
+	(def-constraint drive (- 1.1 ~out)  type max)
+	(def-constraint drive (- ~out 0)  type min)
+	(def-constraint drive (- 1.1 ~nout) type max)
+	(def-constraint drive (- ~nout 0) type min)
+)

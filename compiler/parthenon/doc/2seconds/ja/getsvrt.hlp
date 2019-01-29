@@ -1,0 +1,30 @@
+ＧＥＴＳＶＲＴ
+
+
+機　能　　　設定されたシビアリティを出力します。
+
+形　式　　　ｇｅｔｓｖｒｔ　エラーコード
+　　　　　　　エラーコード：＝<エラー名：コマンド名>
+
+パラメータ　エラー名　：エラー名を指定します。
+　　　　　　コマンド名：エラーが起きたコマンドを指定します。
+
+実行例　　　2SECONDS> setsvrt D01:listen 100
+　　　　　　2SECONDS> setsvrt D01:eval 100
+　　　　　　2SECONDS> setsvrt X01:listen 100
+　　　　　　2SECONDS> getsvrt D01:listen
+　　　　　　setsvrt D01:listen 100 ;
+　　　　　　2SECONDS> getsvrt :listen　　　＜―――――――エラー名省略の場合
+　　　　　　setsvrt X01:listen 100 ;
+　　　　　　setsvrt D01:listen 100 ;
+　　　　　　2SECONDS> getsvrt D01　　　＜―――――――コマンド名省略の場合
+　　　　　　setsvrt D01:listen 100 ;
+　　　　　　setsvrt D01:eval100 ;
+　　　　　　2SECONDS>
+
+注意事項　　・エラーコードはエラー名とコマンド名をコロンで区切ります。
+　　　　　　・setsvrtコマンドで指定されたエラーコードに対してのみ有効となります。
+　　　　　　・エラー名またはコマンド名を省略することもできます。尚,エラーコードが省略された
+　　　　　　　場合は,何も出力されません。
+
+関連事項　　SETSVRTコマンド

@@ -1,0 +1,35 @@
+NAME:
+	mon_on
+
+SYNOPSIS:
+	mon_on <key>
+	mon_on
+
+DESCRIPTION:
+	Mon_on command activates a monitor cell, which is a condition
+	expression on which forward command must breaks, in the
+	monitor list. The <key> is a name which identifies the cell
+	to be activated.
+
+	The second synopsis (without any arguments) prints all of the
+	cells currently activated.
+
+EXAMPLES:
+	2SECONDS> monitor do
+	mon2    unknown
+	mon1    unknown
+	2SECONDS> mon_on mon2 ; monitor do
+	mon2    on
+	mon1    unknown
+	2SECONDS> mon_on
+	mon_on  'mon2' ;
+
+NOTES:
+	* The cell added with mon_add command is initilly 'on' (activated).
+
+SEE ALSO:
+	MONITOR(command)
+	MON_ADD(command)
+	MON_OFF(command)
+	MON_RMV(command)
+	MON_STAT(command)

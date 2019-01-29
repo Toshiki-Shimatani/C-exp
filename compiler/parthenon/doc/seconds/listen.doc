@@ -1,0 +1,38 @@
+listen command
+
+    (A) FUNCTION
+
+        Listen command calls another instance of command interpreter,
+        assigning specified file to its listening-stream.
+
+    (B) SYNOPSIS
+
+          [ listen ]   <file>  { <argument> }
+
+
+    (C) PARAMETERS
+
+        <file>
+          specifies a string which is interpreted on as a script.
+
+        <argument>
+          specifies each of the arguments to be given to the
+          script.
+
+    (D) NOTES
+        The argument-macro $0 in the file script is defined as "listen"
+
+        If SECONDS finds an unknown command name given, it regards
+        the command line as a listen command without "listen".
+
+        Use listen command when a string must be used as listening-stream.
+
+        The script which includes an listen command is pushed into
+        stack when the listen is called, and resumes when the listen
+        script ends.
+
+
+    (E) SEE ALSO
+        eval command
+        leave command
+

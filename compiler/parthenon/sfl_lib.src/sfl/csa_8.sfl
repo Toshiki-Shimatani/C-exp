@@ -1,0 +1,16 @@
+/******************************************
+* (C)Copyright by N.T.T 1993(unpublished) *
+* All rights are reserved.                *
+******************************************/
+module csa_8 {
+    input       in1<8> ;
+    input       in2<8> ;
+    input       in3<8> ;
+    output      out1<8> ;
+    output      out2<8> ;
+    instrin     do ;
+    instruct do par {
+        out1 = in1 @ in2 @ in3 ;
+        out2 = (in1 & in2) | (in2 & in3) | (in3 & in1) ;
+    }
+}

@@ -1,0 +1,5 @@
+ in_blif <path_name>
+
+        Read a network in BLIF format.
+        Then, make an initial network using permissible functions, if 
+        necessary.

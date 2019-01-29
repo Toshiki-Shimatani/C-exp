@@ -1,0 +1,134 @@
+  rma command
+
+  (A) FUNCTION
+
+  Rma command works as a pre-process of rm command to remove each of
+  'inv', 'ninv', 'and', 'or', 'nand', 'nor', 'eor' and 'enor' that is
+  connected to a global (high or low) pin.
+
+  (B) SYNOPSIS
+
+  rma <name of global high pin> <name of global low pin>
+
+  (C) PARAMETERS
+
+  <name of global high pin> : specifies the name of global pin which
+                              represents high constant.
+  <name of global low  pin> : specifies the name of global pin which
+                              represents low constant.
+
+  (D) NOTES
+
+  * This command works only if the constants are represented by global
+    pins (i.e., not by pcd modules).
+
+  * This command is intended to be followed by rmaaa, rmaa, and rm
+    command in this order.
+
+  * How this command identifies each of the modules to be removed:
+
+** A pcd module is identified with 'ninv' if it has a single
+   function which is either of the followings:
+    a) (def-function  <out_pin_name>  <in_pin_name>)
+    b) (def-function ^<out_pin_name> ^<in_pin_name>)
+
+** A pcd module is identified with 'inv' if it has a single
+   function which is either of the followings:
+    a) (def-function ^<out_pin_name>  <in_pin_name>)
+    b) (def-function  <out_pin_name> ^<in_pin_name>)
+
+** A pcd module is identified with 'and' if it has a single
+   function which is either of the followings:
+    a) (def-function <out_pin_name>
+        (and  <in_pin_name>  <in_pin_name>  <in_pin_name>...))
+    b) (def-function ^<out_pin_name>
+        (or  ^<in_pin_name> ^<in_pin_name> ^<in_pin_name>...))
+
+** A pcd module is identified with 'or' if it has a single
+   function which is either of the followings:
+    a) (def-function  <out_pin_name>
+        (or   <in_pin_name>  <in_pin_name>  <in_pin_name>...))
+    b) (def-function ^<out_pin_name>
+        (and ^<in_pin_name> ^<in_pin_name> ^<in_pin_name>...))
+
+** A pcd module is identified with 'nand' if it has a single
+   function which is either of the followings:
+    a) (def-function ^<out_pin_name>
+        (and  <in_pin_name>  <in_pin_name>  <in_pin_name>...))
+    b) (def-function  <out_pin_name>
+        (or  ^<in_pin_name> ^<in_pin_name> ^<in_pin_name>...))
+
+** A pcd module is identified with 'nor' if it has a single
+   function which is either of the followings:
+    a) (def-function ^<out_pin_name>
+        (or   <in_pin_name>  <in_pin_name>  <in_pin_name>...))
+    b) (def-function  <out_pin_name>
+        (and ^<in_pin_name> ^<in_pin_name> ^<in_pin_name>...))
+
+** A pcd module is identified with 'eor' if it has a single
+   function which is either of the followings:
+    a) (def-function <out_pin_name>
+        (eor  <in_pin_name>  <in_pin_name>  <in_pin_name>...))
+    b) (def-function <out_pin_name>
+        (eor ^<in_pin_name> ^<in_pin_name> ^<in_pin_name>...))
+
+** A pcd module is identified with 'enor' if it has a single
+   function which is either of the followings:
+    a) (def-function ^<out_pin_name>
+        (eor  <in_pin_name>  <in_pin_name>  <in_pin_name>...))
+    b) (def-function ^<out_pin_name>
+        (eor ^<in_pin_name> ^<in_pin_name> ^<in_pin_name>...))
+
+  * Overview of the removal:
+
+** Every 'ninv' and 'inv' in an unfrozen nld module is removed if it
+   is conected with a global constant high, and each of the pins that
+   were sourced by the removed 'ninv' and 'inv' is connected to high
+   and low pin, respectively.
+
+** Every 'ninv' and 'inv' in an unfrozen nld module is removed if it
+   is conected with a global constant low, and each of the pins that
+   were sourced by the removed 'ninv' and 'inv' is connected to low
+   and high pin, respectively.
+
+** Every 'or' and 'nor' in an unfrozen nld module is removed if it is
+   conected with a global constant high, and each of the pins that
+   were sourced by the removed 'or' and 'nor' is connected to high and
+   low pin, respectively.
+
+** Every 'and' and 'nand' in an unfrozen nld module is removed if it is
+   conected with a global constant low, and each of the pins that were
+   sourced by the removed 'and' and 'nand' is connected to low and
+   high pin, respectively.
+
+** Every 'and', 'nand', 'or', 'nor', 'eor' and 'enor' in an unfrozen
+   nld module is removed if all of the input pins on it are connected
+   with either of global constant pins, and each of the pins that were
+   sourced by the removed modules is connected to a global constant
+   pin.
+
+  * Details on the removal.
+
+  If an unfrozen nld module (called module A) has either a pcd or a
+  frozen nld module, and the interior module has a pin which refers
+  an output of a gate removed in the above manner, then the pin is
+  connected with a global pin on the module A.
+
+  If an unfrozen nld module other than top module has a pin which
+  refers an output of a gate removed in the above manner, then the pin
+  is removed.
+  
+  If the (unfrozen) top nld module has a pin which refers an output of
+  a gate removed in the above manner, then the pin is conntected to
+  global pin on the top module.
+
+  The global pin connected in the above explanations is added if it
+  does not exist.
+
+  (E) SEE ALSO
+
+  reph, repl, rm, rmaa
+
+ * Scope of freezing.
+  Any modules are frozen in a frozen nld module.
+  Top module cannot be frozen.

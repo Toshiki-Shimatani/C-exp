@@ -1,0 +1,39 @@
+set command
+
+    (A) FUNCTION
+        Set command assigns a value of registers, stages, segments,
+        tasks, instruct terminals, or data terminals.
+
+    (B) SYNOPSIS
+
+         set <facility> <value>
+
+    (C) PARAMETERS
+        <facility>
+        specifies the facility to be set. Type of it must be either of
+        register, stage, segment, task, instruct terminal, or data
+        terminal.
+
+        <value>
+        specifies the value to assigne to the facility. When the
+        facility is stage or segment, the value must be a state of the
+        facility. For other types the value must be a bit string
+        constant.
+        If the lengths of the value and the facility does not match,
+        the value is extended with 0 at MSB or truncated at MSB.
+
+    (D) NOTES
+        Stages/segements in SFL is initialized, by install command,
+        with its first state.
+        Registers (reg), registers-with-reset (reg_wr), and
+        registers-with-set (reg_ws) are initialized with 'u', '0', and
+        '1', respectively.
+        This command cannot assign memory facility's value: use memset/memclr
+        commands to initialize it. 
+
+    (E) SEE ALSO
+        2.3 set and report of facility's value.
+        memset command
+        memclr command
+
+

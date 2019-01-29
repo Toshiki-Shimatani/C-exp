@@ -1,0 +1,41 @@
+mltc command
+
+(A) FUNCTION
+    Mltc command unfreezes all the (nld or pcd) submodule under current
+    module that are of specified class. The unfrozen submodules will
+    be subject to rectifications by succeding commands.
+
+(B) SYNOPSIS
+
+    mltc { <class_name> }
+
+(C) PARAMETERS
+    <class_name>
+      tells name(s) of class(es) to specify the submodules to be
+      unfrozen.
+
+(D) NOTES
+
+    The command acts on all the submodules of specified class that
+    reside in any module hierarchy under current module.
+
+    A submodule in a frozen module is not subject to be unfrozen. That
+    is, it is not possible to unfreeze only a subset of submodules in a
+    frozen module.
+
+    When the command acts on a frozen submodule, the submodule is
+    unfrozen as well as all the internal submodules under the submodule.
+    Whereas the command acts on a submodule which is not frozen, the
+    submodule itself is not unfrozen but all the internal submodules
+    are subject to be unfrozen.
+
+    The command is invalidated if current module is internal to a
+    frozen module.
+
+    Only either of frzs command or frzc command can freeze a submodule.
+
+(E) SEE ALSO
+    frzs command
+    frzc command
+    mlts command
+    lfrz command

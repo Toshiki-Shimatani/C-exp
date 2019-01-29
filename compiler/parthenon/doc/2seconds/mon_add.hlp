@@ -1,0 +1,29 @@
+NAME:
+	mon_add
+
+SYNOPSIS:
+	mon_add <key> <condition>
+	mon_add
+
+DESCRIPTION:
+	Mon_add command registers a monitor cell, which is a condition
+	expression on which forward command must breaks, to the
+	monitor list. The <key> is a name which identifies the cell
+	in the list.
+
+	The second synopsis (without any arguments) prints current
+	list of monitors.
+
+EXAMPLES:
+	2SECONDS> mon_add mon ( eq /start %B8%00000000 )
+	2SECONDS> mon_add
+	mon_add ' mon '  ( eq ( ref /start ) %B8%00000000 ) ;
+
+NOTES:
+
+SEE ALSO:
+	MONITOR(command)
+	MON_ON(command)
+	MON_OFF(command)
+	MON_RMV(command)
+	MON_STAT(command)

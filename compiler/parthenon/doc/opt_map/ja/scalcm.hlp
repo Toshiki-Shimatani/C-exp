@@ -1,0 +1,45 @@
+  scalcm コマンド
+
+  (A) 機能
+
+  カレントのサブモジュールに対し、net 、dot 、power 、gates 、area を集計し、
+  また、インタフェースピンのタイプを決定します。
+
+  (B) 形式
+
+  scalcm
+
+  (C) パラメータ
+
+  なし。
+
+  (D) 注意事項
+
+  ● opt_map  の内部データには他のデータから計算によって導き出すことができる
+    ものがあり、その値はいつも最新値であるとは限りません。その様なものには、
+    lcalc  コマンドによって更新されるネットの負荷容量、 dcalc コマンドによっ
+    て更新される遅延時刻、 scalc コマンドによって更新される power 、gates 、
+    area および nld モジュールのインタフェースピンタイプがあります。
+
+  ● net 数、dot 数の集計値は本コマンド実行後に表示され、 power 、 gates 、
+    area 、インタフェースピンのタイプの最新値は move コマンド、lp コマンドに
+    より表示されます。
+
+  ●インタフェースピンタイプの決定はピンの内側のネットにどの様な pcd  モジュ
+    ールのピンが接続されているかによって次の様に行われます。
+
+  元々 global----------------------------------------------->global
+  pcd の output ピンが接続されている------------------------>output
+  pcd の bidirect ピンが接続されている---------------------->bidirect
+  pcd の tristate ピンと pcd の input ピンが接続されている-->bidirect
+  pcd の tristate ピンのみが接続されている------------------>tristate
+  pcd の input ピンのみが接続されている--------------------->input
+  pcd のピンが接続されていない------------------------------>unused
+
+  さらにインタフェースピン同士が接続されている時、それぞれ、
+  output_connected、bidirect_connected、tristate_connected、input_connected 、
+  unused_connected となります。
+
+  (E) 関連事項
+
+  scalc 、move 、lp

@@ -1,0 +1,111 @@
+  rmaa command
+
+  (A) FUNCTION
+
+  Rmaa command works as a pre-process of rm command to remove each of
+  redundant 'ninv', 'and' and 'or', as well as the redundant part of a
+  connected pair of {inv, nand, nor} and {inv, nand, nor}.
+  This command has been only for removing redundant 'ninv' and 'inv',
+  as another pre-process rmaaa was provided.
+
+  (B) SYNOPSIS
+
+  rmaa <name of global high pin> <name of global low pin>
+
+  (C) PARAMETERS
+
+  <name of global high pin> : specifies the name of global pin which
+                              represents high constant.
+  <name of global low  pin> : specifies the name of global pin which
+                              represents low constant.
+
+  (D) NOTES
+
+  * This command works only if the constants are represented by global
+    pins (i.e., not by pcd modules).
+
+  * This command should be preceded with rmaaa command.
+
+  * Rm command should follow this command.
+
+  * That is, this command is intended to be used in the sequence of
+    rma, rmaaa, rmaa, and rm.
+
+  * The above sequence must be applied before using opt command.
+
+  * How this command identifies each of the modules to be removed:
+
+** A pcd module is identified with 'ninv' if it has a single
+   function which is either of the followings:
+    a) (def-function  <out_pin_name>  <in_pin_name>)
+    b) (def-function ^<out_pin_name> ^<in_pin_name>)
+
+** A pcd module is identified with 'inv' if it has a single
+   function which is either of the followings:
+    a) (def-function ^<out_pin_name>  <in_pin_name>)
+    b) (def-function  <out_pin_name> ^<in_pin_name>)
+
+** A pcd module is identified with 'and' if it has a single
+   function which is either of the followings:
+    a) (def-function <out_pin_name>
+        (and  <in_pin_name>  <in_pin_name>  <in_pin_name>...))
+    b) (def-function ^<out_pin_name>
+        (or  ^<in_pin_name> ^<in_pin_name> ^<in_pin_name>...))
+
+** A pcd module is identified with 'or' if it has a single
+   function which is either of the followings:
+    a) (def-function  <out_pin_name>
+        (or   <in_pin_name>  <in_pin_name>  <in_pin_name>...))
+    b) (def-function ^<out_pin_name>
+        (and ^<in_pin_name> ^<in_pin_name> ^<in_pin_name>...))
+
+** A pcd module is identified with 'nand' if it has a single
+   function which is either of the followings:
+    a) (def-function ^<out_pin_name>
+        (and  <in_pin_name>  <in_pin_name>  <in_pin_name>...))
+    b) (def-function  <out_pin_name>
+        (or  ^<in_pin_name> ^<in_pin_name> ^<in_pin_name>...))
+
+** A pcd module is identified with 'nor' if it has a single
+   function which is either of the followings:
+    a) (def-function ^<out_pin_name>
+        (or   <in_pin_name>  <in_pin_name>  <in_pin_name>...))
+    b) (def-function  <out_pin_name>
+        (and ^<in_pin_name> ^<in_pin_name> ^<in_pin_name>...))
+
+  * Descritions on the removal:
+
+** A couple of the nets is merged if they are connected to the input
+   and output of an 'ninv'.
+
+** A couple of the nets is merged if the followings meet:
+   a) they are connected to an input and the output of a binary 'and',
+   b) and the other input of the gate is connected with a costant
+      high.
+
+** A couple of the nets is merged if the followings meet:
+   a) they are connected to an input and the output of a binary 'or',
+   b) and the other input of the gate is connected with a costant
+      low.
+
+** A couple of the nets is merged if they are connected to the source
+   and sink of a gate series which consists of the gates equivalent to
+   an inverter, such as:
+    a) an 'inv',
+    b) a binary 'nand' with an input being connected with a constant
+       high,
+    b) or a binary 'nor' with an input being connected with a constant
+       low.
+
+** Succeeding application of rm command will remove every gates whose
+   output is changed to be unused as a result of the above.
+
+** The above change can occur only in unfrozen nld modules.
+
+  (E) SEE ALSO
+
+  rm, rma, reph, repl
+
+ * Scope of freezing.
+  Any modules are frozen in a frozen nld module.
+

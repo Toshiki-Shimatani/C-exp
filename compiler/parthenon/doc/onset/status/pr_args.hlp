@@ -1,0 +1,6 @@
+ print_args
+
+        Print the value of arguments.
+
+        $0 (or $) is the name of the current network (i.e., module name).
+        $1, $2, .... can be spesified when this program starts.

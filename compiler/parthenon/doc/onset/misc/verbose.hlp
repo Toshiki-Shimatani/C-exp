@@ -1,0 +1,11 @@
+ verbose [on|off]
+
+        Change the verbose mode.
+
+        If the verbose mode is "on", cost information is printed at each time 
+        network manipulation command is applied.
+
+        If neither "on" nor "off" is specified, the current verbose mode is
+        shown.
+
+        When this program starts, verbose mode is set to "on".

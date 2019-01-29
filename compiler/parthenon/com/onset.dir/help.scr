@@ -1,0 +1,19 @@
+; *******************************************
+; ***** sample script for 'help <type>' *****
+; *******************************************
+help
+echo
+help misc
+echo
+help input
+echo
+help output
+echo
+help net
+echo
+help status
+echo
+help invoke
+echo
+help script
+echo

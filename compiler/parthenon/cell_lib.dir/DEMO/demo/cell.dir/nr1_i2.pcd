@@ -1,0 +1,23 @@
+;***************************************************
+;* (C)Copyright by NTT DATA Corp.1994(unpublished) *
+;*                        All rights are reserved. *
+;***************************************************
+
+(def-module nr1_i2 power 4.7 area 0.61 gates 2
+  
+    (def-pin a1 type input load 0.18)
+    (def-pin a2 type input load 0.18)
+    (def-pin zn type output load 0.11)
+
+    (def-symbol NOR a1 a2 zn)
+
+    (def-function ^zn (or a1 a2))
+
+    (def-delay /a1 /zn (+ 0.26 (* 1.8 ~zn)))
+    (def-delay /a2 /zn (+ 0.26 (* 1.8 ~zn)))
+    (def-delay %a1 %zn (+ 0.26 (* 1.8 ~zn)))
+    (def-delay %a2 %zn (+ 0.26 (* 1.8 ~zn)))
+
+	(def-constraint drive (- 1.1 ~zn) type max)
+	(def-constraint drive (- ~zn 0) type min)
+)

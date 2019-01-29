@@ -1,0 +1,39 @@
+mlts command
+
+(A) FUNCTION
+    Mlts command unfreezes all the (nld or pcd) submodule under
+    current module that have specified submodule name. The unfrozen
+    submodules will be subject to rectifications by succeding
+    commands.
+
+(B) SYNOPSIS
+
+    mlts { <sub_mod_name> }
+
+(C) PARAMETERS
+    <sub_mod_name>
+      tells name(s) of submodule(s) to specify the submodules to be
+      unfrozen.
+
+(D) NOTES
+
+    The command acts on all the submodules of specified name that
+    reside in any module hierarchy under current module.
+
+    When the command acts on a frozen submodule, the submodule is
+    unfrozen as well as all the internal submodules under the submodule.
+    Whereas the command acts on a submodule which is not frozen, the
+    submodule itself is not unfrozen but all the internal submodules
+    are subject to be unfrozen.
+
+    A submodule in a frozen module is not subject to be unfrozen. That
+    is, it is not possible to unfreeze only a subset of submodules in a
+    frozen module.
+
+    Only either of frzs command or frzc command can freeze a submodule.
+
+(E) SEE ALSO
+    frzs command
+    frzc command
+    mltc command
+    lfrz command

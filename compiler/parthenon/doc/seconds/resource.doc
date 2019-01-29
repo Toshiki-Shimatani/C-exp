@@ -1,0 +1,20 @@
+resource command
+
+    (A) FUNCTION
+        Resource command reports on cpu and memory usage.
+
+    (B) SYNOPSIS
+
+         resource
+
+    (C) PARAMETERS
+        None.
+
+    (D) NOTES
+        SECONDS itself never restrict the usage of cpu nor memory.
+
+        Without restricted by administrator, SECONDS consumes as much
+        memory resource as possible: SECONDS immediately aborts when
+        it runs out of the resource.
+
+    (E) SEE ALSO

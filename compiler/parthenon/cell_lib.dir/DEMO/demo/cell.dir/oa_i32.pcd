@@ -1,0 +1,33 @@
+;***************************************************
+;* (C)Copyright by NTT DATA Corp.1994(unpublished) *
+;*                        All rights are reserved. *
+;***************************************************
+
+(def-module oa_i32 power  12 area 1.1 gates 5
+  
+    (def-pin a1 type input load 0.12)
+    (def-pin a2 type input load 0.11)
+    (def-pin a3 type input load 0.11)
+    (def-pin b1 type input load 0.11)
+    (def-pin b2 type input load 0.11)
+    (def-pin zn type output load 0.064)
+
+    (def-symbol OAI32 a1 a2 a3 b1 b2 zn)
+                                     
+    (def-function ^zn (and (or a1 a2 a3) (or b1 b2)))
+
+    (def-delay /a1 /zn (+ 1.7 (* 1.9 ~zn)))
+    (def-delay /a2 /zn (+ 1.8 (* 1.9 ~zn)))
+    (def-delay /a3 /zn (+ 1.8 (* 1.9 ~zn)))
+    (def-delay /b1 /zn (+ 1.4 (* 1.9 ~zn)))
+    (def-delay /b2 /zn (+ 1.5 (* 1.9 ~zn)))
+
+    (def-delay %a1 %zn (+ 1.7 (* 1.9 ~zn)))
+    (def-delay %a2 %zn (+ 1.8 (* 1.9 ~zn)))
+    (def-delay %a3 %zn (+ 1.8 (* 1.9 ~zn)))
+    (def-delay %b1 %zn (+ 1.4 (* 1.9 ~zn)))
+    (def-delay %b2 %zn (+ 1.5 (* 1.9 ~zn)))
+
+    (def-constraint drive (- 1.1 ~zn) type max)
+    (def-constraint drive (- ~zn 0) type min)
+)

@@ -1,0 +1,18 @@
+Name:
+	let
+
+Usage: let <var> <command>
+
+Function:
+	Define the variable <var> as the output of <command>.
+
+Example:
+	2SECONDS> let all lmc
+	2SECONDS> sflsave $all archive
+
+Note:
+	You do not have to enclose <command> by quotes,
+	even if <command> consist of multiple tokens.
+
+Author:
+	Ryo Nomura

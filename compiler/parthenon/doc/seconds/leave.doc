@@ -1,0 +1,34 @@
+leave command
+
+    (A)  FUNCTION
+         Leave command quits currnt script and resumes the script
+         which called the quitted script with listen or eval command.
+
+    (B)  SYNOPSIS
+
+         leave  [ <status> ]
+
+    (C)  PARAMETERS
+        <status>
+          gives integer value of the status code for the quitted
+          script.
+          This parameter has been ignored.
+
+    (D)  NOTES
+         This command is automatically issued on the end of script,
+         which is signed with EOF in a file script or with NULL
+         character in a string script.
+
+         This command command has been useless except for commenting a
+         tailing part of script out at a line.
+
+         This command quits SECONDS' process if issued when stdin is
+         assigned to listening-stream.
+
+    (E)  SEE ALSO
+         eval commadn
+         listen command
+
+
+
+

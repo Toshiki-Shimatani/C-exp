@@ -1,0 +1,39 @@
+frzs command
+
+(A) FUNCTION
+    Frzs command freezes all the nld/pcd submodules in current module
+    that has the specified submodule name. The frozen submodules will
+    not subeject to be rectified by succeding command.
+
+(B) SYNOPSIS
+
+    frzs  { <sub_mod_name> }
+
+(C) PARAMETERS
+    <sub_mod_name>
+    tells name(s) of submodule to be forzen.
+
+(D) NOTES
+    * The command's action will be invalidated in an already frozen
+      submodule.
+
+    * The command acts on all the submodules under current module,
+      that have the specified name.
+
+    * When a submodule to be frozen by a use of the command has an
+      already frozen module, subtree under the submodule, which
+      includes the already frozen module, will be a new
+      frozen module. That is, frozen module cannot be nested.
+
+    * A forzen module can be melted by either mlts or mltc: others
+      cannot.
+
+    * Freezing needs a care: in a frozen module any pcd modules
+      will not be replaced. This can cause a problem when a set of
+      pcd's are in library that specifies a physically identical cell.
+
+(E) SEE ALSO
+    frzc command
+    mlts command
+    mltc command
+    lfrz command

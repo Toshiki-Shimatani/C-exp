@@ -1,0 +1,27 @@
+setenv command
+
+    (A) FUNCTION
+        Setenv command defines an environmental macro.
+
+    (B) SYNOPSIS
+
+         setenv <name> [ <string> ]
+
+    (C) PARAMETERS
+        <name>
+        specifies a name of the macro.
+        <string>
+        specifies a string value to be assigned to the macro.
+        If ommitted, the specified macro becomes undefined.
+
+    (D) NOTES
+        TIME, POSIT, MARKER are reserved macro by SECONDS.
+        SECONDS automatically defines on invocation each macro
+        corresponding to an environmental variable of process.
+        A script macro overrides the macro corresponding to a
+        process's environmental variable with same name.
+        Undefined macro is expanded as empty string.
+
+    (E) SEE ALSO
+        3.2 macro expansion
+        define command

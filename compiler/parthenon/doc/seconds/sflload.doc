@@ -1,0 +1,27 @@
+ sflload command
+
+    (A) FUNCTION
+        Sflload command reads module class representation of an SFL
+        module.
+
+    (B) SYNOPSIS
+
+         sflload  <file>
+
+    (C) PARAMETERS
+        <file>
+        specifies a name of file which has been created by sflsave
+        command and in which the module class is saved.
+
+    (D) NOTES
+        The module class cannot be directly simulated: you must build
+        a simulation image by using install command.
+        This version of sflload cannot save nor load the simulation
+        image.
+
+    (E) SEE ALSO
+        2.1 internal representations of SFL
+        sflread command
+        sflsave command
+        install command
+

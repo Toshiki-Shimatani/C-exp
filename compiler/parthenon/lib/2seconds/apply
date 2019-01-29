@@ -1,0 +1,7 @@
+# Usage: apply <cmd> {<target>}
+if ( le $ARGC 1 ) leave
+define cmd    $1
+define target $2
+shift 2
+$cmd $target
+listen -x $0 "$cmd" "$ARGV"

@@ -1,0 +1,20 @@
+  lctf command
+
+  (A) FUNCTIONS
+
+  Lctf command lists all the constraints of current mofule that are
+  not satisfied.
+
+  (B) SYNOPSIS
+
+  lctf
+
+  (C) PARAMETERS
+
+  None.
+
+  (D) NOTES
+
+  (E) SEE ALSO
+
+  lct, lcta, lcts

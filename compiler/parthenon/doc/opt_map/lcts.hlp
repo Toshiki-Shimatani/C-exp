@@ -1,0 +1,20 @@
+  lcts command
+
+  (A) FUNCTION
+
+  Lcts command lists all the constraints of current module that are
+  satisfied.
+
+  (B) SYNOPSIS
+
+  lcts
+
+  (C) PARAMETERS
+
+  None.
+
+  (D) NOTES
+
+  (E) SEE ALSO
+
+  lct, lcta, lctf

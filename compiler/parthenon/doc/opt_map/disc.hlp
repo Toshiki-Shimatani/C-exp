@@ -1,0 +1,41 @@
+  disc command
+
+  (A) FUNCTION
+
+  Disc command expands only one layer in module hierarchy.
+
+  (B) SYNOPSIS
+
+  disc { <class-name-of-the-module-to-be-expanded> }
+
+  (C) PARAMETERS
+
+  Class name(s) of the module(s) to be expanded.
+
+  (D) NOTES
+
+  * Message will be cautioned when submodule of specified class does
+    not exist.
+
+  * Current submodule will possibly be added with global terminals
+    when they are needed. Their names are identical with those
+    attached to the submodule to be expanded.
+
+  * Each of submodules in the submodule to be expanded will be renamed
+    as:
+
+    (submodule name to be exapanded)_(its old name)
+
+    or
+
+    (submodule name to be exapanded)_(a number)_(its old name)
+
+    The latter name is used to avoid possible name confliction with
+    existing submodules.
+
+  * Current module is required to be unfrozen, and so is the module to
+    be exapnded.
+
+  (E) SEE ALSO
+
+  make, encc, encs, diss, flat

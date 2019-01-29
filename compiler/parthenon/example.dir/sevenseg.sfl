@@ -1,0 +1,30 @@
+/******************************************
+* (C)Copyright by N.T.T 1993(unpublished) *
+* All rights are reserved.                *
+******************************************/
+module sevenseg {
+    input   bcd<4>;
+    output  out<7>;
+    sel     cnv<7>;
+    par {
+        any {
+            bcd == 0x0 : cnv = 0b1111110;
+            bcd == 0x1 : cnv = 0b1100000;
+            bcd == 0x2 : cnv = 0b1011011;
+            bcd == 0x3 : cnv = 0b1110011;
+            bcd == 0x4 : cnv = 0b1100101;
+            bcd == 0x5 : cnv = 0b0110111;
+            bcd == 0x6 : cnv = 0b0111111;
+            bcd == 0x7 : cnv = 0b1100010;
+            bcd == 0x8 : cnv = 0b1111111;
+            bcd == 0x9 : cnv = 0b1110111;
+            bcd == 0xa : cnv = 0b1101111;
+            bcd == 0xb : cnv = 0b0111101;
+            bcd == 0xc : cnv = 0b0011001;
+            bcd == 0xd : cnv = 0b1111001;
+            bcd == 0xe : cnv = 0b0011111;
+            bcd == 0xf : cnv = 0b0001111;
+        }
+        out = cnv;
+    }
+}

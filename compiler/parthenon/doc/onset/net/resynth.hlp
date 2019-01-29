@@ -1,0 +1,7 @@
+ resynthesis
+
+        Synthesize the whole network from the output functions of the current 
+        network.
+
+        The network created by this command is equivalent to the network by 
+        "in_pla" command.

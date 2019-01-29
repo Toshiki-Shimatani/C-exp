@@ -1,0 +1,16 @@
+expr "
+( proc
+	( vdef x $1 )
+	( vdef fact ( qoute
+		( proc
+			( cond ( eq ( vref x ) 01 )
+				01
+				( proc	( vdef ( y x ) )
+					( vdef ( x ( sub ( vref x ) 01 ) ) )
+					( mul ( vref y  ( eval ( vref fact ) ) ) )
+				)
+			)
+		) )
+	)
+	( eval ( vref fact ) )
+) "

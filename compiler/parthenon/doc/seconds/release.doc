@@ -1,0 +1,24 @@
+release command
+
+    (A) FUNCTION
+        Release command cancels the effect of hold command on
+        specified facility.
+
+    (B) SYNOPSIS
+
+         release  <facility>
+
+    (C) PARAMETERS
+         <facility>
+           specifies name of the facility to be applied with the
+           cancellation.
+
+    (D) NOTES
+        A use of this command on either of data- or instruct terminal
+        makes the terminal forget its value which was set with set
+        command.
+
+    (E) NOTES
+        set  command
+        hold command
+

@@ -1,0 +1,10 @@
+/******************************************
+* (C)Copyright by N.T.T 1993(unpublished) *
+* All rights are reserved.                *
+******************************************/
+module zero16 {
+    input       data<16> ;
+    output      zero ;
+    instrin     do ;
+    instruct do zero = ^/|data ;
+}
