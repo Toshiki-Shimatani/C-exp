@@ -1,9 +1,0 @@
-; ****************************************************
-; ***** sample script for blif-input nld-output  *****
-; ***** (resynthesis + delay mode)               *****
-; ****************************************************
-verbose $2
-in_blif $1.blif
-resynthesis
-delay.scr
-out_nld $1.nld

@@ -1,6 +1,0 @@
-[output]  write the multi-level network
- out_pla [<path_name>] ... write the network in PLA format (default stdout)
- out_nlif [<path_name>] .. write the network in NLIF format (default stdout)
- out_blif [<path_name>] .. write the network in BLIF format (default stdout)
- out_blifs [<path_name>] . write the network in another BLIF format (df stdout)
- out_nld [<path_name>] ... write the network in NLD format (default stdout)

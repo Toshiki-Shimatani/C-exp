@@ -1,7 +1,0 @@
-# Usage: apply <script> {<target>}
-if ( le $ARGC 1 ) leave
-define script $1
-define target $2
-shift 2
-eval "$script" $target
-listen -x $0 "$cmd" "$ARGV"

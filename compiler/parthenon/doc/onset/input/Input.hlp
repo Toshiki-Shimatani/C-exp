@@ -1,5 +1,0 @@
-[input]  read a 2-level network or a multi-level network
- in_pla <path_name> ...... read a network in PLA format, make an initial 
-                           multi-level network
- in_nlif <path_name> ..... read a network in NLIF format
- in_blif <path_name> ..... read a network in BLIF format

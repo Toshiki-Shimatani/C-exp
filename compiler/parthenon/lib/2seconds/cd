@@ -1,5 +1,0 @@
-if ( eq $ARGC 0 )
-   dir $HOME
-else
-   dir $1
-endif

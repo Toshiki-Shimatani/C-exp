@@ -1,6 +1,0 @@
-#!/bin/sh
-# Original file must be saved as .bak appended name.
-
-#mv $1 $1.bak
-#cp $1.bak $1
-#xterm -title $1 -vb -e vi -c $2 $1 &

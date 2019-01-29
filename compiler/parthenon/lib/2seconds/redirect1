@@ -1,4 +1,0 @@
-speak -p $1
-shift
-"$ARGV"
-speak -x

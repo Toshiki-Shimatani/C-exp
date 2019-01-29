@@ -1,7 +1,0 @@
-# Usage where <command-name>
-let WHICH which $1
-if ( isnull ( vref WHICH ) )           evalx "setenv WHERE nowhere"
-if ( match  ( vref WHICH ) \\builtin ) evalx "unsetenv WHERE"
-setenv WHERE ( proc ( vdef delim ( rindex ( vref WHICH ) \\/ ) )  \
-                    ( substr ( vref WHICH ) 1 ( vref delim ) ) )
-echo $WHERE

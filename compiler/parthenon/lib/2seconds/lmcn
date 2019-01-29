@@ -1,3 +1,0 @@
-speakp "| awk '{ print \$1 }'"
-lmc
-speakx

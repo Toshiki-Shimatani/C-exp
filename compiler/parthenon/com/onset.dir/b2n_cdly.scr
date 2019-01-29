@@ -1,9 +1,0 @@
-; ****************************************************
-; ***** sample script for blif-input nld-output  *****
-; ***** (cpb + delay mode)                       *****
-; ****************************************************
-verbose $2
-in_blif $1.blif
-cpb 4
-delay.scr
-out_nld $1.nld

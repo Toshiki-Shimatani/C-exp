@@ -1,8 +1,0 @@
- constant
-        Create constant-1 or constant-0 gates for constant output terminals.
-
-        Constant-1 gate is an NAND gate whose inputs are connected to the
-        input and the output of an inverter.
-
-        Constant-0 gate is an NOR gate whose inputs are connected to the
-        input and the output of an inverter.

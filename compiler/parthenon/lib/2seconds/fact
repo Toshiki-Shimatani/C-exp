@@ -1,4 +1,0 @@
-if ( eq $1 0 ) evalx "expr -D 1"
-expr -s ( sub $1 1 )
-listen fact $EXPR
-expr -D ( mul $EXPR $1 )

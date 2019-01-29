@@ -1,5 +1,0 @@
- print_names
-
-        Print the current name of the network (module name), the names of 
-        the external inputs, the names of the external outputs, and, gate-IDs
-        of the gates whose outputs are connented to the external outputs.

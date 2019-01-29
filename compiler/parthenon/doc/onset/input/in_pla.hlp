@@ -1,4 +1,0 @@
- in_pla <path_name>
-
-        Read a network in PLA format (ESPRESSO fd type), and then make 
-        an initial network using permissible functions.

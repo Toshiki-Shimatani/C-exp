@@ -1,4 +1,0 @@
-if ( eq $ARGC 0 ) leave
-$1
-shift
-$0 $ARGL

@@ -1,8 +1,0 @@
-; ****************************************************
-; ***** sample script for iterative minimization *****
-; ****************************************************
-unmap
-condis
-gm
-map
-constant
