@@ -35,6 +35,8 @@ typedef enum {
   QUITE,
   CHECK,
   PRINT,
+  SERVER_WRITE,
+  SERVER_READ,
   WRITE,
   READ,
   LINUX_ls,
@@ -54,7 +56,9 @@ void cmd_quit();                 /************************************/
 void cmd_check(int socket);
 void cmd_print(int n, int socket);
 void cmd_read(int socket);
-void cmd_write(char *file, int socket);/*          コマンド関数           */
+void cmd_write(int socket);
+void cmd_serv_read(char *file, int socket);
+void cmd_serv_write(char *file, int socket);/*          コマンド関数           */
 void cmd_find(char *word);
 void cmd_bsort(int n);
 void cmd_qsort(int n);
@@ -68,6 +72,8 @@ void print_profile(struct profile *p, int socket);
 void fprint_profile_csv(FILE *fp, struct profile *p);
 int execute(char *command, char *buf, int bufmax);
 int decide_cmd(char *cmd);
+int get_line(FILE *fp,char *line);
+int subst(char *str, char c1, char c2);
 /*************************************************************************/
 
 int recv_msg_exe(char* recv_buf, int socket);
@@ -78,10 +84,11 @@ int main(void){
   int len,len_c;
   int sn,cn,rn;
   int n;
+  int pid; /* fork */
   struct sockaddr_in sa,sa_c;
   char c;
-  char cmd1[BUFSIZE];
-  char cmd2[BUFSIZE];  
+  //char cmd1[BUFSIZE];
+  //char cmd2[BUFSIZE];  
   char send_buf[BUFSIZE];
   char recv_buf[BUFSIZE];
   
@@ -114,42 +121,47 @@ int main(void){
       fprintf(stderr,"Error: Accept Failed.\n");
       exit(4);
     }
-    
-    /* サーバ処理メインルーチン */
-    while(1){
-      i = 0; /* 受信文字のカウント */
-      //bzero(send_buf,strlen(send_buf));
-     
-      sn = sprintf(send_buf, "< ");
-      send(new_s, send_buf, sn, 0);
-      
-    receive: /* ストリーム型のデータの受信処理 */  
-      if(rn = recv(new_s,&recv_buf[i],1,0) < 0) break;
-      /* 改行単位で受信処理をする */
-      if (recv_buf[i] != '\n') {
-	i++;
-        if (i < BUFSIZE - 1)
-          goto receive;
-      }
-      recv_buf[i] = '\0';
-      printf("receive '%s'\n", recv_buf);
-      rn = i;
-      bzero(cmd1,BUFSIZE);
-      bzero(cmd2,BUFSIZE);
-      if((recv_msg_exe(recv_buf, new_s))<=0) break;
-      bzero(recv_buf,BUFSIZE);
-      /* 受信コマンドの処理 */
+    pid = fork();
+    if(pid==0){
+      close(s);
+	/* サーバ処理メインルーチン */
+	while(1){
+	  i = 0; /* 受信文字のカウント */
+	  //bzero(send_buf,strlen(send_buf));
+	  
+	  sn = sprintf(send_buf, "< ");
+	  send(new_s, send_buf, sn, 0);
+	  
+	receive: /* ストリーム型のデータの受信処理 */  
+	  if(rn = recv(new_s,&recv_buf[i],1,0) < 0) break;
+	  /* 改行単位で受信処理をする */
+	  if (recv_buf[i] != '\n') {
+	    i++;
+	    if (i < BUFSIZE - 1)
+	      goto receive;
+	  }
+	  recv_buf[i] = '\0';
+	  //printf("receive '%s'\n", recv_buf);
+	  rn = i;
+	  //bzero(cmd1,BUFSIZE);
+	  //bzero(cmd2,BUFSIZE);
+	  if((recv_msg_exe(recv_buf, new_s))<=0) break;
+	  bzero(recv_buf,BUFSIZE);
+	  /* 受信コマンドの処理 */
+	}
+      printf("connection closed.\n");
+      //bzero(send_buf,BUFSIZE);
+      //bzero(recv_buf,BUFSIZE);
+      close(new_s);
+      _exit(0);
+    }else {
+      close(new_s);
     }
-    printf("connection closed.\n");
-    //bzero(send_buf,BUFSIZE);
-    //bzero(recv_buf,BUFSIZE);
-    close(new_s);
   }
   close(s);
-
   return EXIT_SUCCESS;
 }
-
+  
 int recv_msg_exe(char* recv_buf, int socket){ 
   int cn;
   char send_buf[BUFSIZE];
@@ -187,41 +199,17 @@ int recv_msg_exe(char* recv_buf, int socket){
 }
 
 void parse_line(char* cmd1, char* cmd2, int socket){
-  if(*cmd1 == '%'){
-    exec_command(cmd1, cmd2, socket);
-  }else {
-    if (profile_data_nitems < 10000 ) {
-      new_profile(cmd1, socket);
+    if(*cmd1 == '%'){
+      exec_command(cmd1, cmd2, socket);
+    }else {
+      if (profile_data_nitems < 10000 ) {
+	new_profile(cmd1, socket);
+      }
     }
-  }
 }
 
-void exec_command(char* cmd1, char* cmd2, int socket){
-  /*    if(strlen(cmd1)-1 == 1){
-    printf("1 char command\n");
-    switch(*(cmd1+1)) {
-    case 'C' : 
-    case 'c' : cmd_check(socket); break;
-    case 'P' :
-    case 'p' : 
-      if(cmd2 == NULL) {
-	cmd_print(0,socket);
-      }else{
-	cmd_print(atoi(cmd2),socket); 
-      }break;
-    case 'R' :
-    case 'r' : cmd_read(socket); break;
-    case 'W' : 
-    case 'w' :  cmd_write(cmd2, socket); break;
-    default:
-      fprintf(stderr, "%s command is undefined \n", cmd1);
-      break;
-    }
-  }else if(strlen(cmd1)-1 == 2){
-    printf("2 char command\n");
-  }
-}*/
 
+void exec_command(char* cmd1, char* cmd2, int socket){
  Command cmd = decide_cmd(cmd1);
     switch(cmd) {
     case CHECK :  cmd_check(socket); break;
@@ -232,15 +220,15 @@ void exec_command(char* cmd1, char* cmd2, int socket){
 	cmd_print(atoi(cmd2),socket); 
       } break;
     case READ  : cmd_read(socket); break;
-    case WRITE :  cmd_write(cmd2, socket); break;
+    case WRITE : cmd_write(socket); break;
+    case SERVER_READ : cmd_serv_read(cmd2,socket); break;
+    case SERVER_WRITE :  cmd_serv_write(cmd2, socket); break;
     case LINUX_ls : cmd_ls(socket); break;
     default:
       fprintf(stderr, "%s command is undefined \n", cmd1);
       break;
     }
 }
-
-
 
 void new_profile(char* profile, int socket){
   char send_buf[BUFSIZE] = {};
@@ -251,11 +239,11 @@ void new_profile(char* profile, int socket){
   
   cnt1 = split(profile, ret, ',', MAX_SPLIT);
   if (cnt1 == 5){
-    printf("%s\n",ret[0]);
-    printf("%s\n",ret[1]);
-    printf("%s\n",ret[2]);
-    printf("%s\n",ret[3]);
-    printf("%s\n",ret[4]);
+    //printf("%s\n",ret[0]);
+    //printf("%s\n",ret[1]);
+    //printf("%s\n",ret[2]);
+    //printf("%s\n",ret[3]);
+    //printf("%s\n",ret[4]);
     if (strlen(ret[0]) > 8) {
       err_flag = 1;
       strcat(send_buf, "> ID max digits are 8.\n");
@@ -305,8 +293,6 @@ void new_profile(char* profile, int socket){
 	else strcat(send_buf,"> ");
 	err_flag = 1;
 	strcat(send_buf, "correct birtday form example: 2018-01-01\n");
-	//send(socket, "correct birtday form example: 2018-01-01\n",41,0); 
-	//fprintf(stderr,"correct birthday form example: 2018-01-01\n");
       }
     }
     send(socket, send_buf,strlen(send_buf),0);
@@ -314,15 +300,12 @@ void new_profile(char* profile, int socket){
     strcat(send_buf,"> ");
     strcat(send_buf,"error: this input is wrong form.\n  ");
     strcat(send_buf,"correct form : (ID),(name),(birthday),(home),(comment)\n  ");
-    strcat(send_buf,"example: 09428500,Okayama Taro,1998-01-01,okayama,good student\n");
+    strcat(send_buf,"             : %(command) (argument)\n  ");
+    strcat(send_buf,"example: 09428500,Okayama Taro,1998-01-01,okayama,good student\n  ");
+    strcat(send_buf,"       : %C\n");
    
     send(socket, send_buf, strlen(send_buf), 0);
-    /*    send(socket,"error: this input is wrong form.\n",33,0);
-    send(socket,"correct form : (ID),(name),(birthday),(home),(comment)\n",55,0);
-    send(socket,"example: 09428500,Okayama Taro,1998-01-01,okayama,good student\n",63,0);*/
-    //fprintf(stderr,"error: this input is wrong form\n");
-    //fprintf(stderr,"correct form : (ID),(name),(birthday),(home),(comment)\n");
-  }
+      }
 }
 
 int split(char *str, char *ret[], char sep, int max){
@@ -415,12 +398,67 @@ void cmd_read(int socket){
       new_profile(recv_buf, socket);
     }
     send(socket," ",1,0);
-   
   }
-
 }
 
-void cmd_write(char *file, int socket) {
+void cmd_write(int socket){
+  int i;
+  char ack[2]={0};
+  FILE *fp,*tmp_fp;
+  char tmp_file[22]={"server_file/.tmp.csv"};
+  char send_buf[BUFSIZE+1]={0};
+
+  tmp_fp = fopen(tmp_file,"w");
+  for (i = 0; i < profile_data_nitems; i++) {
+   fprint_profile_csv(tmp_fp, PDS+i);
+  }
+  fclose(tmp_fp);
+  fp = fopen(tmp_file,"r");
+  
+  send(socket," ",1,0);
+  while(1){
+    while(1){
+      if(recv(socket,ack,1,0)>0) break;
+    }
+    if(fgets(send_buf,BUFSIZE+1,fp)==NULL) {
+      send(socket,"\0",1,0);
+      break;
+    }
+    send(socket,send_buf,strlen(send_buf),0);
+    bzero(send_buf,BUFSIZE);
+  }
+}
+
+void cmd_serv_read(char *file, int socket){
+  FILE *fp;
+  char line[BUFSIZE];
+  char filename[BUFSIZE+12]={"server_file/"};
+  char send_buf[BUFSIZE]={0};
+
+  if(strchr(file,'/')!=NULL){
+    sprintf(send_buf,"This file-name is including invalid character '/' : %s\n", file);
+    send(socket,send_buf,strlen(send_buf),0);
+    return;
+  }
+  strcat(filename,file);
+  fp = fopen(filename, "r");
+
+  if (fp == NULL) {
+   sprintf(send_buf,"Could not open file: %s\n", file);
+    send(socket,send_buf,strlen(send_buf),0);
+    fclose(fp);
+    return;
+  }
+
+  
+  while (get_line(fp, line)) {
+    parse_line(line,NULL,socket);
+  }
+
+  fclose(fp);
+}  
+
+void cmd_serv_write(char *file, int socket) {
   int i,pms;
   FILE *fp;
   char send_buf[BUFSIZE]={0};
@@ -447,9 +485,9 @@ void cmd_write(char *file, int socket) {
     fclose(fp);
     return;
   }
-  //for (i = 0; i < profile_data_nitems; i++) {
-  // fprint_profile_csv(fp, PDS+i);
-  //}
+  for (i = 0; i < profile_data_nitems; i++) {
+   fprint_profile_csv(fp, PDS+i);
+  }
   fclose(fp);
 
 } 
@@ -496,7 +534,39 @@ int decide_cmd(char *cmd){
   else if((strcmp(cmd,"%R") == 0) || (strcmp(cmd,"%r") == 0)) return READ;
   else if((strcmp(cmd,"%P") == 0) || (strcmp(cmd,"%p") == 0)) return PRINT;
   else if((strcmp(cmd,"%LS")== 0) || (strcmp(cmd,"%ls")== 0)) return LINUX_ls;
+  else if((strcmp(cmd,"%SW")== 0) || (strcmp(cmd,"%sw")== 0)) return SERVER_WRITE;
+  else if((strcmp(cmd,"%SR")== 0) || (strcmp(cmd,"%sr")== 0)) return SERVER_READ;
   else return UNKNOWN;
   
 }
+int get_line(FILE *fp, char *line)
+{
+  if (fgets(line, BUFSIZE, fp) == '\0')
+    {
+      return 0;
+    }
 
+  subst(line, '\n', '\0');
+
+  return 1;
+}
+
+int subst(char *str, char c1, char c2) {
+  char *s;
+  int i, x, n;
+
+  s = str;
+  while (*s != '\0') {
+    s++;
+  }
+  x = s - str; /* strの文字数 */
+  s = str;
+  n=0; /*入れ替えを行った回数 */
+  for(i=0;i<x+1;i++) {
+    if (*(s+i)== c1) {
+      *(s+i) = c2;
+      n++;
+    }
+  }
+  return n;
+}
