@@ -1,0 +1,241 @@
+\documentclass[a4paper,11pt]{jarticle}
+% ファイル先頭から\begin{document}までの内容（プレアンブル）については，
+% 教員からの指示がない限り， { } の中を書き換えるだけでよい．
+
+% ToDo: 提出要領に従って，適切な余白を設定する
+\usepackage[top=25truemm,  bottom=30truemm,
+            left=25truemm, right=25truemm]{geometry}
+
+
+% ToDo: 提出要領に従って，適切なタイトル・サブタイトルを設定する.
+\title{情報工学実験Cレポート \\
+      コンパイラ実験}
+
+% ToDo: 自分自身の氏名と学生番号に書き換える
+\author{氏名: 島谷　隼生 (Shimatani, Toshiki) \\
+        学生番号: 09428526}
+
+% ToDo: 教員の指示に従って適切に書き換える
+\date{出題日: 2018年12月06日 \\
+      提出日: 2019年02月05日 \\
+      締切日: 2019年02月05日 \\}  % 注：最後の\\は不要に見えるが必要．
+
+% ToDo: 図を入れる場合，以下の1行を有効にする
+%\usepackage{graphicx}
+\usepackage{ascmac}
+
+\begin{document}
+\maketitle
+
+% 目次つきの表紙ページにする場合はコメントを外す
+%{\footnotesize \tableofcontents \newpage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{実験の目的}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+本実験では，情報系学科で学んだ３年間の総仕上げとしてコンパイラの作成を行うことを通じ，
+プログラミング言語で書かれたプログラムと
+アセンブリ言語の対応についてより深く理解し，木構造の取扱いについて習熟すること，
+およびyacc.lexといったプログラムジェネレータを使用してプログラムを作成する経験を
+積むことを目的とする．
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{作成した言語定義}
+最終的に作成した言語の定義をBNFで記述する．以下がその言語定義である．
+{\fontsize{10pt}{11pt} \selectfont
+\begin{itembox}[l]{作成した言語定義(1/3}
+\begin{eqnarray*}
+  <program> &::=& <variable\_declarations> <function\_list> \\
+  <function\_list> &::=& <function> <function\_list> \\
+    &|& <function> \\
+  <function\_list> &::=& <function> <function\_list> \\
+  <function> &::=& <pre\_func> (<argument\_list>) \\&&{<variable\_declarations> <statement\_list>} \\
+  &|& <pre\_func> () \\&& \{ <variable\_declarations>  <statement\_list> \} \\
+<pre\_func> &::=& \verb|func| <\verb|IDENTIFIER|> \\
+<argument\_list> &::=& <argument>\verb|,| <argument\_list> \\
+                  &|& <argument>\\
+<argument> &::=& \verb|define| <\verb|IDENTIFIER|>\\
+             &|& \verb|array| <\verb|IDENTIFIER|>[] \\
+             &|& \verb|array| <\verb|IDENTIFIER|> [<\verb|NUMBER|>][] \\
+<variable\_declarations> &::=& <declaration> <variable\_declarations>  \\
+\end{eqnarray*}
+\end{itembox}
+\begin{itembox}[l]{作成した言語定義(2/3)}
+\begin{eqnarray*}
+<declaration> &::=& \verb|define| <identifier\_list>\verb|;|    \\
+                &|& \verb|array| <\verb|IDENTIFIER|> [<\verb|NUMBER|>]\verb|;|  \\ 
+                &|& \verb|array| <\verb|IDENTIFIER|> [<\verb|NUMBER|>][<\verb|NUMBER|>]\verb|;| \\
+<identifier\_list> &::=& <\verb|IDENTIFIER|>\verb|,| <identifier\_list> \\
+                    &|& <\verb|IDENTIFIER|>\\
+<statement\_list> &::=& <statement> <statement\_list>\\
+                   &|& <statement>          \\
+<statement> &::=& <assignment\_statement>    \\
+              &|& <loop\_statement>\\
+              &|& <selection\_statement>\\
+              &|& <function\_call>\\
+              &|& <break\_statement> \\
+              &|& <\verb|IDENTIFIER|> <unary\_operator> \\
+              &|& <unary\_operator> <\verb|IDENTIFIER|>\\
+<assignment\_statement> &::=& <\verb|IDENTIFIER|> \verb|=| <arithmetic\_expression>\verb|;| \\
+                         &|& <array\_reference> \verb|=| <arithmetic\_expression>\verb|;|\\
+<arithmetic\_expression> &::=& <arithmetic\_expression> <additive\_operator> \\&&<multiplicative\_expression> \\
+                          &|& <multiplicative\_expression> \\
+<multiplicative\_expression> &::=& <multiplicative\_expression>\\&&<multiplicative\_operator> <primary\_expression> \\
+                              &|& <primary\_expression>        \\
+primary\_expression &::=& <variable>\\
+&|& (<arithmetic\_expression>)\\
+<additive\_operator> &::=& \verb|+| \\
+&|& \verb|-| \\
+<multiplicative\_operator> &::=& \verb|*| \\
+&|& \verb|/|\\
+&|& \verb|%| \\
+<unary\_operator> &::=& \verb|++| \\
+&|& \verb|--| \\
+<variable> &::=& \verb|IDENTIFIER| \\
+&|& \verb|NUMBER|\\
+&|& <array\_reference> \\
+&|& \verb|IDENTIFIER| <unary\_operator>\\
+&|& <unary\_operator> \verb|IDENTIFIER|\\
+<array\_reference> &::=& \verb|IDENTIFIER| [<variable>] \\
+&|& \verb|IDENTIFIER| [<variable>][<variable>]\\
+<loop\_statement> &::=& \verb|while|(<expression>){<statement\_list>}\\
+&|& \verb|WHILE|(<expression>)<statement>\\
+&|& \verb|FOR|\\&&(<for\_initial><for\_expression><for\_update>)\\&&{<statement\_list>}\\
+&|& \verb|FOR|\\&&(<for\_initial><for\_expression><for\_update>)\\&&<statement>\\
+\end{eqnarray*}
+\end{itembox}
+\begin{itembox}[l]{作成した言語定義(3/3)}
+\begin{eqnarray*}
+<for\_initial> &::=& <assignment\_statement>\\
+&|& \verb|;|\\
+<for\_expression> &::=& <expression> \verb|;|\\ 
+&|& \verb|;|\\
+<for\_update> &::=& <\verb|IDENTIFIER|> \verb|=| <arithmetic\_expression>\\
+&|& <array\_reference> = <arithmetic\_expression> \\
+&|& \verb|IDENTIFIER| <unary\_operator>\\
+&|& <unary\_operator> <\verb|IDENTIFIER|> \\
+&|& (何もないことを定義)\\
+<selection\_statement> &::=& <if\_statement> \\
+&|& <if\_statement> <else\_statement>\\
+<if\_statement> &::=& \verb|IF| (<expression>){<statement\_list>}\\
+&|& \verb|IF|(<expression>)<statement>\\
+<else\_statement> &::=& \verb|ELSE|{<statement\_list>}\\
+&|& \verb|ELSE| <statement> \\
+<break\_statement> &::=& \verb|BREAK| \verb|;|\\
+<expression> &::=& <arithmetic\_expression> <comparison\_operator>\\&& <arithmetic\_expression> \\
+<comparison\_operator> &::=& \verb|==| \\
+&|& \verb|<|\\
+&|& \verb|>|\\
+&|& \verb|≦|\\
+&|& \verb|≧|\\
+<function\_call> &::=& \verb|FUNCCALL| \verb|IDENTIFIER|()\verb|;|\\
+&|& \verb|FUNCCALL| \verb|IDENTIFIER|(<parameter\_list>) \verb|;|\\
+<parameter\_list> &::=& <arithmetic\_expression> \verb|,| <parameter\_list>\\
+&|& <arithmetic\_expression> \\
+\end{eqnarray*}
+\end{itembox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{言語定義で受理されるプログラムの例}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{コード生成の概略}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{コンパイラ作成過程で工夫した点}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{最終課題を解くために書いたプログラムの概要}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{最終課題の実行結果}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{最終課題の考察}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{ソースプログラムのある場所}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+作成したソースプログラ以下の場所に保存してある．．
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{プログラムリスト}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\fontsize{10pt}{11pt} \selectfont
+\begin{verbatim}
+
+\end{verbatim}
+}
+
+\begin{verbatim}
+<program> ::= <variable_declarations> <function_list> 
+            | <function_list>
+<function_list> ::= <function> <function_list> 
+                  | <function>
+<function> ::= <pre_func> (<argument_list>) {<variable_declarations> <statement_list>}
+             | <pre_func> () {<variable_declarations> <statement_list>}
+<pre_func> ::= func <IDENTIFIER>
+<argument_list> ::= <argument>, <argument_list> 
+                  | <argument>
+<argument> ::= define <IDENTIFIER>
+             | array <IDENTIFIER>[] 
+             | array <IDENTIFIER> [<NUMBER>][] 
+<variable_declarations> ::= <declaration> <variable_declarations>  
+<declaration> ::= define <identifier_list>;    
+                | array <IDENTIFIER> [<NUMBER>];   
+                | array <IDENTIFIER> [<NUMBER>][<NUMBER>]; 
+<identifier_list> ::= <IDENTIFIER>, <identifier_list> 
+                    | <IDENTIFIER>
+<statement_list> ::= <statement> <statement_list>
+                   | <statement>          
+<statement> ::= <assignment_statement>    
+              | <loop_statement>
+              | <selection_statement>
+              | <function_call>
+              | <break_statement> 
+              | <IDENTIFIER> <unary_operator> 
+              | <unary_operator> <IDENTIFIER>
+<assignment_statement> ::= <IDENTIFIER> = <arithmetic_expression>; 
+                         | <array_reference> = <arithmetic_expression>;
+<arithmetic_expression> ::= <arithmetic_expression> <additive_operator> <multiplicative_expression> 
+                          | <multiplicative_expression> 
+<multiplicative_expression> ::= <multiplicative_expression> <multiplicative_operator> <primary_expression> 
+                              | <primary_expression>        
+primary_expression : variable
+| PAREN_L arithmetic_expression PAREN_R
+additive_operator : ADDITION 
+| SUBTRACTION {$$ = AST_SUB;}
+multiplicative_operator : MULTIPLICATION 
+| DIVISION
+| MODULUS 
+unary_operator : INCREMENT 
+| DECREMENT 
+variable : IDENTIFIER 
+| NUMBER
+| array_reference 
+| IDENTIFIER unary_operator
+| unary_operator IDENTIFIER
+array_reference : IDENTIFIER BRACKET_L variable BRACKET_R 
+| IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R 
+loop_statement : WHILE PAREN_L expression PAREN_R BRACE_L statement_list BRACE_R 
+| WHILE PAREN_L expression PAREN_R statement
+| FOR PAREN_L for_initial for_expression for_update PAREN_R BRACE_L statement_list BRACE_R
+| FOR PAREN_L for_initial for_expression for_update PAREN_R statement
+for_initial : assignment_statement
+
+
+
+\end{verbatim}
+
+\end{document}
