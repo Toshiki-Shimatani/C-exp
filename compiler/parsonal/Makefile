@@ -24,4 +24,4 @@ test_ast: test_ast.o ast.o
 	$(CC) $^ -o $@
 
 clean:
-	rm -f $(TARGET) *.o *.tab.c *.tab.h lex.yy.c *~
+	rm -f *.o *.tab.c *.tab.h lex.yy.c *~
