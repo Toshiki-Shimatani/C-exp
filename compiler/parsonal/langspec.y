@@ -89,6 +89,7 @@ argument : DEFINE IDENTIFIER {
     nid = make_ident_node(SYM_ARG_VAR, stmp->symno, NULL);
     $$ = make_nchild_node(AST_ARG, nid, NULL);
     $$->value = 0;
+    $$->size = 1;
   } else {
     sprintf(errmsg, "undefined id %s", $2);
     yyerror(errmsg);
@@ -105,6 +106,7 @@ argument : DEFINE IDENTIFIER {
     nid = make_ident_node(SYM_ARG_VAR, stmp->symno, NULL);
     $$ = make_nchild_node(AST_ARG, nid, NULL);
     $$->value = 1;
+    $$->size = 1;
   } else {
     sprintf(errmsg, "undefined id %s", $2);
     yyerror(errmsg);
@@ -121,6 +123,7 @@ argument : DEFINE IDENTIFIER {
     nid = make_ident_node(SYM_ARG_VAR, stmp->symno, NULL);
     $$ = make_nchild_node(AST_ARG, nid, $4);
     $$->value = 2;
+    $$->size = $4->value;
   } else {
     sprintf(errmsg, "undefined id %s", $2);
     yyerror(errmsg);

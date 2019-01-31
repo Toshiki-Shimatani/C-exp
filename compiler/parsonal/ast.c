@@ -31,6 +31,9 @@ Node *make_ident_node(Stype type, int symno, Symbols *stable){
   obj->value = symno;
   obj->n_child = 0;
   obj->child = NULL;
+  if(type == SYM_FUNC){
+    //obj->value2 = x;
+  }
   return obj;
 }
 

@@ -44,6 +44,8 @@ typedef enum{
 typedef struct node{
   Ntype type;
   int value;
+  int value2;
+  int size;
   int n_child;
   struct node **child;
 } Node;
@@ -54,6 +56,7 @@ typedef struct symbols{
   Stype type;
   unsigned int size1;
   unsigned int size2;
+  unsigned int arg_num;
   struct symbols *next;
   struct symbols *branch;
 } Symbols;
