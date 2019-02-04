@@ -1,5 +1,10 @@
 func main(){
      define a;
+     array b[2];
+     define c;
+     define d;
+     c = 0;
      a = 3;
+     b[c] = a;
     
 }

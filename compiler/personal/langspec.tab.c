@@ -473,15 +473,15 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    43,    43,    44,    46,    47,    49,    59,    67,    84,
-      85,    87,   103,   119,   136,   142,   144,   145,   157,   171,
-     185,   201,   202,   205,   206,   207,   208,   209,   210,   226,
-     242,   245,   261,   264,   268,   287,   291,   293,   297,   299,
-     300,   302,   303,   305,   306,   307,   309,   310,   312,   325,
-     326,   327,   343,   360,   375,   390,   405,   420,   435,   451,
-     454,   457,   460,   463,   464,   466,   467,   469,   484,   485,
-     501,   517,   519,   520,   523,   524,   526,   527,   529,   531,
-     533,   534,   535,   536,   537,   539,   552,   565,   566
+       0,    43,    43,    44,    46,    47,    49,    68,    76,    93,
+      94,    96,   112,   128,   145,   151,   153,   154,   166,   180,
+     194,   210,   211,   214,   215,   216,   217,   218,   219,   235,
+     251,   254,   270,   273,   277,   296,   300,   302,   306,   308,
+     309,   311,   312,   314,   315,   316,   318,   319,   321,   334,
+     335,   336,   352,   369,   384,   399,   414,   429,   444,   460,
+     463,   466,   469,   472,   473,   475,   476,   478,   493,   494,
+     510,   526,   528,   529,   532,   533,   535,   536,   538,   540,
+     542,   543,   544,   545,   546,   548,   561,   574,   575
 };
 #endif
 
@@ -1419,18 +1419,27 @@ yyreduce:
     {
   Node *nfun;
   int arg_num;
+  Node *tmp;
+  int i = 0;
   
   arg_num = calc_arg_node_depth((yyvsp[-5].np),1);
   //printf("%d\n",arg_num);
   nfun = make_nchild_node(AST_FUNC, (yyvsp[-7].np), (yyvsp[-5].np), (yyvsp[-2].np), (yyvsp[-1].np));
   nfun->value  = arg_num;
+  tmp = (yyvsp[-5].np);
+  while(tmp != NULL){
+    set_arg_type(nfun,tmp,i);
+    tmp=tmp->child[1];
+    i++;
+    }
+  
   (yyval.np) = nfun;
 }
-#line 1430 "langspec.tab.c" /* yacc.c:1646  */
+#line 1439 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 59 "langspec.y" /* yacc.c:1646  */
+#line 68 "langspec.y" /* yacc.c:1646  */
     {
   Node *nfun;
   
@@ -1438,11 +1447,11 @@ yyreduce:
   nfun->value = 0;
   (yyval.np) = nfun;
 }
-#line 1442 "langspec.tab.c" /* yacc.c:1646  */
+#line 1451 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 67 "langspec.y" /* yacc.c:1646  */
+#line 76 "langspec.y" /* yacc.c:1646  */
     {
   Node *nid;
   Symbols *stmp;
@@ -1459,23 +1468,23 @@ yyreduce:
     err_flag = 1;
   }
 }
-#line 1463 "langspec.tab.c" /* yacc.c:1646  */
+#line 1472 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 84 "langspec.y" /* yacc.c:1646  */
+#line 93 "langspec.y" /* yacc.c:1646  */
     {(yyval.np)=make_nchild_node(AST_ARG_LIST, (yyvsp[-2].np), (yyvsp[0].np));}
-#line 1469 "langspec.tab.c" /* yacc.c:1646  */
+#line 1478 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 85 "langspec.y" /* yacc.c:1646  */
+#line 94 "langspec.y" /* yacc.c:1646  */
     {(yyval.np)=make_nchild_node(AST_ARG_LIST, (yyvsp[0].np), NULL);}
-#line 1475 "langspec.tab.c" /* yacc.c:1646  */
+#line 1484 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 87 "langspec.y" /* yacc.c:1646  */
+#line 96 "langspec.y" /* yacc.c:1646  */
     {
   Symbols *stmp;
   Node *nid;
@@ -1492,18 +1501,18 @@ yyreduce:
     err_flag = 1;
   }
 }
-#line 1496 "langspec.tab.c" /* yacc.c:1646  */
+#line 1505 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 103 "langspec.y" /* yacc.c:1646  */
+#line 112 "langspec.y" /* yacc.c:1646  */
     {
   Symbols *stmp;
   Node *nid;
   char errmsg[1024];
 
   if(sym_lookup(stable, (yyvsp[-2].name)) == -1){
-    stmp = sym_add(stable, (yyvsp[-2].name), SYM_ARG_VAR, 0, 0);
+    stmp = sym_add(stable, (yyvsp[-2].name), SYM_ARG_VAR, 1, 0);
     nid = make_ident_node(SYM_ARG_VAR, stmp->symno, NULL,(yyvsp[-2].name));
     (yyval.np) = make_nchild_node(AST_ARG, nid, NULL);
     (yyval.np)->value = 1;
@@ -1513,18 +1522,18 @@ yyreduce:
     err_flag = 1;
   }
  }
-#line 1517 "langspec.tab.c" /* yacc.c:1646  */
+#line 1526 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 119 "langspec.y" /* yacc.c:1646  */
+#line 128 "langspec.y" /* yacc.c:1646  */
     {
   Symbols *stmp;
   Node *nid;
   char errmsg[1024];
   
   if(sym_lookup(stable, (yyvsp[-5].name)) == -1){
-    stmp = sym_add(stable, (yyvsp[-5].name), SYM_ARG_VAR, 0, 0);
+    stmp = sym_add(stable, (yyvsp[-5].name), SYM_ARG_VAR, 1, 1);
     nid = make_ident_node(SYM_ARG_VAR, stmp->symno, NULL,(yyvsp[-5].name));
     (yyval.np) = make_nchild_node(AST_ARG, nid, (yyvsp[-3].np));
     (yyval.np)->value = 2;
@@ -1534,34 +1543,34 @@ yyreduce:
     err_flag = 1;
   }
 }
-#line 1538 "langspec.tab.c" /* yacc.c:1646  */
+#line 1547 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 136 "langspec.y" /* yacc.c:1646  */
+#line 145 "langspec.y" /* yacc.c:1646  */
     {
   Node *ntmp = (yyvsp[-1].np);
   while(ntmp->child[1] != NULL) ntmp = ntmp->child[1];
   ntmp->child[1] = (yyvsp[0].np);
   (yyval.np) = (yyvsp[-1].np);
 }
-#line 1549 "langspec.tab.c" /* yacc.c:1646  */
+#line 1558 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 142 "langspec.y" /* yacc.c:1646  */
+#line 151 "langspec.y" /* yacc.c:1646  */
     {(yyval.np)=(yyvsp[0].np);}
-#line 1555 "langspec.tab.c" /* yacc.c:1646  */
+#line 1564 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 144 "langspec.y" /* yacc.c:1646  */
+#line 153 "langspec.y" /* yacc.c:1646  */
     {(yyval.np) = (yyvsp[-1].np);}
-#line 1561 "langspec.tab.c" /* yacc.c:1646  */
+#line 1570 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 145 "langspec.y" /* yacc.c:1646  */
+#line 154 "langspec.y" /* yacc.c:1646  */
     {
   Node *ntmp = make_new_ident_node(stable, SYM_VAR, (yyvsp[-4].name), (yyvsp[-2].np), NULL);
   char errmsg[1024];
@@ -1574,11 +1583,11 @@ yyreduce:
     err_flag = 1;
   }
 }
-#line 1578 "langspec.tab.c" /* yacc.c:1646  */
+#line 1587 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 157 "langspec.y" /* yacc.c:1646  */
+#line 166 "langspec.y" /* yacc.c:1646  */
     {
   Node *ntmp = make_new_ident_node(stable, SYM_VAR, (yyvsp[-7].name), (yyvsp[-5].np), (yyvsp[-2].np));
   char errmsg[1024];
@@ -1591,11 +1600,11 @@ yyreduce:
     err_flag = 1;
   }
 }
-#line 1595 "langspec.tab.c" /* yacc.c:1646  */
+#line 1604 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 171 "langspec.y" /* yacc.c:1646  */
+#line 180 "langspec.y" /* yacc.c:1646  */
     {
   Node *ntmp = make_new_ident_node(stable, SYM_VAR, (yyvsp[-2].name), NULL, NULL);
   char errmsg[1024];
@@ -1610,11 +1619,11 @@ yyreduce:
     //print_symbol_table(global_stable, 0);
   }
 }
-#line 1614 "langspec.tab.c" /* yacc.c:1646  */
+#line 1623 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 185 "langspec.y" /* yacc.c:1646  */
+#line 194 "langspec.y" /* yacc.c:1646  */
     {
   Node *ntmp = make_new_ident_node(stable, SYM_VAR, (yyvsp[0].name), NULL, NULL);
   char errmsg[1024];
@@ -1628,53 +1637,53 @@ yyreduce:
     //print_symbol_table(global_stable, 0);
   }
 }
-#line 1632 "langspec.tab.c" /* yacc.c:1646  */
+#line 1641 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 201 "langspec.y" /* yacc.c:1646  */
+#line 210 "langspec.y" /* yacc.c:1646  */
     {(yyval.np)=make_nchild_node(AST_STAT_LIST, (yyvsp[-1].np), (yyvsp[0].np));}
-#line 1638 "langspec.tab.c" /* yacc.c:1646  */
+#line 1647 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 202 "langspec.y" /* yacc.c:1646  */
+#line 211 "langspec.y" /* yacc.c:1646  */
     {(yyval.np)=make_nchild_node(AST_STAT_LIST, (yyvsp[0].np), NULL);}
-#line 1644 "langspec.tab.c" /* yacc.c:1646  */
+#line 1653 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 205 "langspec.y" /* yacc.c:1646  */
+#line 214 "langspec.y" /* yacc.c:1646  */
     {(yyval.np) = (yyvsp[0].np);}
-#line 1650 "langspec.tab.c" /* yacc.c:1646  */
+#line 1659 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 206 "langspec.y" /* yacc.c:1646  */
+#line 215 "langspec.y" /* yacc.c:1646  */
     {(yyval.np) = (yyvsp[0].np);}
-#line 1656 "langspec.tab.c" /* yacc.c:1646  */
+#line 1665 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 207 "langspec.y" /* yacc.c:1646  */
+#line 216 "langspec.y" /* yacc.c:1646  */
     {(yyval.np) = (yyvsp[0].np);}
-#line 1662 "langspec.tab.c" /* yacc.c:1646  */
+#line 1671 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 208 "langspec.y" /* yacc.c:1646  */
+#line 217 "langspec.y" /* yacc.c:1646  */
     {(yyval.np) = (yyvsp[0].np);}
-#line 1668 "langspec.tab.c" /* yacc.c:1646  */
+#line 1677 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 209 "langspec.y" /* yacc.c:1646  */
+#line 218 "langspec.y" /* yacc.c:1646  */
     {(yyval.np) = (yyvsp[0].np);}
-#line 1674 "langspec.tab.c" /* yacc.c:1646  */
+#line 1683 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 210 "langspec.y" /* yacc.c:1646  */
+#line 219 "langspec.y" /* yacc.c:1646  */
     {
   int symno;
   Node *nid;
@@ -1691,11 +1700,11 @@ yyreduce:
   (yyval.np) = make_nchild_node((yyvsp[0].op), nid);
   (yyval.np)->value = 1;
 }
-#line 1695 "langspec.tab.c" /* yacc.c:1646  */
+#line 1704 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 226 "langspec.y" /* yacc.c:1646  */
+#line 235 "langspec.y" /* yacc.c:1646  */
     {
   int symno;
   Node *nid;
@@ -1712,17 +1721,17 @@ yyreduce:
   (yyval.np) = make_nchild_node((yyvsp[-1].op), nid);
   (yyval.np)->value = 0;
 }
-#line 1716 "langspec.tab.c" /* yacc.c:1646  */
+#line 1725 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 242 "langspec.y" /* yacc.c:1646  */
+#line 251 "langspec.y" /* yacc.c:1646  */
     {(yyval.np) = NULL;}
-#line 1722 "langspec.tab.c" /* yacc.c:1646  */
+#line 1731 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 245 "langspec.y" /* yacc.c:1646  */
+#line 254 "langspec.y" /* yacc.c:1646  */
     {
   int symno;
   Node *nid;
@@ -1739,28 +1748,28 @@ yyreduce:
   nid = make_ident_node(SYM_VAR, symno, stable,(yyvsp[-3].name));
   (yyval.np) = make_nchild_node(AST_ASSIGN, nid, (yyvsp[-1].np));
 }
-#line 1743 "langspec.tab.c" /* yacc.c:1646  */
+#line 1752 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 261 "langspec.y" /* yacc.c:1646  */
+#line 270 "langspec.y" /* yacc.c:1646  */
     {
   (yyval.np) = make_nchild_node(AST_ASSIGN, (yyvsp[-3].np), (yyvsp[-1].np));
-}
-#line 1751 "langspec.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 33:
-#line 264 "langspec.y" /* yacc.c:1646  */
-    {
-  (yyvsp[-1].np)->value = (yyvsp[-1].np)->value * (-1);
-  (yyval.np) = make_nchild_node(AST_ASSIGN, (yyvsp[-4].np), (yyvsp[-1].np));
 }
 #line 1760 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
+  case 33:
+#line 273 "langspec.y" /* yacc.c:1646  */
+    {
+  (yyvsp[-1].np)->value = (yyvsp[-1].np)->value * (-1);
+  (yyval.np) = make_nchild_node(AST_ASSIGN, (yyvsp[-4].np), (yyvsp[-1].np));
+}
+#line 1769 "langspec.tab.c" /* yacc.c:1646  */
+    break;
+
   case 34:
-#line 268 "langspec.y" /* yacc.c:1646  */
+#line 277 "langspec.y" /* yacc.c:1646  */
     {
   int symno;
   Node *nid;
@@ -1778,93 +1787,93 @@ yyreduce:
   (yyvsp[-1].np)->value = (yyvsp[-1].np)->value * (-1);
   (yyval.np) = make_nchild_node(AST_ASSIGN, nid, (yyvsp[-1].np));
  }
-#line 1782 "langspec.tab.c" /* yacc.c:1646  */
+#line 1791 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 288 "langspec.y" /* yacc.c:1646  */
+#line 297 "langspec.y" /* yacc.c:1646  */
     {
   (yyval.np) = make_nchild_node((yyvsp[-1].op), (yyvsp[-2].np), (yyvsp[0].np));
 }
-#line 1790 "langspec.tab.c" /* yacc.c:1646  */
+#line 1799 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 291 "langspec.y" /* yacc.c:1646  */
+#line 300 "langspec.y" /* yacc.c:1646  */
     {(yyval.np) = (yyvsp[0].np);}
-#line 1796 "langspec.tab.c" /* yacc.c:1646  */
+#line 1805 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 294 "langspec.y" /* yacc.c:1646  */
+#line 303 "langspec.y" /* yacc.c:1646  */
     {
   (yyval.np) = make_nchild_node((yyvsp[-1].op), (yyvsp[-2].np), (yyvsp[0].np));
 }
-#line 1804 "langspec.tab.c" /* yacc.c:1646  */
+#line 1813 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 297 "langspec.y" /* yacc.c:1646  */
+#line 306 "langspec.y" /* yacc.c:1646  */
     {(yyval.np) = (yyvsp[0].np);}
-#line 1810 "langspec.tab.c" /* yacc.c:1646  */
+#line 1819 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 299 "langspec.y" /* yacc.c:1646  */
+#line 308 "langspec.y" /* yacc.c:1646  */
     {(yyval.np) = (yyvsp[0].np);}
-#line 1816 "langspec.tab.c" /* yacc.c:1646  */
+#line 1825 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 300 "langspec.y" /* yacc.c:1646  */
+#line 309 "langspec.y" /* yacc.c:1646  */
     {(yyval.np) = (yyvsp[-1].np);}
-#line 1822 "langspec.tab.c" /* yacc.c:1646  */
+#line 1831 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 302 "langspec.y" /* yacc.c:1646  */
+#line 311 "langspec.y" /* yacc.c:1646  */
     {(yyval.op) = AST_ADD;}
-#line 1828 "langspec.tab.c" /* yacc.c:1646  */
+#line 1837 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 303 "langspec.y" /* yacc.c:1646  */
+#line 312 "langspec.y" /* yacc.c:1646  */
     {(yyval.op) = AST_SUB;}
-#line 1834 "langspec.tab.c" /* yacc.c:1646  */
+#line 1843 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 305 "langspec.y" /* yacc.c:1646  */
+#line 314 "langspec.y" /* yacc.c:1646  */
     {(yyval.op) = AST_MUL;}
-#line 1840 "langspec.tab.c" /* yacc.c:1646  */
+#line 1849 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 306 "langspec.y" /* yacc.c:1646  */
+#line 315 "langspec.y" /* yacc.c:1646  */
     {(yyval.op) = AST_DIV;}
-#line 1846 "langspec.tab.c" /* yacc.c:1646  */
+#line 1855 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 307 "langspec.y" /* yacc.c:1646  */
+#line 316 "langspec.y" /* yacc.c:1646  */
     {(yyval.op) = AST_MOD;}
-#line 1852 "langspec.tab.c" /* yacc.c:1646  */
+#line 1861 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 46:
-#line 309 "langspec.y" /* yacc.c:1646  */
+#line 318 "langspec.y" /* yacc.c:1646  */
     {(yyval.op) = AST_INCRE;}
-#line 1858 "langspec.tab.c" /* yacc.c:1646  */
+#line 1867 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 47:
-#line 310 "langspec.y" /* yacc.c:1646  */
+#line 319 "langspec.y" /* yacc.c:1646  */
     {(yyval.op) = AST_DECRE;}
-#line 1864 "langspec.tab.c" /* yacc.c:1646  */
+#line 1873 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 312 "langspec.y" /* yacc.c:1646  */
+#line 321 "langspec.y" /* yacc.c:1646  */
     {
   int symno;
   char errmsg[1024];
@@ -1878,23 +1887,23 @@ yyreduce:
   }
   (yyval.np) = make_ident_node(SYM_VAR, symno, stable,(yyvsp[0].name));
 }
-#line 1882 "langspec.tab.c" /* yacc.c:1646  */
+#line 1891 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 325 "langspec.y" /* yacc.c:1646  */
+#line 334 "langspec.y" /* yacc.c:1646  */
     {(yyval.np) = (yyvsp[0].np);}
-#line 1888 "langspec.tab.c" /* yacc.c:1646  */
+#line 1897 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 50:
-#line 326 "langspec.y" /* yacc.c:1646  */
+#line 335 "langspec.y" /* yacc.c:1646  */
     {(yyval.np) = (yyvsp[0].np);}
-#line 1894 "langspec.tab.c" /* yacc.c:1646  */
+#line 1903 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 327 "langspec.y" /* yacc.c:1646  */
+#line 336 "langspec.y" /* yacc.c:1646  */
     {
   int symno;
   Node *nid;
@@ -1911,11 +1920,11 @@ yyreduce:
   (yyval.np) = make_nchild_node((yyvsp[0].op), nid);
   (yyval.np)->value = 1;
 }
-#line 1915 "langspec.tab.c" /* yacc.c:1646  */
+#line 1924 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 343 "langspec.y" /* yacc.c:1646  */
+#line 352 "langspec.y" /* yacc.c:1646  */
     {
   int symno;
   Node *nid;
@@ -1932,11 +1941,11 @@ yyreduce:
   (yyval.np) = make_nchild_node((yyvsp[-1].op), nid);
   (yyval.np)->value = 0;
 }
-#line 1936 "langspec.tab.c" /* yacc.c:1646  */
+#line 1945 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 360 "langspec.y" /* yacc.c:1646  */
+#line 369 "langspec.y" /* yacc.c:1646  */
     {
   int symno;
   Node *nid;
@@ -1952,11 +1961,11 @@ yyreduce:
   nid = make_ident_node(SYM_VAR, symno, stable,(yyvsp[-3].name));
   (yyval.np) = make_nchild_node(AST_ARRAY_REF, nid, (yyvsp[-1].np), NULL);
 }
-#line 1956 "langspec.tab.c" /* yacc.c:1646  */
+#line 1965 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 54:
-#line 375 "langspec.y" /* yacc.c:1646  */
+#line 384 "langspec.y" /* yacc.c:1646  */
     {
   int symno;
   Node *nid;
@@ -1972,11 +1981,11 @@ yyreduce:
   nid = make_ident_node(SYM_VAR, symno, stable,(yyvsp[-3].name));
   (yyval.np) = make_nchild_node(AST_ARRAY_REF, nid, (yyvsp[-1].np), NULL);
 }
-#line 1976 "langspec.tab.c" /* yacc.c:1646  */
+#line 1985 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 390 "langspec.y" /* yacc.c:1646  */
+#line 399 "langspec.y" /* yacc.c:1646  */
     {
   int symno;
   Node *nid;
@@ -1992,11 +2001,11 @@ yyreduce:
   nid = make_ident_node(SYM_VAR, symno, stable,(yyvsp[-6].name));
   (yyval.np) = make_nchild_node(AST_ARRAY_REF, nid, (yyvsp[-4].np), (yyvsp[-1].np));
 }
-#line 1996 "langspec.tab.c" /* yacc.c:1646  */
+#line 2005 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 56:
-#line 405 "langspec.y" /* yacc.c:1646  */
+#line 414 "langspec.y" /* yacc.c:1646  */
     {
   int symno;
   Node *nid;
@@ -2012,11 +2021,11 @@ yyreduce:
   nid = make_ident_node(SYM_VAR, symno, stable,(yyvsp[-6].name));
   (yyval.np) = make_nchild_node(AST_ARRAY_REF, nid, (yyvsp[-4].np), (yyvsp[-1].np));
 }
-#line 2016 "langspec.tab.c" /* yacc.c:1646  */
+#line 2025 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 420 "langspec.y" /* yacc.c:1646  */
+#line 429 "langspec.y" /* yacc.c:1646  */
     {
   int symno;
   Node *nid;
@@ -2032,11 +2041,11 @@ yyreduce:
   nid = make_ident_node(SYM_VAR, symno, stable,(yyvsp[-6].name));
   (yyval.np) = make_nchild_node(AST_ARRAY_REF, nid, (yyvsp[-4].np), (yyvsp[-1].np));
 }
-#line 2036 "langspec.tab.c" /* yacc.c:1646  */
+#line 2045 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 435 "langspec.y" /* yacc.c:1646  */
+#line 444 "langspec.y" /* yacc.c:1646  */
     {
   int symno;
   Node *nid;
@@ -2052,66 +2061,66 @@ yyreduce:
   nid = make_ident_node(SYM_VAR, symno, stable,(yyvsp[-6].name));
   (yyval.np) = make_nchild_node(AST_ARRAY_REF, nid, (yyvsp[-4].np), (yyvsp[-1].np));
 }
-#line 2056 "langspec.tab.c" /* yacc.c:1646  */
+#line 2065 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 59:
-#line 451 "langspec.y" /* yacc.c:1646  */
+#line 460 "langspec.y" /* yacc.c:1646  */
     {
   (yyval.np) = make_nchild_node(AST_WHILE, (yyvsp[-4].np), (yyvsp[-1].np));
 }
-#line 2064 "langspec.tab.c" /* yacc.c:1646  */
+#line 2073 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 454 "langspec.y" /* yacc.c:1646  */
+#line 463 "langspec.y" /* yacc.c:1646  */
     {
   (yyval.np) = make_nchild_node(AST_WHILE, (yyvsp[-2].np), (yyvsp[0].np));
 }
-#line 2072 "langspec.tab.c" /* yacc.c:1646  */
+#line 2081 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 457 "langspec.y" /* yacc.c:1646  */
+#line 466 "langspec.y" /* yacc.c:1646  */
     {
   (yyval.np) = make_nchild_node(AST_FOR, (yyvsp[-6].np), (yyvsp[-5].np), (yyvsp[-4].np), (yyvsp[-1].np));
 }
-#line 2080 "langspec.tab.c" /* yacc.c:1646  */
+#line 2089 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 62:
-#line 460 "langspec.y" /* yacc.c:1646  */
+#line 469 "langspec.y" /* yacc.c:1646  */
     {
   (yyval.np) = make_nchild_node(AST_FOR, (yyvsp[-4].np), (yyvsp[-3].np), (yyvsp[-2].np), (yyvsp[0].np));}
-#line 2087 "langspec.tab.c" /* yacc.c:1646  */
+#line 2096 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 63:
-#line 463 "langspec.y" /* yacc.c:1646  */
+#line 472 "langspec.y" /* yacc.c:1646  */
     { (yyval.np) = (yyvsp[0].np);}
-#line 2093 "langspec.tab.c" /* yacc.c:1646  */
+#line 2102 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 64:
-#line 464 "langspec.y" /* yacc.c:1646  */
+#line 473 "langspec.y" /* yacc.c:1646  */
     { (yyval.np) = NULL;}
-#line 2099 "langspec.tab.c" /* yacc.c:1646  */
+#line 2108 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 65:
-#line 466 "langspec.y" /* yacc.c:1646  */
+#line 475 "langspec.y" /* yacc.c:1646  */
     { (yyval.np) = (yyvsp[-1].np);}
-#line 2105 "langspec.tab.c" /* yacc.c:1646  */
+#line 2114 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 66:
-#line 467 "langspec.y" /* yacc.c:1646  */
+#line 476 "langspec.y" /* yacc.c:1646  */
     {(yyval.np) = NULL;}
-#line 2111 "langspec.tab.c" /* yacc.c:1646  */
+#line 2120 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 67:
-#line 469 "langspec.y" /* yacc.c:1646  */
+#line 478 "langspec.y" /* yacc.c:1646  */
     {
   int symno;
   Node *nid;
@@ -2127,17 +2136,17 @@ yyreduce:
   nid = make_ident_node(SYM_VAR, symno, stable,(yyvsp[-2].name));
   (yyval.np) = make_nchild_node(AST_ASSIGN, nid, (yyvsp[0].np));
 }
-#line 2131 "langspec.tab.c" /* yacc.c:1646  */
+#line 2140 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 68:
-#line 484 "langspec.y" /* yacc.c:1646  */
+#line 493 "langspec.y" /* yacc.c:1646  */
     { (yyval.np) = make_nchild_node(AST_ASSIGN, (yyvsp[-2].np), (yyvsp[0].np));}
-#line 2137 "langspec.tab.c" /* yacc.c:1646  */
+#line 2146 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 69:
-#line 485 "langspec.y" /* yacc.c:1646  */
+#line 494 "langspec.y" /* yacc.c:1646  */
     {
   int symno;
   Node *nid;
@@ -2154,11 +2163,11 @@ yyreduce:
   (yyval.np) = make_nchild_node((yyvsp[0].op), nid);
   (yyval.np)->value = 1;
 }
-#line 2158 "langspec.tab.c" /* yacc.c:1646  */
+#line 2167 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 70:
-#line 501 "langspec.y" /* yacc.c:1646  */
+#line 510 "langspec.y" /* yacc.c:1646  */
     {
   int symno;
   Node *nid;
@@ -2175,95 +2184,95 @@ yyreduce:
   (yyval.np) = make_nchild_node((yyvsp[-1].op), nid);
   (yyval.np)->value = 0;
 }
-#line 2179 "langspec.tab.c" /* yacc.c:1646  */
+#line 2188 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 71:
-#line 517 "langspec.y" /* yacc.c:1646  */
+#line 526 "langspec.y" /* yacc.c:1646  */
     {(yyval.np) = NULL;}
-#line 2185 "langspec.tab.c" /* yacc.c:1646  */
+#line 2194 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 72:
-#line 519 "langspec.y" /* yacc.c:1646  */
+#line 528 "langspec.y" /* yacc.c:1646  */
     { (yyval.np) = (yyvsp[0].np); }
-#line 2191 "langspec.tab.c" /* yacc.c:1646  */
+#line 2200 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 73:
-#line 520 "langspec.y" /* yacc.c:1646  */
+#line 529 "langspec.y" /* yacc.c:1646  */
     { (yyvsp[-1].np)->child[2] = (yyvsp[0].np); (yyval.np) = (yyvsp[-1].np); }
-#line 2197 "langspec.tab.c" /* yacc.c:1646  */
+#line 2206 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 74:
-#line 523 "langspec.y" /* yacc.c:1646  */
+#line 532 "langspec.y" /* yacc.c:1646  */
     { (yyval.np) = make_nchild_node(AST_IF, (yyvsp[-4].np), (yyvsp[-1].np), NULL); }
-#line 2203 "langspec.tab.c" /* yacc.c:1646  */
+#line 2212 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 75:
-#line 524 "langspec.y" /* yacc.c:1646  */
+#line 533 "langspec.y" /* yacc.c:1646  */
     { (yyval.np) = make_nchild_node(AST_IF, (yyvsp[-2].np), (yyvsp[0].np), NULL); }
-#line 2209 "langspec.tab.c" /* yacc.c:1646  */
+#line 2218 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 76:
-#line 526 "langspec.y" /* yacc.c:1646  */
+#line 535 "langspec.y" /* yacc.c:1646  */
     { (yyval.np) = (yyvsp[-1].np); }
-#line 2215 "langspec.tab.c" /* yacc.c:1646  */
+#line 2224 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 77:
-#line 527 "langspec.y" /* yacc.c:1646  */
+#line 536 "langspec.y" /* yacc.c:1646  */
     { (yyval.np) = (yyvsp[0].np); }
-#line 2221 "langspec.tab.c" /* yacc.c:1646  */
+#line 2230 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 78:
-#line 529 "langspec.y" /* yacc.c:1646  */
+#line 538 "langspec.y" /* yacc.c:1646  */
     { (yyval.np) = make_nchild_node(AST_BREAK); }
-#line 2227 "langspec.tab.c" /* yacc.c:1646  */
+#line 2236 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 79:
-#line 531 "langspec.y" /* yacc.c:1646  */
+#line 540 "langspec.y" /* yacc.c:1646  */
     { (yyval.np) = make_nchild_node((yyvsp[-1].op), (yyvsp[-2].np), (yyvsp[0].np)); }
-#line 2233 "langspec.tab.c" /* yacc.c:1646  */
+#line 2242 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 80:
-#line 533 "langspec.y" /* yacc.c:1646  */
+#line 542 "langspec.y" /* yacc.c:1646  */
     { (yyval.op) = AST_EQ; }
-#line 2239 "langspec.tab.c" /* yacc.c:1646  */
+#line 2248 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 81:
-#line 534 "langspec.y" /* yacc.c:1646  */
+#line 543 "langspec.y" /* yacc.c:1646  */
     { (yyval.op) = AST_LESS; }
-#line 2245 "langspec.tab.c" /* yacc.c:1646  */
+#line 2254 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 82:
-#line 535 "langspec.y" /* yacc.c:1646  */
+#line 544 "langspec.y" /* yacc.c:1646  */
     { (yyval.op) = AST_GR; }
-#line 2251 "langspec.tab.c" /* yacc.c:1646  */
+#line 2260 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 83:
-#line 536 "langspec.y" /* yacc.c:1646  */
+#line 545 "langspec.y" /* yacc.c:1646  */
     { (yyval.op) = AST_LSEQ; }
-#line 2257 "langspec.tab.c" /* yacc.c:1646  */
+#line 2266 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 84:
-#line 537 "langspec.y" /* yacc.c:1646  */
+#line 546 "langspec.y" /* yacc.c:1646  */
     { (yyval.op) = AST_GREQ; }
-#line 2263 "langspec.tab.c" /* yacc.c:1646  */
+#line 2272 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 85:
-#line 539 "langspec.y" /* yacc.c:1646  */
+#line 548 "langspec.y" /* yacc.c:1646  */
     {
   int symno;
   Node *nid;
@@ -2277,11 +2286,11 @@ yyreduce:
   nid = make_ident_node(SYM_FUNC, symno, NULL,(yyvsp[-3].name));
   (yyval.np) = make_nchild_node(AST_FUNCCALL, nid, NULL);
 }
-#line 2281 "langspec.tab.c" /* yacc.c:1646  */
+#line 2290 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 86:
-#line 552 "langspec.y" /* yacc.c:1646  */
+#line 561 "langspec.y" /* yacc.c:1646  */
     {
   int symno;
   Node *nid;
@@ -2294,23 +2303,23 @@ yyreduce:
   }
   nid = make_ident_node(SYM_FUNC, symno, NULL,(yyvsp[-4].name));
   (yyval.np) = make_nchild_node(AST_FUNCCALL, nid, (yyvsp[-2].np));}
-#line 2298 "langspec.tab.c" /* yacc.c:1646  */
+#line 2307 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 87:
-#line 565 "langspec.y" /* yacc.c:1646  */
+#line 574 "langspec.y" /* yacc.c:1646  */
     { (yyval.np) = make_nchild_node(AST_PARAM_LIST, (yyvsp[-2].np), (yyvsp[0].np)); }
-#line 2304 "langspec.tab.c" /* yacc.c:1646  */
+#line 2313 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 88:
-#line 566 "langspec.y" /* yacc.c:1646  */
+#line 575 "langspec.y" /* yacc.c:1646  */
     { (yyval.np) = make_nchild_node(AST_PARAM_LIST, (yyvsp[0].np), NULL); }
-#line 2310 "langspec.tab.c" /* yacc.c:1646  */
+#line 2319 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 2314 "langspec.tab.c" /* yacc.c:1646  */
+#line 2323 "langspec.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2538,7 +2547,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 568 "langspec.y" /* yacc.c:1906  */
+#line 577 "langspec.y" /* yacc.c:1906  */
 
 int main(int argc, char* argv[]){
   global_stable = sym_add(global_stable, "global", SYM_KEYWORD, 0, 0);

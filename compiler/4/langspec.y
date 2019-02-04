@@ -357,7 +357,7 @@ loop_statement : WHILE PAREN_L expression PAREN_R BRACE_L statement_list BRACE_R
 ;
 for_initial : assignment_statement { $$ = $1;}
 | SEMIC { $$ = NULL;}
-;
+;/*******/
 for_expression : expression SEMIC { $$ = $1;}
 | SEMIC {$$ = NULL;}
 ;

@@ -40,12 +40,24 @@ typedef enum{
   AST_BREAK,
 } Ntype;
 
+typedef enum{
+  D_DEFINE,
+  D_ARRAY,
+} Dtype;
+
+typedef struct dtyp{
+  Dtype type;
+  struct dtyp *next;
+} DTYP;
+
 typedef struct node{
   Ntype type;
   int value; 
   int value2;
   char *name;
   int n_child;
+  Dtype dtype[30];
+  int   dnum;
   struct node **child;
 } Node;
 
@@ -58,9 +70,9 @@ typedef struct symbols{
   unsigned int arg_num; //SYM_FUNCに使用
   unsigned int address; 
   int array_flag;       //set_ident_address内で使用,配列か否かを判断
+  Dtype dtype[30];
   struct symbols *next;
   struct symbols *branch;
-  struct symbols *array;
 } Symbols;
 
 typedef struct fours{
@@ -92,7 +104,7 @@ void generate_function_list_code(Node *node, Symbols *gstable);
 void generate_function_code(Node *func, Symbols *gstable, Symbols *lstable);
 unsigned int calc_local_variables_size(Node *func);
 void generate_global_variables_definitions(Symbols *gstable);
-void generate_statement_code(Node *stat, Symbols *gstable, Symbols *lstable);
+void generate_statement_code(Node *stat, Symbols *gstable, Symbols *lstable, int jlabel);
 //assign_functions
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
 void generate_assign_code(Node *assign, Symbols *gstable, Symbols *lstable);
@@ -116,6 +128,14 @@ void generate_if_code(Node *if_node, Symbols *gstable, Symbols *lstable, int ski
 //for_functions
 //########################################################################//
 void generate_for_code(Node *for_node, Symbols *gstable, Symbols *lstable);
+//########################################################################//
+
+//funccall_functions
+//########################################################################//
+void generate_funccall_code(Node *funccall_node, Symbols *gstable, Symbols *lstable);
+int ident_check(Node *node, Symbols *gstable, Symbols *lstable);
+void set_arg_type(Node *node, Node *arg_list, int i);
+void cp_dtype(Symbols *sym, Node *node);
 //########################################################################//
 #endif // _AST_H_
 

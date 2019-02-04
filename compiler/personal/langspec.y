@@ -49,11 +49,20 @@ function_list : function function_list {$$=make_nchild_node(AST_FUNC_LIST, $1, $
 function : pre_func PAREN_L argument_list PAREN_R BRACE_L variable_declarations statement_list BRACE_R{
   Node *nfun;
   int arg_num;
+  Node *tmp;
+  int i = 0;
   
   arg_num = calc_arg_node_depth($3,1);
   //printf("%d\n",arg_num);
   nfun = make_nchild_node(AST_FUNC, $1, $3, $6, $7);
   nfun->value  = arg_num;
+  tmp = $3;
+  while(tmp != NULL){
+    set_arg_type(nfun,tmp,i);
+    tmp=tmp->child[1];
+    i++;
+    }
+  
   $$ = nfun;
 }
 |pre_func PAREN_L PAREN_R BRACE_L variable_declarations statement_list BRACE_R {
@@ -106,7 +115,7 @@ argument : DEFINE IDENTIFIER {
   char errmsg[1024];
 
   if(sym_lookup(stable, $2) == -1){
-    stmp = sym_add(stable, $2, SYM_ARG_VAR, 0, 0);
+    stmp = sym_add(stable, $2, SYM_ARG_VAR, 1, 0);
     nid = make_ident_node(SYM_ARG_VAR, stmp->symno, NULL,$2);
     $$ = make_nchild_node(AST_ARG, nid, NULL);
     $$->value = 1;
@@ -122,7 +131,7 @@ argument : DEFINE IDENTIFIER {
   char errmsg[1024];
   
   if(sym_lookup(stable, $2) == -1){
-    stmp = sym_add(stable, $2, SYM_ARG_VAR, 0, 0);
+    stmp = sym_add(stable, $2, SYM_ARG_VAR, 1, 1);
     nid = make_ident_node(SYM_ARG_VAR, stmp->symno, NULL,$2);
     $$ = make_nchild_node(AST_ARG, nid, $4);
     $$->value = 2;

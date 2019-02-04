@@ -40,8 +40,8 @@ main_body:
 	sw     $v0, 28($fp)
 	li     $v0, 1
 	sw     $v0, 32($fp)
-	j      while_L2_0
-while_L1_0:
+	j      L2_1
+L1_1:
 	addi   $t8, $fp, 32
 	lw     $v0, 32($fp)
 	nop
@@ -181,6 +181,8 @@ if_L2:
 	add    $v0, $v0, $v1
 	sw     $v0, 28($fp)
 if_end_L1:
+if_end_L1:
+if_end_L1:
 	addi   $t8, $fp, 32
 	lw     $v0, 32($fp)
 	nop
@@ -193,7 +195,7 @@ if_end_L1:
 	nop
 	add    $v0, $v0, $v1
 	sw     $v0, 32($fp)
-while_L2_0:
+L2_1:
 	li     $v0, 31
 	add    $t7, $v0, $zero
 	addi   $t8, $fp, 32
@@ -201,9 +203,9 @@ while_L2_0:
 	nop
 	add    $v1, $t7, $zero
 	slt  $v0, $v0, $v1
-	bne  $v0, $zero, while_L1_0
+	bne  $v0, $zero, L1_1
 	nop
-	add   $t9, $v0, $zero
+L3_1:
 main_end:
 	add   $sp, $fp, $zero
 	lw    $ra, 44($sp)

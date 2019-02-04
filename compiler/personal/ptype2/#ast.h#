@@ -60,7 +60,6 @@ typedef struct symbols{
   int array_flag;       //set_ident_address内で使用,配列か否かを判断
   struct symbols *next;
   struct symbols *branch;
-  struct symbols *array;
 } Symbols;
 
 typedef struct fours{
@@ -105,7 +104,7 @@ void get_array_address(Node *array_ref, Symbols *gstable, Symbols *lstable);
 //while_functions
 //########################################################################//
 void generate_while_code(Node *while_node, Symbols *gstable, Symbols *lstable);
-void generate_expression_code(Node *exp, Symbols *gstable, Symbols *lstable, char *label_name, int bool);//bool = 1のとき,真でジャンプ, bool = 0のとき，偽でジャンプ 
+void generate_expression_code(Node *exp, Symbols *gstable, Symbols *lstable, char *label_name, int bool);
 //########################################################################//
 
 //if_functions
@@ -116,6 +115,11 @@ void generate_if_code(Node *if_node, Symbols *gstable, Symbols *lstable, int ski
 //for_functions
 //########################################################################//
 void generate_for_code(Node *for_node, Symbols *gstable, Symbols *lstable);
+//########################################################################//
+
+//funccall_functions
+//########################################################################//
+void generate_funccall_code(Node *funccall_node, Symbols *gstable, Symbols *lstable);
 //########################################################################//
 #endif // _AST_H_
 

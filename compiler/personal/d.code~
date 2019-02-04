@@ -1,0 +1,9 @@
+func main(){
+     define a;
+     define i;
+
+     for(;;){
+     if(i>10) break;
+     a++;
+     }    
+}

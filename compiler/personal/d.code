@@ -1,0 +1,18 @@
+func main(){
+     define a;
+     define b;
+     define c;
+     define i;
+     a=1;
+     i=1;
+     c=16;
+
+     for(;;){
+     if(i>10) break;
+     a++;
+     i++;
+     }
+     b = a;
+       
+
+}

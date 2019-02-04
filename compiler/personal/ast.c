@@ -1,4 +1,4 @@
-#define DEBUG 
+//#define DEBUG 
 
 #include "ast.h"
 #include <stdio.h>
@@ -6,11 +6,12 @@
 #include <string.h>
 #include <stdarg.h>
 
-int label_count;
+int label_count = 1; //loop
 int stack_count = 1;
-int skip_count = 0;
+int skip_count = 0; //if
 int skip = 0;
-int for_count = 0;
+
+
 
 Node *make_num_node(int n){
   Node *obj;
@@ -301,7 +302,9 @@ void print_ast_tree(Node *root, Symbols *gstable, Symbols *lstable, int space){
   int i, j;
   char *idname;
   Symbols *stmp;
-
+  #ifdef DEBUG
+  int k;
+  #endif
   if(root == NULL){
     printf("NULL\n");
     return;
@@ -326,6 +329,16 @@ void print_ast_tree(Node *root, Symbols *gstable, Symbols *lstable, int space){
     printf("%s", get_ntype_name(root->type));
     if(root->type == AST_FUNC){
       printf(" arg_num %d\n",root->value);
+      #ifdef DEBUG
+      i = root->dnum;
+      while(i>0){
+	if(root->dtype[k] == D_DEFINE){ printf("!!!define!!!\n");
+	}else if(root->dtype[k] == D_ARRAY){ printf("!!!array!!!\n");
+	}
+	i--;
+	k++;	
+      }
+      #endif
     }else printf("\n");
     space += 1;
     for(i = 0; i < root->n_child; i++){
@@ -506,8 +519,19 @@ void generate_function_code(Node *func, Symbols *gstable, Symbols *lstable){
   int local_size = 0;
   int func_arg_size = 0;
   Node *stat_list;
- 
+  Symbols *tmp_symbol;
+
   func_name = sym_lookup_name(gstable, func->child[0]->value);
+  tmp_symbol=gstable;
+  while(tmp_symbol != NULL){
+    if(strcmp(tmp_symbol->symbolname, func_name) == 0){
+      break;
+    }else {
+      tmp_symbol = tmp_symbol->next;
+    }
+  }
+  tmp_symbol->arg_num = func->value;
+  cp_dtype(tmp_symbol,func);
   local_size = calc_local_variables_size(func);
   //local_size = ((local_size/2)+1)*8;
   #ifdef DEBUG
@@ -535,6 +559,7 @@ void generate_function_code(Node *func, Symbols *gstable, Symbols *lstable){
   printf("\x1b[0m");
   printf("\x1b[39m");     /* 前景色をデフォルトに戻す */
   #endif
+  
   // スタックの操作
   printf("%s:\n", func_name);
   //printf("%s_init:\n", func_name);
@@ -556,12 +581,11 @@ void generate_function_code(Node *func, Symbols *gstable, Symbols *lstable){
   #endif
   set_ident_address(lstable, func_arg_size, stack_size);
   while(stat_list != NULL){
-    generate_statement_code(stat_list->child[0], gstable, lstable);
+    generate_statement_code(stat_list->child[0], gstable, lstable,0);
     stat_list = stat_list->child[1];
   }
 
   // 関数から抜ける時の後処理
-  printf("\tadd   $t9, $v0, $zero\n");
   printf("%s_end:\n", func_name);
   printf("\tadd   $sp, $fp, $zero\n");
   printf("\tlw    $ra, %d($sp)\n\tnop\n", stack_size - 4);
@@ -643,8 +667,11 @@ void generate_global_variables_definitions(Symbols *gstable){
   } while(gstable != NULL);
 }
 
-void generate_statement_code(Node *stat, Symbols *gstable, Symbols *lstable){
+void generate_statement_code(Node *stat, Symbols *gstable, Symbols *lstable,int jlabel){
   if(stat == NULL){ //SEMIC
+    #ifdef DEBUG
+    printf("SEMIC\n");
+    #endif
     return;
   }
   #ifdef DEBUG
@@ -669,7 +696,7 @@ void generate_statement_code(Node *stat, Symbols *gstable, Symbols *lstable){
     printf("if\n");
     #endif
     generate_if_code(stat, gstable, lstable, skip);
-    printf("if_end_L%d:\n",skip);
+    //printf("if_end_L%d:\n",skip);
   }
   if(stat->type == AST_FOR){
     #ifdef DEBUG
@@ -678,6 +705,11 @@ void generate_statement_code(Node *stat, Symbols *gstable, Symbols *lstable){
     generate_for_code(stat, gstable, lstable);
   }
   if(stat->type == AST_BREAK){
+    #ifdef DEBUG
+    printf("break\n");
+    #endif
+    printf("\tj       L3_%d\n",jlabel+1);
+    printf("\tnop\n");
   }
   if(stat->type == AST_INCRE){
     generate_arithmetic_code(stat, gstable, lstable);
@@ -685,6 +717,12 @@ void generate_statement_code(Node *stat, Symbols *gstable, Symbols *lstable){
   if(stat->type == AST_DECRE){
     generate_arithmetic_code(stat, gstable, lstable);
   }  
+  if(stat->type == AST_FUNCCALL){
+    #ifdef DEBUG
+    printf("funccall\n");
+    #endif
+    generate_funccall_code(stat, gstable, lstable);
+  }
 }
   
 void generate_assign_code(Node *assign, Symbols *gstable, Symbols *lstable){
@@ -718,8 +756,9 @@ int generate_arithmetic_code(Node *exp, Symbols *gstable, Symbols *lstable){
     printf("ERROR! in function generate_arithmetic_code\n");
     printf("\x1b[39m");     /* 後景色をデフォルトに戻す */ 
     #endif
+    return 0;
   }
-
+  // $t8 は　値が格納されているアドレス
   if(exp->type == AST_IDENT){
     val_address = get_ident_address(exp,gstable,lstable);
     printf("\taddi   $t8, $fp, %d\n",val_address); 
@@ -805,6 +844,7 @@ void set_ident_address(Symbols *lstable, int func_arg_size, int stack_size){
   while(tmp_table != NULL){
     if(tmp_table->type == SYM_ARG_VAR){
       tmp_table->address = stack_size + arg_count * 4;
+      //printf("#####%d####\n",tmp_table->address);
       arg_count += 1;
     }else if(tmp_table->type == SYM_VAR){
       if(tmp_table->array_flag == 0){
@@ -838,13 +878,7 @@ void set_ident_address(Symbols *lstable, int func_arg_size, int stack_size){
 	printf("\x1b[39m");     /* 前景色をデフォルトに戻す */
 	#endif
       }else{
-	#ifdef DEBUG
-	printf("\x1b[31m");     /* 前景色を青に */
-	printf("\x1b[1m"); // 太文字出力
-	printf("ERROR: in set_ident_address\n");
-	printf("\x1b[0m");
-	printf("\x1b[39m");     /* 前景色をデフォルトに戻す */
-	#endif
+
       }
     }
     tmp_table = tmp_table->next;
@@ -899,14 +933,28 @@ void get_array_address(Node *array_ref, Symbols *gstable, Symbols *lstable){
       tmp_symbol = tmp_symbol->next;
     }
   }
-  address = tmp_symbol->address;
-  printf("\tli     $v0, %d\n",address);
-  printf("\tadd    $v1, $zero, $fp\n");
-  printf("\tadd    $v0, $v0, $v1\n");
+  #ifdef DEBUG
+  printf("!!!!%d!!!!\n",tmp_symbol->array_flag);
+  printf("!!!!%s!!!!\n",tmp_symbol->symbolname);
+  #endif
+  if(tmp_symbol->type == SYM_VAR){
+    address = tmp_symbol->address;
+    printf("\tli     $v0, %d\n",address);
+    printf("\tadd    $v1, $zero, $fp\n");
+    printf("\tadd    $v0, $v0, $v1\n");
+  }else if(tmp_symbol->type == SYM_ARG_VAR){
+    address = tmp_symbol->address;
+    printf("\taddi    $v0, $fp, %d\n",address);
+    printf("\tlw     $v0, 0($v0)\n");
+    //printf("\tlw     $v0, 0($v0)\n");
+    //printf("\tadd    $s7, $v0,$zero\n");
+  }
   printf("\tsw     $v0, -%d($fp)\n",stack_count*4);
   stack_count++;
   
+  
   if(tmp_symbol->array_flag == 1){
+    //printf("array 1\n");
     generate_arithmetic_code(array_ref->child[1],gstable,lstable);
     printf("\tli     $t0, 4\n");
     printf("\tmult   $v0, $t0\n");
@@ -915,6 +963,7 @@ void get_array_address(Node *array_ref, Symbols *gstable, Symbols *lstable){
     printf("\tadd    $v0, $v1,$v0\n");
     stack_count--;
   }else if(tmp_symbol->array_flag == 2){
+    //printf("array 2\n");
     generate_arithmetic_code(array_ref->child[1],gstable,lstable);
     printf("\tli     $t0,%d\n",tmp_symbol->size2*4);
     printf("\tmult   $v0, $t0\n");   
@@ -931,6 +980,7 @@ void get_array_address(Node *array_ref, Symbols *gstable, Symbols *lstable){
     stack_count--;
   }
 }
+
 //label_count is groval
 void generate_while_code(Node *while_node, Symbols *gstable, Symbols *lstable){
   Node *stat_list;
@@ -944,35 +994,38 @@ void generate_while_code(Node *while_node, Symbols *gstable, Symbols *lstable){
    */
   if(while_node == NULL) return;
 
-  sprintf(label_name, "while_L1_%d", keep_label);
+  sprintf(label_name, "L1_%d", keep_label);
   
-  printf("\tj      while_L2_%d\n",keep_label);
-  printf("while_L1_%d:\n", keep_label);
-  //statements_area
-  if(while_node->child[1]->type == AST_STAT_LIST){
-    printf("aaa\n");
-    #ifdef DEBUG
-    printf("\x1b[33m");     /* 前景色を黄色に */
-    printf("/* stat_list */\n");
-    printf("\x1b[39m");     /* 前景色をデフォルトに戻す */
-    #endif
-    stat_list = while_node->child[1];
-    while(stat_list != NULL){
-      generate_statement_code(stat_list->child[0],gstable,lstable);
-      stat_list = stat_list->child[1];
+  printf("\tj      L2_%d\n",keep_label);
+  printf("L1_%d:\n", keep_label);
+
+  if(while_node->child[1] != NULL){
+    //statements_area
+    if(while_node->child[1]->type == AST_STAT_LIST){
+      #ifdef DEBUG
+      printf("\x1b[33m");     /* 前景色を黄色に */
+      printf("/* stat_list */\n");
+      printf("\x1b[39m");     /* 前景色をデフォルトに戻す */
+      #endif
+      stat_list = while_node->child[1];
+      while(stat_list != NULL){
+	generate_statement_code(stat_list->child[0],gstable,lstable,keep_label);
+	stat_list = stat_list->child[1];
+      }
+    }else { //statement が　一行のみの場合
+      #ifdef DEBUG
+      printf("\x1b[33m");     /* 前景色を黄色に */
+      printf("/* statement %s */\n",get_ntype_name(while_node->child[1]->type));
+      printf("\x1b[39m");     /* 前景色をデフォルトに戻す */
+      #endif
+      generate_statement_code(while_node->child[1],gstable, lstable,keep_label);
     }
-  }else { //statement が　一行のみの場合
-    printf("bbb\n");
-    #ifdef DEBUG
-    printf("\x1b[33m");     /* 前景色を黄色に */
-    printf("/* statement %s */\n",get_ntype_name(while_node->child[1]->type));
-    printf("\x1b[39m");     /* 前景色をデフォルトに戻す */
-    #endif
-    generate_statement_code(while_node->child[1],gstable, lstable);
   }
-  printf("while_L2_%d:\n", keep_label);
+  printf("L2_%d:\n", keep_label);
   //exp_part
   generate_expression_code(while_node->child[0],gstable,lstable,label_name, 1);
+
+  printf("L3_%d:\n", keep_label);
 
 }
 
@@ -1038,10 +1091,12 @@ void generate_expression_code(Node *exp, Symbols *gstable, Symbols *lstable, cha
 void generate_if_code(Node *if_node, Symbols *gstable, Symbols *lstable, int skip){
   Node *stat_list;
   char skip_name[100] = {0};
-  int keep_skip = skip;
-  
+  int keep_skip = 0;
+  //printf("###%d###\n",keep_skip);
+  keep_skip = skip;
+
   if(if_node == NULL) return;
-  
+    skip = skip + 1;
   
   sprintf(skip_name, "if_L%d", skip_count);
   skip_count++;
@@ -1050,12 +1105,13 @@ void generate_if_code(Node *if_node, Symbols *gstable, Symbols *lstable, int ski
   stat_list = if_node->child[1];
   if(stat_list->type == AST_STAT_LIST){
     while(stat_list != NULL){
-      generate_statement_code(stat_list->child[0], gstable, lstable);
+      generate_statement_code(stat_list->child[0], gstable, lstable, 0);
       stat_list = stat_list->child[1];
     }
   }else{
-    generate_statement_code(stat_list, gstable, lstable);
+    generate_statement_code(stat_list, gstable, lstable,0);
   }
+  //printf("%d\n",keep_skip);
   printf("\tj      if_end_L%d\n", keep_skip);
   printf("%s:\n",skip_name);
   if(if_node->child[2] != NULL){
@@ -1065,46 +1121,159 @@ void generate_if_code(Node *if_node, Symbols *gstable, Symbols *lstable, int ski
       stat_list = if_node->child[2];
       if(stat_list->type == AST_STAT_LIST){
 	while(stat_list != NULL){
-	  generate_statement_code(stat_list->child[0], gstable, lstable);
+	  generate_statement_code(stat_list->child[0], gstable, lstable,0);
 	  stat_list = stat_list->child[1];
 	}
       }else{
-	generate_statement_code(stat_list, gstable, lstable);
+	generate_statement_code(stat_list, gstable, lstable,0);
       }
     }
   }
+  printf("if_end_L%d:\n",keep_skip);
 }
 
 void generate_for_code(Node *for_node, Symbols *gstable, Symbols *lstable){
-  int keep_count = for_count;
+  int keep_count=0;
   Node *stat_list;
   char for_name[100]={0};
-  for_count += 2;
-
+  keep_count = label_count;
+  label_count = label_count + 1;
   if(for_node == NULL) return;
   
   //for_init 必ずAST_ASSIGN
-  generate_statement_code(for_node->child[0], gstable, lstable);
-  
-  printf("\tj      for_L%d\n",keep_count+1);
-  sprintf(for_name,"for_L%d",keep_count);
+  generate_statement_code(for_node->child[0], gstable, lstable,0);
+  printf("\tj      L1_%d\n",keep_count);
+  sprintf(for_name,"L2_%d",keep_count);
   printf("%s:\n",for_name);
   
   //stat_list
   stat_list = for_node->child[3];
   if(stat_list->type == AST_STAT_LIST){
     while(stat_list != NULL){
-      generate_statement_code(stat_list->child[0], gstable, lstable);
+      //printf("%d\n",keep_count);
+      generate_statement_code(stat_list->child[0], gstable, lstable,keep_count);
       stat_list = stat_list->child[1];
     }
   }else{
-    generate_statement_code(stat_list, gstable, lstable);
+    generate_statement_code(stat_list, gstable, lstable, keep_count);
   }
 
   //for_update
+  if(for_node->child[2] != NULL){
   generate_arithmetic_code(for_node->child[2], gstable, lstable);
-  printf("for_L%d:\n",keep_count+1);
+  }
+  printf("L1_%d:\n",keep_count);
 
   //for_exp
-  generate_expression_code(for_node->child[1], gstable, lstable, for_name, 1);
+  if(for_node->child[1] == NULL){
+    printf("\tj       L2_%d\n",keep_count);
+    printf("\tnop\n");
+  }else {
+    generate_expression_code(for_node->child[1], gstable, lstable, for_name, 1);
+  }
+  printf("L3_%d:\n",keep_count);
+}    
+
+void generate_funccall_code(Node *funccall_node, Symbols *gstable, Symbols *lstable){
+  Symbols *tmp_symbol;
+  Symbols *tmp2;
+  int i=0;
+  int loop;
+  Node *param_list;
+
+  tmp_symbol = gstable;
+  while(tmp_symbol != NULL){
+    if(strcmp(tmp_symbol->symbolname, funccall_node->child[0]->name) == 0){
+      break;
+    }else{
+      tmp_symbol = tmp_symbol->next;
+    }
+  }
+  
+  #ifdef DEBUG
+  printf("sym name:%s\n",tmp_symbol->symbolname);
+  printf("func arg:%d\n",tmp_symbol->arg_num);
+  #endif
+  loop = tmp_symbol->arg_num;
+  param_list = funccall_node->child[1];  
+  while(loop>0){
+    //while(funccall_node->child[1]->type == AST_PARAM_LIST){
+    generate_arithmetic_code(param_list->child[0],gstable,lstable);
+    //printf("%s\n",tmp_symbol->symbolname);
+    /*if(tmp_symbol->type == SYM_VAR){
+      printf("sym_var\n");
+    }
+    else if(tmp_symbol->type == SYM_ARG_VAR){
+      printf("sym_arg_var\n");
+    }	
+    else{
+      printf("other\n");
+    }*/
+    tmp2 = lstable;
+    while(tmp2 != NULL){
+      if(param_list->child[0]->name != NULL){
+	if(strcmp(tmp2->symbolname,param_list->child[0]->name) == 0){
+	  break;
+	}else 
+	  tmp2 = tmp2->next;
+      }else break;
+    }
+    
+    if(i<4){
+	if(tmp_symbol->dtype[i] == D_ARRAY){
+	  if(tmp2->type == SYM_VAR){
+	    printf("\tadd     $a%d, $zero, $t8\n",i);
+	  }else if(tmp2->type == SYM_ARG_VAR){
+	    printf("\tadd     $a%d, $zero, $v0\n",i);
+	    printf("\tadd     $t9, $zero, $v0\n");
+	  }else
+	    printf("error: funccall\n");
+	}else if(tmp_symbol->dtype[i] == D_DEFINE){
+	  printf("\tadd      $a%d, $zero, $v0\n",i);
+	}
+    }else{
+      if(tmp_symbol->dtype[i] == D_ARRAY){
+	if(tmp2->type == SYM_VAR){
+	  printf("\tsw       $t8, %d($fp)\n", i*4);
+	}else if(tmp2->type == SYM_ARG_VAR){
+	  printf("\tadd      $v0, %d($fp)\n", i*4);
+	}else
+	  printf("error: funccall\n");
+      }else if(tmp_symbol->dtype[i] == D_DEFINE){
+	printf("\tsw      $v0, %d($fp)\n", i*4);
+      }
+    }
+    i++;
+    loop--;
+    param_list = param_list->child[1];
+  }
+    
+  printf("\tjal     %s\n",tmp_symbol->symbolname);
+  printf("\tnop\n");
+}
+
+int ident_check(Node *ident, Symbols *gstable, Symbols *lstable){
+  return 0;
+}
+
+void set_arg_type(Node *node, Node *arg_list, int i){
+  
+  if(arg_list->child[0]->value == 0){
+    node->dtype[i] = D_DEFINE;
+    node->dnum++;
+  }else{
+    node->dtype[i] = D_ARRAY;
+    node->dnum++;
+    }
+}
+
+void cp_dtype(Symbols *sym, Node *node){
+  int i = sym->arg_num;
+  //printf("%d\n",i);
+  int j = 0;
+  while(i>0){
+    sym->dtype[j] = node->dtype[j];
+    i--;
+    j++;
+  }
 }

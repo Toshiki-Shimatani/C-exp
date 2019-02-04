@@ -1,0 +1,3051 @@
+状態 59 conflicts: 1 shift/reduce
+状態 89 conflicts: 1 shift/reduce
+状態 162 conflicts: 1 shift/reduce
+状態 164 conflicts: 1 shift/reduce
+
+
+文法
+
+    0 $accept: program $end
+
+    1 program: variable_declarations function_list
+    2        | function_list
+
+    3 function_list: function function_list
+    4              | function
+
+    5 function: pre_func PAREN_L argument_list PAREN_R BRACE_L variable_declarations statement_list BRACE_R
+    6         | pre_func PAREN_L PAREN_R BRACE_L variable_declarations statement_list BRACE_R
+
+    7 pre_func: FUNC IDENTIFIER
+
+    8 argument_list: argument COMMA argument_list
+    9              | argument
+
+   10 argument: DEFINE IDENTIFIER
+   11         | ARRAY IDENTIFIER BRACKET_L BRACKET_R
+   12         | ARRAY IDENTIFIER BRACKET_L NUMBER BRACKET_R BRACKET_L BRACKET_R
+
+   13 variable_declarations: declaration variable_declarations
+   14                      | declaration
+
+   15 declaration: DEFINE identifier_list SEMIC
+   16            | ARRAY IDENTIFIER BRACKET_L NUMBER BRACKET_R SEMIC
+   17            | ARRAY IDENTIFIER BRACKET_L NUMBER BRACKET_R BRACKET_L NUMBER BRACKET_R SEMIC
+
+   18 identifier_list: IDENTIFIER COMMA identifier_list
+   19                | IDENTIFIER
+
+   20 statement_list: statement statement_list
+   21               | statement
+
+   22 statement: assignment_statement
+   23          | loop_statement
+   24          | selection_statement
+   25          | function_call
+   26          | break_statement
+   27          | IDENTIFIER unary_operator
+   28          | unary_operator IDENTIFIER
+   29          | SEMIC
+
+   30 assignment_statement: IDENTIFIER ASSIGNMENT arithmetic_expression SEMIC
+   31                     | array_reference ASSIGNMENT arithmetic_expression SEMIC
+   32                     | array_reference ASSIGNMENT SUBTRACTION arithmetic_expression SEMIC
+   33                     | IDENTIFIER ASSIGNMENT SUBTRACTION arithmetic_expression SEMIC
+
+   34 arithmetic_expression: arithmetic_expression additive_operator multiplicative_expression
+   35                      | multiplicative_expression
+
+   36 multiplicative_expression: multiplicative_expression multiplicative_operator primary_expression
+   37                          | primary_expression
+
+   38 primary_expression: variable
+   39                   | PAREN_L arithmetic_expression PAREN_R
+
+   40 additive_operator: ADDITION
+   41                  | SUBTRACTION
+
+   42 multiplicative_operator: MULTIPLICATION
+   43                        | DIVISION
+   44                        | MODULUS
+
+   45 unary_operator: INCREMENT
+   46               | DECREMENT
+
+   47 variable: IDENTIFIER
+   48         | NUMBER
+   49         | array_reference
+   50         | IDENTIFIER unary_operator
+   51         | unary_operator IDENTIFIER
+
+   52 array_reference: IDENTIFIER BRACKET_L variable BRACKET_R
+   53                | IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R
+   54                | IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   55                | IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   56                | IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+
+   58 loop_statement: WHILE PAREN_L expression PAREN_R BRACE_L statement_list BRACE_R
+   59               | WHILE PAREN_L expression PAREN_R statement
+   60               | FOR PAREN_L for_initial for_expression for_update PAREN_R BRACE_L statement_list BRACE_R
+   61               | FOR PAREN_L for_initial for_expression for_update PAREN_R statement
+
+   62 for_initial: assignment_statement
+   63            | SEMIC
+
+   64 for_expression: expression SEMIC
+   65               | SEMIC
+
+   66 for_update: IDENTIFIER ASSIGNMENT arithmetic_expression
+   67           | array_reference ASSIGNMENT arithmetic_expression
+   68           | IDENTIFIER unary_operator
+   69           | unary_operator IDENTIFIER
+   70           | %empty
+
+   71 selection_statement: if_statement
+   72                    | if_statement else_statement
+
+   73 if_statement: IF PAREN_L expression PAREN_R BRACE_L statement_list BRACE_R
+   74             | IF PAREN_L expression PAREN_R statement
+
+   75 else_statement: ELSE BRACE_L statement_list BRACE_R
+   76               | ELSE statement
+
+   77 break_statement: BREAK SEMIC
+
+   78 expression: arithmetic_expression comparison_operator arithmetic_expression
+
+   79 comparison_operator: EQUAL
+   80                    | LESS
+   81                    | GRATER
+   82                    | LSEQ
+   83                    | GREQ
+
+   84 function_call: FUNCCALL IDENTIFIER PAREN_L PAREN_R SEMIC
+   85              | FUNCCALL IDENTIFIER PAREN_L parameter_list PAREN_R SEMIC
+
+   86 parameter_list: arithmetic_expression COMMA parameter_list
+   87               | arithmetic_expression
+
+
+出現位置の規則による終端
+
+$end (0) 0
+error (256)
+DEFINE (258) 10 15
+ARRAY (259) 11 12 16 17
+IDENTIFIER (260) 7 10 11 12 16 17 18 19 27 28 30 33 47 50 51 52 53
+    54 55 56 57 66 68 69 84 85
+NUMBER (261) 12 16 17 48
+FUNC (262) 7
+FUNCCALL (263) 84 85
+WHILE (264) 58 59
+IF (265) 73 74
+ELSE (266) 75 76
+BREAK (267) 77
+FOR (268) 60 61
+PAREN_L (269) 5 6 39 58 59 60 61 73 74 84 85
+PAREN_R (270) 5 6 39 58 59 60 61 73 74 84 85
+BRACKET_L (271) 11 12 16 17 52 53 54 55 56 57
+BRACKET_R (272) 11 12 16 17 52 53 54 55 56 57
+BRACE_L (273) 5 6 58 60 73 75
+BRACE_R (274) 5 6 58 60 73 75
+ADDITION (275) 40
+SUBTRACTION (276) 32 33 41
+MULTIPLICATION (277) 42
+DIVISION (278) 43
+MODULUS (279) 44
+EQUAL (280) 79
+LESS (281) 80
+GRATER (282) 81
+GREQ (283) 83
+LSEQ (284) 82
+DECREMENT (285) 46
+INCREMENT (286) 45
+ASSIGNMENT (287) 30 31 32 33 66 67
+SEMIC (288) 15 16 17 29 30 31 32 33 63 64 65 77 84 85
+COMMA (289) 8 18 86
+
+
+出現位置の規則による非終端
+
+$accept (35)
+    左辺: 0
+program (36)
+    左辺: 1 2, 右辺: 0
+function_list (37)
+    左辺: 3 4, 右辺: 1 2 3
+function (38)
+    左辺: 5 6, 右辺: 3 4
+pre_func (39)
+    左辺: 7, 右辺: 5 6
+argument_list (40)
+    左辺: 8 9, 右辺: 5 8
+argument (41)
+    左辺: 10 11 12, 右辺: 8 9
+variable_declarations (42)
+    左辺: 13 14, 右辺: 1 5 6 13
+declaration (43)
+    左辺: 15 16 17, 右辺: 13 14
+identifier_list (44)
+    左辺: 18 19, 右辺: 15 18
+statement_list (45)
+    左辺: 20 21, 右辺: 5 6 20 58 60 73 75
+statement (46)
+    左辺: 22 23 24 25 26 27 28 29, 右辺: 20 21 59 61 74 76
+assignment_statement (47)
+    左辺: 30 31 32 33, 右辺: 22 62
+arithmetic_expression (48)
+    左辺: 34 35, 右辺: 30 31 32 33 34 39 53 55 56 57 66 67 78 86
+    87
+multiplicative_expression (49)
+    左辺: 36 37, 右辺: 34 35 36
+primary_expression (50)
+    左辺: 38 39, 右辺: 36 37
+additive_operator (51)
+    左辺: 40 41, 右辺: 34
+multiplicative_operator (52)
+    左辺: 42 43 44, 右辺: 36
+unary_operator (53)
+    左辺: 45 46, 右辺: 27 28 50 51 68 69
+variable (54)
+    左辺: 47 48 49 50 51, 右辺: 38 52 54 55 56
+array_reference (55)
+    左辺: 52 53 54 55 56 57, 右辺: 31 32 49 67
+loop_statement (56)
+    左辺: 58 59 60 61, 右辺: 23
+for_initial (57)
+    左辺: 62 63, 右辺: 60 61
+for_expression (58)
+    左辺: 64 65, 右辺: 60 61
+for_update (59)
+    左辺: 66 67 68 69 70, 右辺: 60 61
+selection_statement (60)
+    左辺: 71 72, 右辺: 24
+if_statement (61)
+    左辺: 73 74, 右辺: 71 72
+else_statement (62)
+    左辺: 75 76, 右辺: 72
+break_statement (63)
+    左辺: 77, 右辺: 26
+expression (64)
+    左辺: 78, 右辺: 58 59 64 73 74
+comparison_operator (65)
+    左辺: 79 80 81 82 83, 右辺: 78
+function_call (66)
+    左辺: 84 85, 右辺: 25
+parameter_list (67)
+    左辺: 86 87, 右辺: 85 86
+
+
+State 0
+
+    0 $accept: . program $end
+    1 program: . variable_declarations function_list
+    2        | . function_list
+    3 function_list: . function function_list
+    4              | . function
+    5 function: . pre_func PAREN_L argument_list PAREN_R BRACE_L variable_declarations statement_list BRACE_R
+    6         | . pre_func PAREN_L PAREN_R BRACE_L variable_declarations statement_list BRACE_R
+    7 pre_func: . FUNC IDENTIFIER
+   13 variable_declarations: . declaration variable_declarations
+   14                      | . declaration
+   15 declaration: . DEFINE identifier_list SEMIC
+   16            | . ARRAY IDENTIFIER BRACKET_L NUMBER BRACKET_R SEMIC
+   17            | . ARRAY IDENTIFIER BRACKET_L NUMBER BRACKET_R BRACKET_L NUMBER BRACKET_R SEMIC
+
+    DEFINE  shift, and go to state 1
+    ARRAY   shift, and go to state 2
+    FUNC    shift, and go to state 3
+
+    program                go to state 4
+    function_list          go to state 5
+    function               go to state 6
+    pre_func               go to state 7
+    variable_declarations  go to state 8
+    declaration            go to state 9
+
+
+State 1
+
+   15 declaration: DEFINE . identifier_list SEMIC
+   18 identifier_list: . IDENTIFIER COMMA identifier_list
+   19                | . IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 10
+
+    identifier_list  go to state 11
+
+
+State 2
+
+   16 declaration: ARRAY . IDENTIFIER BRACKET_L NUMBER BRACKET_R SEMIC
+   17            | ARRAY . IDENTIFIER BRACKET_L NUMBER BRACKET_R BRACKET_L NUMBER BRACKET_R SEMIC
+
+    IDENTIFIER  shift, and go to state 12
+
+
+State 3
+
+    7 pre_func: FUNC . IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 13
+
+
+State 4
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 14
+
+
+State 5
+
+    2 program: function_list .
+
+    $default  reduce using rule 2 (program)
+
+
+State 6
+
+    3 function_list: . function function_list
+    3              | function . function_list
+    4              | . function
+    4              | function .  [$end]
+    5 function: . pre_func PAREN_L argument_list PAREN_R BRACE_L variable_declarations statement_list BRACE_R
+    6         | . pre_func PAREN_L PAREN_R BRACE_L variable_declarations statement_list BRACE_R
+    7 pre_func: . FUNC IDENTIFIER
+
+    FUNC  shift, and go to state 3
+
+    $default  reduce using rule 4 (function_list)
+
+    function_list  go to state 15
+    function       go to state 6
+    pre_func       go to state 7
+
+
+State 7
+
+    5 function: pre_func . PAREN_L argument_list PAREN_R BRACE_L variable_declarations statement_list BRACE_R
+    6         | pre_func . PAREN_L PAREN_R BRACE_L variable_declarations statement_list BRACE_R
+
+    PAREN_L  shift, and go to state 16
+
+
+State 8
+
+    1 program: variable_declarations . function_list
+    3 function_list: . function function_list
+    4              | . function
+    5 function: . pre_func PAREN_L argument_list PAREN_R BRACE_L variable_declarations statement_list BRACE_R
+    6         | . pre_func PAREN_L PAREN_R BRACE_L variable_declarations statement_list BRACE_R
+    7 pre_func: . FUNC IDENTIFIER
+
+    FUNC  shift, and go to state 3
+
+    function_list  go to state 17
+    function       go to state 6
+    pre_func       go to state 7
+
+
+State 9
+
+   13 variable_declarations: . declaration variable_declarations
+   13                      | declaration . variable_declarations
+   14                      | . declaration
+   14                      | declaration .  [IDENTIFIER, FUNC, FUNCCALL, WHILE, IF, BREAK, FOR, DECREMENT, INCREMENT, SEMIC]
+   15 declaration: . DEFINE identifier_list SEMIC
+   16            | . ARRAY IDENTIFIER BRACKET_L NUMBER BRACKET_R SEMIC
+   17            | . ARRAY IDENTIFIER BRACKET_L NUMBER BRACKET_R BRACKET_L NUMBER BRACKET_R SEMIC
+
+    DEFINE  shift, and go to state 1
+    ARRAY   shift, and go to state 2
+
+    $default  reduce using rule 14 (variable_declarations)
+
+    variable_declarations  go to state 18
+    declaration            go to state 9
+
+
+State 10
+
+   18 identifier_list: IDENTIFIER . COMMA identifier_list
+   19                | IDENTIFIER .  [SEMIC]
+
+    COMMA  shift, and go to state 19
+
+    $default  reduce using rule 19 (identifier_list)
+
+
+State 11
+
+   15 declaration: DEFINE identifier_list . SEMIC
+
+    SEMIC  shift, and go to state 20
+
+
+State 12
+
+   16 declaration: ARRAY IDENTIFIER . BRACKET_L NUMBER BRACKET_R SEMIC
+   17            | ARRAY IDENTIFIER . BRACKET_L NUMBER BRACKET_R BRACKET_L NUMBER BRACKET_R SEMIC
+
+    BRACKET_L  shift, and go to state 21
+
+
+State 13
+
+    7 pre_func: FUNC IDENTIFIER .
+
+    $default  reduce using rule 7 (pre_func)
+
+
+State 14
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+State 15
+
+    3 function_list: function function_list .
+
+    $default  reduce using rule 3 (function_list)
+
+
+State 16
+
+    5 function: pre_func PAREN_L . argument_list PAREN_R BRACE_L variable_declarations statement_list BRACE_R
+    6         | pre_func PAREN_L . PAREN_R BRACE_L variable_declarations statement_list BRACE_R
+    8 argument_list: . argument COMMA argument_list
+    9              | . argument
+   10 argument: . DEFINE IDENTIFIER
+   11         | . ARRAY IDENTIFIER BRACKET_L BRACKET_R
+   12         | . ARRAY IDENTIFIER BRACKET_L NUMBER BRACKET_R BRACKET_L BRACKET_R
+
+    DEFINE   shift, and go to state 22
+    ARRAY    shift, and go to state 23
+    PAREN_R  shift, and go to state 24
+
+    argument_list  go to state 25
+    argument       go to state 26
+
+
+State 17
+
+    1 program: variable_declarations function_list .
+
+    $default  reduce using rule 1 (program)
+
+
+State 18
+
+   13 variable_declarations: declaration variable_declarations .
+
+    $default  reduce using rule 13 (variable_declarations)
+
+
+State 19
+
+   18 identifier_list: . IDENTIFIER COMMA identifier_list
+   18                | IDENTIFIER COMMA . identifier_list
+   19                | . IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 10
+
+    identifier_list  go to state 27
+
+
+State 20
+
+   15 declaration: DEFINE identifier_list SEMIC .
+
+    $default  reduce using rule 15 (declaration)
+
+
+State 21
+
+   16 declaration: ARRAY IDENTIFIER BRACKET_L . NUMBER BRACKET_R SEMIC
+   17            | ARRAY IDENTIFIER BRACKET_L . NUMBER BRACKET_R BRACKET_L NUMBER BRACKET_R SEMIC
+
+    NUMBER  shift, and go to state 28
+
+
+State 22
+
+   10 argument: DEFINE . IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 29
+
+
+State 23
+
+   11 argument: ARRAY . IDENTIFIER BRACKET_L BRACKET_R
+   12         | ARRAY . IDENTIFIER BRACKET_L NUMBER BRACKET_R BRACKET_L BRACKET_R
+
+    IDENTIFIER  shift, and go to state 30
+
+
+State 24
+
+    6 function: pre_func PAREN_L PAREN_R . BRACE_L variable_declarations statement_list BRACE_R
+
+    BRACE_L  shift, and go to state 31
+
+
+State 25
+
+    5 function: pre_func PAREN_L argument_list . PAREN_R BRACE_L variable_declarations statement_list BRACE_R
+
+    PAREN_R  shift, and go to state 32
+
+
+State 26
+
+    8 argument_list: argument . COMMA argument_list
+    9              | argument .  [PAREN_R]
+
+    COMMA  shift, and go to state 33
+
+    $default  reduce using rule 9 (argument_list)
+
+
+State 27
+
+   18 identifier_list: IDENTIFIER COMMA identifier_list .
+
+    $default  reduce using rule 18 (identifier_list)
+
+
+State 28
+
+   16 declaration: ARRAY IDENTIFIER BRACKET_L NUMBER . BRACKET_R SEMIC
+   17            | ARRAY IDENTIFIER BRACKET_L NUMBER . BRACKET_R BRACKET_L NUMBER BRACKET_R SEMIC
+
+    BRACKET_R  shift, and go to state 34
+
+
+State 29
+
+   10 argument: DEFINE IDENTIFIER .
+
+    $default  reduce using rule 10 (argument)
+
+
+State 30
+
+   11 argument: ARRAY IDENTIFIER . BRACKET_L BRACKET_R
+   12         | ARRAY IDENTIFIER . BRACKET_L NUMBER BRACKET_R BRACKET_L BRACKET_R
+
+    BRACKET_L  shift, and go to state 35
+
+
+State 31
+
+    6 function: pre_func PAREN_L PAREN_R BRACE_L . variable_declarations statement_list BRACE_R
+   13 variable_declarations: . declaration variable_declarations
+   14                      | . declaration
+   15 declaration: . DEFINE identifier_list SEMIC
+   16            | . ARRAY IDENTIFIER BRACKET_L NUMBER BRACKET_R SEMIC
+   17            | . ARRAY IDENTIFIER BRACKET_L NUMBER BRACKET_R BRACKET_L NUMBER BRACKET_R SEMIC
+
+    DEFINE  shift, and go to state 1
+    ARRAY   shift, and go to state 2
+
+    variable_declarations  go to state 36
+    declaration            go to state 9
+
+
+State 32
+
+    5 function: pre_func PAREN_L argument_list PAREN_R . BRACE_L variable_declarations statement_list BRACE_R
+
+    BRACE_L  shift, and go to state 37
+
+
+State 33
+
+    8 argument_list: . argument COMMA argument_list
+    8              | argument COMMA . argument_list
+    9              | . argument
+   10 argument: . DEFINE IDENTIFIER
+   11         | . ARRAY IDENTIFIER BRACKET_L BRACKET_R
+   12         | . ARRAY IDENTIFIER BRACKET_L NUMBER BRACKET_R BRACKET_L BRACKET_R
+
+    DEFINE  shift, and go to state 22
+    ARRAY   shift, and go to state 23
+
+    argument_list  go to state 38
+    argument       go to state 26
+
+
+State 34
+
+   16 declaration: ARRAY IDENTIFIER BRACKET_L NUMBER BRACKET_R . SEMIC
+   17            | ARRAY IDENTIFIER BRACKET_L NUMBER BRACKET_R . BRACKET_L NUMBER BRACKET_R SEMIC
+
+    BRACKET_L  shift, and go to state 39
+    SEMIC      shift, and go to state 40
+
+
+State 35
+
+   11 argument: ARRAY IDENTIFIER BRACKET_L . BRACKET_R
+   12         | ARRAY IDENTIFIER BRACKET_L . NUMBER BRACKET_R BRACKET_L BRACKET_R
+
+    NUMBER     shift, and go to state 41
+    BRACKET_R  shift, and go to state 42
+
+
+State 36
+
+    6 function: pre_func PAREN_L PAREN_R BRACE_L variable_declarations . statement_list BRACE_R
+   20 statement_list: . statement statement_list
+   21               | . statement
+   22 statement: . assignment_statement
+   23          | . loop_statement
+   24          | . selection_statement
+   25          | . function_call
+   26          | . break_statement
+   27          | . IDENTIFIER unary_operator
+   28          | . unary_operator IDENTIFIER
+   29          | . SEMIC
+   30 assignment_statement: . IDENTIFIER ASSIGNMENT arithmetic_expression SEMIC
+   31                     | . array_reference ASSIGNMENT arithmetic_expression SEMIC
+   32                     | . array_reference ASSIGNMENT SUBTRACTION arithmetic_expression SEMIC
+   33                     | . IDENTIFIER ASSIGNMENT SUBTRACTION arithmetic_expression SEMIC
+   45 unary_operator: . INCREMENT
+   46               | . DECREMENT
+   52 array_reference: . IDENTIFIER BRACKET_L variable BRACKET_R
+   53                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R
+   54                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   55                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   56                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   58 loop_statement: . WHILE PAREN_L expression PAREN_R BRACE_L statement_list BRACE_R
+   59               | . WHILE PAREN_L expression PAREN_R statement
+   60               | . FOR PAREN_L for_initial for_expression for_update PAREN_R BRACE_L statement_list BRACE_R
+   61               | . FOR PAREN_L for_initial for_expression for_update PAREN_R statement
+   71 selection_statement: . if_statement
+   72                    | . if_statement else_statement
+   73 if_statement: . IF PAREN_L expression PAREN_R BRACE_L statement_list BRACE_R
+   74             | . IF PAREN_L expression PAREN_R statement
+   77 break_statement: . BREAK SEMIC
+   84 function_call: . FUNCCALL IDENTIFIER PAREN_L PAREN_R SEMIC
+   85              | . FUNCCALL IDENTIFIER PAREN_L parameter_list PAREN_R SEMIC
+
+    IDENTIFIER  shift, and go to state 43
+    FUNCCALL    shift, and go to state 44
+    WHILE       shift, and go to state 45
+    IF          shift, and go to state 46
+    BREAK       shift, and go to state 47
+    FOR         shift, and go to state 48
+    DECREMENT   shift, and go to state 49
+    INCREMENT   shift, and go to state 50
+    SEMIC       shift, and go to state 51
+
+    statement_list        go to state 52
+    statement             go to state 53
+    assignment_statement  go to state 54
+    unary_operator        go to state 55
+    array_reference       go to state 56
+    loop_statement        go to state 57
+    selection_statement   go to state 58
+    if_statement          go to state 59
+    break_statement       go to state 60
+    function_call         go to state 61
+
+
+State 37
+
+    5 function: pre_func PAREN_L argument_list PAREN_R BRACE_L . variable_declarations statement_list BRACE_R
+   13 variable_declarations: . declaration variable_declarations
+   14                      | . declaration
+   15 declaration: . DEFINE identifier_list SEMIC
+   16            | . ARRAY IDENTIFIER BRACKET_L NUMBER BRACKET_R SEMIC
+   17            | . ARRAY IDENTIFIER BRACKET_L NUMBER BRACKET_R BRACKET_L NUMBER BRACKET_R SEMIC
+
+    DEFINE  shift, and go to state 1
+    ARRAY   shift, and go to state 2
+
+    variable_declarations  go to state 62
+    declaration            go to state 9
+
+
+State 38
+
+    8 argument_list: argument COMMA argument_list .
+
+    $default  reduce using rule 8 (argument_list)
+
+
+State 39
+
+   17 declaration: ARRAY IDENTIFIER BRACKET_L NUMBER BRACKET_R BRACKET_L . NUMBER BRACKET_R SEMIC
+
+    NUMBER  shift, and go to state 63
+
+
+State 40
+
+   16 declaration: ARRAY IDENTIFIER BRACKET_L NUMBER BRACKET_R SEMIC .
+
+    $default  reduce using rule 16 (declaration)
+
+
+State 41
+
+   12 argument: ARRAY IDENTIFIER BRACKET_L NUMBER . BRACKET_R BRACKET_L BRACKET_R
+
+    BRACKET_R  shift, and go to state 64
+
+
+State 42
+
+   11 argument: ARRAY IDENTIFIER BRACKET_L BRACKET_R .
+
+    $default  reduce using rule 11 (argument)
+
+
+State 43
+
+   27 statement: IDENTIFIER . unary_operator
+   30 assignment_statement: IDENTIFIER . ASSIGNMENT arithmetic_expression SEMIC
+   33                     | IDENTIFIER . ASSIGNMENT SUBTRACTION arithmetic_expression SEMIC
+   45 unary_operator: . INCREMENT
+   46               | . DECREMENT
+   52 array_reference: IDENTIFIER . BRACKET_L variable BRACKET_R
+   53                | IDENTIFIER . BRACKET_L arithmetic_expression BRACKET_R
+   54                | IDENTIFIER . BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   55                | IDENTIFIER . BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   56                | IDENTIFIER . BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | IDENTIFIER . BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+
+    BRACKET_L   shift, and go to state 65
+    DECREMENT   shift, and go to state 49
+    INCREMENT   shift, and go to state 50
+    ASSIGNMENT  shift, and go to state 66
+
+    unary_operator  go to state 67
+
+
+State 44
+
+   84 function_call: FUNCCALL . IDENTIFIER PAREN_L PAREN_R SEMIC
+   85              | FUNCCALL . IDENTIFIER PAREN_L parameter_list PAREN_R SEMIC
+
+    IDENTIFIER  shift, and go to state 68
+
+
+State 45
+
+   58 loop_statement: WHILE . PAREN_L expression PAREN_R BRACE_L statement_list BRACE_R
+   59               | WHILE . PAREN_L expression PAREN_R statement
+
+    PAREN_L  shift, and go to state 69
+
+
+State 46
+
+   73 if_statement: IF . PAREN_L expression PAREN_R BRACE_L statement_list BRACE_R
+   74             | IF . PAREN_L expression PAREN_R statement
+
+    PAREN_L  shift, and go to state 70
+
+
+State 47
+
+   77 break_statement: BREAK . SEMIC
+
+    SEMIC  shift, and go to state 71
+
+
+State 48
+
+   60 loop_statement: FOR . PAREN_L for_initial for_expression for_update PAREN_R BRACE_L statement_list BRACE_R
+   61               | FOR . PAREN_L for_initial for_expression for_update PAREN_R statement
+
+    PAREN_L  shift, and go to state 72
+
+
+State 49
+
+   46 unary_operator: DECREMENT .
+
+    $default  reduce using rule 46 (unary_operator)
+
+
+State 50
+
+   45 unary_operator: INCREMENT .
+
+    $default  reduce using rule 45 (unary_operator)
+
+
+State 51
+
+   29 statement: SEMIC .
+
+    $default  reduce using rule 29 (statement)
+
+
+State 52
+
+    6 function: pre_func PAREN_L PAREN_R BRACE_L variable_declarations statement_list . BRACE_R
+
+    BRACE_R  shift, and go to state 73
+
+
+State 53
+
+   20 statement_list: . statement statement_list
+   20               | statement . statement_list
+   21               | . statement
+   21               | statement .  [BRACE_R]
+   22 statement: . assignment_statement
+   23          | . loop_statement
+   24          | . selection_statement
+   25          | . function_call
+   26          | . break_statement
+   27          | . IDENTIFIER unary_operator
+   28          | . unary_operator IDENTIFIER
+   29          | . SEMIC
+   30 assignment_statement: . IDENTIFIER ASSIGNMENT arithmetic_expression SEMIC
+   31                     | . array_reference ASSIGNMENT arithmetic_expression SEMIC
+   32                     | . array_reference ASSIGNMENT SUBTRACTION arithmetic_expression SEMIC
+   33                     | . IDENTIFIER ASSIGNMENT SUBTRACTION arithmetic_expression SEMIC
+   45 unary_operator: . INCREMENT
+   46               | . DECREMENT
+   52 array_reference: . IDENTIFIER BRACKET_L variable BRACKET_R
+   53                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R
+   54                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   55                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   56                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   58 loop_statement: . WHILE PAREN_L expression PAREN_R BRACE_L statement_list BRACE_R
+   59               | . WHILE PAREN_L expression PAREN_R statement
+   60               | . FOR PAREN_L for_initial for_expression for_update PAREN_R BRACE_L statement_list BRACE_R
+   61               | . FOR PAREN_L for_initial for_expression for_update PAREN_R statement
+   71 selection_statement: . if_statement
+   72                    | . if_statement else_statement
+   73 if_statement: . IF PAREN_L expression PAREN_R BRACE_L statement_list BRACE_R
+   74             | . IF PAREN_L expression PAREN_R statement
+   77 break_statement: . BREAK SEMIC
+   84 function_call: . FUNCCALL IDENTIFIER PAREN_L PAREN_R SEMIC
+   85              | . FUNCCALL IDENTIFIER PAREN_L parameter_list PAREN_R SEMIC
+
+    IDENTIFIER  shift, and go to state 43
+    FUNCCALL    shift, and go to state 44
+    WHILE       shift, and go to state 45
+    IF          shift, and go to state 46
+    BREAK       shift, and go to state 47
+    FOR         shift, and go to state 48
+    DECREMENT   shift, and go to state 49
+    INCREMENT   shift, and go to state 50
+    SEMIC       shift, and go to state 51
+
+    $default  reduce using rule 21 (statement_list)
+
+    statement_list        go to state 74
+    statement             go to state 53
+    assignment_statement  go to state 54
+    unary_operator        go to state 55
+    array_reference       go to state 56
+    loop_statement        go to state 57
+    selection_statement   go to state 58
+    if_statement          go to state 59
+    break_statement       go to state 60
+    function_call         go to state 61
+
+
+State 54
+
+   22 statement: assignment_statement .
+
+    $default  reduce using rule 22 (statement)
+
+
+State 55
+
+   28 statement: unary_operator . IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 75
+
+
+State 56
+
+   31 assignment_statement: array_reference . ASSIGNMENT arithmetic_expression SEMIC
+   32                     | array_reference . ASSIGNMENT SUBTRACTION arithmetic_expression SEMIC
+
+    ASSIGNMENT  shift, and go to state 76
+
+
+State 57
+
+   23 statement: loop_statement .
+
+    $default  reduce using rule 23 (statement)
+
+
+State 58
+
+   24 statement: selection_statement .
+
+    $default  reduce using rule 24 (statement)
+
+
+State 59
+
+   71 selection_statement: if_statement .  [IDENTIFIER, FUNCCALL, WHILE, IF, ELSE, BREAK, FOR, BRACE_R, DECREMENT, INCREMENT, SEMIC]
+   72                    | if_statement . else_statement
+   75 else_statement: . ELSE BRACE_L statement_list BRACE_R
+   76               | . ELSE statement
+
+    ELSE  shift, and go to state 77
+
+    ELSE      [reduce using rule 71 (selection_statement)]
+    $default  reduce using rule 71 (selection_statement)
+
+    else_statement  go to state 78
+
+
+State 60
+
+   26 statement: break_statement .
+
+    $default  reduce using rule 26 (statement)
+
+
+State 61
+
+   25 statement: function_call .
+
+    $default  reduce using rule 25 (statement)
+
+
+State 62
+
+    5 function: pre_func PAREN_L argument_list PAREN_R BRACE_L variable_declarations . statement_list BRACE_R
+   20 statement_list: . statement statement_list
+   21               | . statement
+   22 statement: . assignment_statement
+   23          | . loop_statement
+   24          | . selection_statement
+   25          | . function_call
+   26          | . break_statement
+   27          | . IDENTIFIER unary_operator
+   28          | . unary_operator IDENTIFIER
+   29          | . SEMIC
+   30 assignment_statement: . IDENTIFIER ASSIGNMENT arithmetic_expression SEMIC
+   31                     | . array_reference ASSIGNMENT arithmetic_expression SEMIC
+   32                     | . array_reference ASSIGNMENT SUBTRACTION arithmetic_expression SEMIC
+   33                     | . IDENTIFIER ASSIGNMENT SUBTRACTION arithmetic_expression SEMIC
+   45 unary_operator: . INCREMENT
+   46               | . DECREMENT
+   52 array_reference: . IDENTIFIER BRACKET_L variable BRACKET_R
+   53                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R
+   54                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   55                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   56                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   58 loop_statement: . WHILE PAREN_L expression PAREN_R BRACE_L statement_list BRACE_R
+   59               | . WHILE PAREN_L expression PAREN_R statement
+   60               | . FOR PAREN_L for_initial for_expression for_update PAREN_R BRACE_L statement_list BRACE_R
+   61               | . FOR PAREN_L for_initial for_expression for_update PAREN_R statement
+   71 selection_statement: . if_statement
+   72                    | . if_statement else_statement
+   73 if_statement: . IF PAREN_L expression PAREN_R BRACE_L statement_list BRACE_R
+   74             | . IF PAREN_L expression PAREN_R statement
+   77 break_statement: . BREAK SEMIC
+   84 function_call: . FUNCCALL IDENTIFIER PAREN_L PAREN_R SEMIC
+   85              | . FUNCCALL IDENTIFIER PAREN_L parameter_list PAREN_R SEMIC
+
+    IDENTIFIER  shift, and go to state 43
+    FUNCCALL    shift, and go to state 44
+    WHILE       shift, and go to state 45
+    IF          shift, and go to state 46
+    BREAK       shift, and go to state 47
+    FOR         shift, and go to state 48
+    DECREMENT   shift, and go to state 49
+    INCREMENT   shift, and go to state 50
+    SEMIC       shift, and go to state 51
+
+    statement_list        go to state 79
+    statement             go to state 53
+    assignment_statement  go to state 54
+    unary_operator        go to state 55
+    array_reference       go to state 56
+    loop_statement        go to state 57
+    selection_statement   go to state 58
+    if_statement          go to state 59
+    break_statement       go to state 60
+    function_call         go to state 61
+
+
+State 63
+
+   17 declaration: ARRAY IDENTIFIER BRACKET_L NUMBER BRACKET_R BRACKET_L NUMBER . BRACKET_R SEMIC
+
+    BRACKET_R  shift, and go to state 80
+
+
+State 64
+
+   12 argument: ARRAY IDENTIFIER BRACKET_L NUMBER BRACKET_R . BRACKET_L BRACKET_R
+
+    BRACKET_L  shift, and go to state 81
+
+
+State 65
+
+   34 arithmetic_expression: . arithmetic_expression additive_operator multiplicative_expression
+   35                      | . multiplicative_expression
+   36 multiplicative_expression: . multiplicative_expression multiplicative_operator primary_expression
+   37                          | . primary_expression
+   38 primary_expression: . variable
+   39                   | . PAREN_L arithmetic_expression PAREN_R
+   45 unary_operator: . INCREMENT
+   46               | . DECREMENT
+   47 variable: . IDENTIFIER
+   48         | . NUMBER
+   49         | . array_reference
+   50         | . IDENTIFIER unary_operator
+   51         | . unary_operator IDENTIFIER
+   52 array_reference: . IDENTIFIER BRACKET_L variable BRACKET_R
+   52                | IDENTIFIER BRACKET_L . variable BRACKET_R
+   53                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R
+   53                | IDENTIFIER BRACKET_L . arithmetic_expression BRACKET_R
+   54                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   54                | IDENTIFIER BRACKET_L . variable BRACKET_R BRACKET_L variable BRACKET_R
+   55                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   55                | IDENTIFIER BRACKET_L . arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   56                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   56                | IDENTIFIER BRACKET_L . variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | IDENTIFIER BRACKET_L . arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+
+    IDENTIFIER  shift, and go to state 82
+    NUMBER      shift, and go to state 83
+    PAREN_L     shift, and go to state 84
+    DECREMENT   shift, and go to state 49
+    INCREMENT   shift, and go to state 50
+
+    arithmetic_expression      go to state 85
+    multiplicative_expression  go to state 86
+    primary_expression         go to state 87
+    unary_operator             go to state 88
+    variable                   go to state 89
+    array_reference            go to state 90
+
+
+State 66
+
+   30 assignment_statement: IDENTIFIER ASSIGNMENT . arithmetic_expression SEMIC
+   33                     | IDENTIFIER ASSIGNMENT . SUBTRACTION arithmetic_expression SEMIC
+   34 arithmetic_expression: . arithmetic_expression additive_operator multiplicative_expression
+   35                      | . multiplicative_expression
+   36 multiplicative_expression: . multiplicative_expression multiplicative_operator primary_expression
+   37                          | . primary_expression
+   38 primary_expression: . variable
+   39                   | . PAREN_L arithmetic_expression PAREN_R
+   45 unary_operator: . INCREMENT
+   46               | . DECREMENT
+   47 variable: . IDENTIFIER
+   48         | . NUMBER
+   49         | . array_reference
+   50         | . IDENTIFIER unary_operator
+   51         | . unary_operator IDENTIFIER
+   52 array_reference: . IDENTIFIER BRACKET_L variable BRACKET_R
+   53                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R
+   54                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   55                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   56                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+
+    IDENTIFIER   shift, and go to state 82
+    NUMBER       shift, and go to state 83
+    PAREN_L      shift, and go to state 84
+    SUBTRACTION  shift, and go to state 91
+    DECREMENT    shift, and go to state 49
+    INCREMENT    shift, and go to state 50
+
+    arithmetic_expression      go to state 92
+    multiplicative_expression  go to state 86
+    primary_expression         go to state 87
+    unary_operator             go to state 88
+    variable                   go to state 93
+    array_reference            go to state 90
+
+
+State 67
+
+   27 statement: IDENTIFIER unary_operator .
+
+    $default  reduce using rule 27 (statement)
+
+
+State 68
+
+   84 function_call: FUNCCALL IDENTIFIER . PAREN_L PAREN_R SEMIC
+   85              | FUNCCALL IDENTIFIER . PAREN_L parameter_list PAREN_R SEMIC
+
+    PAREN_L  shift, and go to state 94
+
+
+State 69
+
+   34 arithmetic_expression: . arithmetic_expression additive_operator multiplicative_expression
+   35                      | . multiplicative_expression
+   36 multiplicative_expression: . multiplicative_expression multiplicative_operator primary_expression
+   37                          | . primary_expression
+   38 primary_expression: . variable
+   39                   | . PAREN_L arithmetic_expression PAREN_R
+   45 unary_operator: . INCREMENT
+   46               | . DECREMENT
+   47 variable: . IDENTIFIER
+   48         | . NUMBER
+   49         | . array_reference
+   50         | . IDENTIFIER unary_operator
+   51         | . unary_operator IDENTIFIER
+   52 array_reference: . IDENTIFIER BRACKET_L variable BRACKET_R
+   53                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R
+   54                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   55                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   56                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   58 loop_statement: WHILE PAREN_L . expression PAREN_R BRACE_L statement_list BRACE_R
+   59               | WHILE PAREN_L . expression PAREN_R statement
+   78 expression: . arithmetic_expression comparison_operator arithmetic_expression
+
+    IDENTIFIER  shift, and go to state 82
+    NUMBER      shift, and go to state 83
+    PAREN_L     shift, and go to state 84
+    DECREMENT   shift, and go to state 49
+    INCREMENT   shift, and go to state 50
+
+    arithmetic_expression      go to state 95
+    multiplicative_expression  go to state 86
+    primary_expression         go to state 87
+    unary_operator             go to state 88
+    variable                   go to state 93
+    array_reference            go to state 90
+    expression                 go to state 96
+
+
+State 70
+
+   34 arithmetic_expression: . arithmetic_expression additive_operator multiplicative_expression
+   35                      | . multiplicative_expression
+   36 multiplicative_expression: . multiplicative_expression multiplicative_operator primary_expression
+   37                          | . primary_expression
+   38 primary_expression: . variable
+   39                   | . PAREN_L arithmetic_expression PAREN_R
+   45 unary_operator: . INCREMENT
+   46               | . DECREMENT
+   47 variable: . IDENTIFIER
+   48         | . NUMBER
+   49         | . array_reference
+   50         | . IDENTIFIER unary_operator
+   51         | . unary_operator IDENTIFIER
+   52 array_reference: . IDENTIFIER BRACKET_L variable BRACKET_R
+   53                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R
+   54                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   55                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   56                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   73 if_statement: IF PAREN_L . expression PAREN_R BRACE_L statement_list BRACE_R
+   74             | IF PAREN_L . expression PAREN_R statement
+   78 expression: . arithmetic_expression comparison_operator arithmetic_expression
+
+    IDENTIFIER  shift, and go to state 82
+    NUMBER      shift, and go to state 83
+    PAREN_L     shift, and go to state 84
+    DECREMENT   shift, and go to state 49
+    INCREMENT   shift, and go to state 50
+
+    arithmetic_expression      go to state 95
+    multiplicative_expression  go to state 86
+    primary_expression         go to state 87
+    unary_operator             go to state 88
+    variable                   go to state 93
+    array_reference            go to state 90
+    expression                 go to state 97
+
+
+State 71
+
+   77 break_statement: BREAK SEMIC .
+
+    $default  reduce using rule 77 (break_statement)
+
+
+State 72
+
+   30 assignment_statement: . IDENTIFIER ASSIGNMENT arithmetic_expression SEMIC
+   31                     | . array_reference ASSIGNMENT arithmetic_expression SEMIC
+   32                     | . array_reference ASSIGNMENT SUBTRACTION arithmetic_expression SEMIC
+   33                     | . IDENTIFIER ASSIGNMENT SUBTRACTION arithmetic_expression SEMIC
+   52 array_reference: . IDENTIFIER BRACKET_L variable BRACKET_R
+   53                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R
+   54                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   55                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   56                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   60 loop_statement: FOR PAREN_L . for_initial for_expression for_update PAREN_R BRACE_L statement_list BRACE_R
+   61               | FOR PAREN_L . for_initial for_expression for_update PAREN_R statement
+   62 for_initial: . assignment_statement
+   63            | . SEMIC
+
+    IDENTIFIER  shift, and go to state 98
+    SEMIC       shift, and go to state 99
+
+    assignment_statement  go to state 100
+    array_reference       go to state 56
+    for_initial           go to state 101
+
+
+State 73
+
+    6 function: pre_func PAREN_L PAREN_R BRACE_L variable_declarations statement_list BRACE_R .
+
+    $default  reduce using rule 6 (function)
+
+
+State 74
+
+   20 statement_list: statement statement_list .
+
+    $default  reduce using rule 20 (statement_list)
+
+
+State 75
+
+   28 statement: unary_operator IDENTIFIER .
+
+    $default  reduce using rule 28 (statement)
+
+
+State 76
+
+   31 assignment_statement: array_reference ASSIGNMENT . arithmetic_expression SEMIC
+   32                     | array_reference ASSIGNMENT . SUBTRACTION arithmetic_expression SEMIC
+   34 arithmetic_expression: . arithmetic_expression additive_operator multiplicative_expression
+   35                      | . multiplicative_expression
+   36 multiplicative_expression: . multiplicative_expression multiplicative_operator primary_expression
+   37                          | . primary_expression
+   38 primary_expression: . variable
+   39                   | . PAREN_L arithmetic_expression PAREN_R
+   45 unary_operator: . INCREMENT
+   46               | . DECREMENT
+   47 variable: . IDENTIFIER
+   48         | . NUMBER
+   49         | . array_reference
+   50         | . IDENTIFIER unary_operator
+   51         | . unary_operator IDENTIFIER
+   52 array_reference: . IDENTIFIER BRACKET_L variable BRACKET_R
+   53                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R
+   54                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   55                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   56                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+
+    IDENTIFIER   shift, and go to state 82
+    NUMBER       shift, and go to state 83
+    PAREN_L      shift, and go to state 84
+    SUBTRACTION  shift, and go to state 102
+    DECREMENT    shift, and go to state 49
+    INCREMENT    shift, and go to state 50
+
+    arithmetic_expression      go to state 103
+    multiplicative_expression  go to state 86
+    primary_expression         go to state 87
+    unary_operator             go to state 88
+    variable                   go to state 93
+    array_reference            go to state 90
+
+
+State 77
+
+   22 statement: . assignment_statement
+   23          | . loop_statement
+   24          | . selection_statement
+   25          | . function_call
+   26          | . break_statement
+   27          | . IDENTIFIER unary_operator
+   28          | . unary_operator IDENTIFIER
+   29          | . SEMIC
+   30 assignment_statement: . IDENTIFIER ASSIGNMENT arithmetic_expression SEMIC
+   31                     | . array_reference ASSIGNMENT arithmetic_expression SEMIC
+   32                     | . array_reference ASSIGNMENT SUBTRACTION arithmetic_expression SEMIC
+   33                     | . IDENTIFIER ASSIGNMENT SUBTRACTION arithmetic_expression SEMIC
+   45 unary_operator: . INCREMENT
+   46               | . DECREMENT
+   52 array_reference: . IDENTIFIER BRACKET_L variable BRACKET_R
+   53                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R
+   54                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   55                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   56                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   58 loop_statement: . WHILE PAREN_L expression PAREN_R BRACE_L statement_list BRACE_R
+   59               | . WHILE PAREN_L expression PAREN_R statement
+   60               | . FOR PAREN_L for_initial for_expression for_update PAREN_R BRACE_L statement_list BRACE_R
+   61               | . FOR PAREN_L for_initial for_expression for_update PAREN_R statement
+   71 selection_statement: . if_statement
+   72                    | . if_statement else_statement
+   73 if_statement: . IF PAREN_L expression PAREN_R BRACE_L statement_list BRACE_R
+   74             | . IF PAREN_L expression PAREN_R statement
+   75 else_statement: ELSE . BRACE_L statement_list BRACE_R
+   76               | ELSE . statement
+   77 break_statement: . BREAK SEMIC
+   84 function_call: . FUNCCALL IDENTIFIER PAREN_L PAREN_R SEMIC
+   85              | . FUNCCALL IDENTIFIER PAREN_L parameter_list PAREN_R SEMIC
+
+    IDENTIFIER  shift, and go to state 43
+    FUNCCALL    shift, and go to state 44
+    WHILE       shift, and go to state 45
+    IF          shift, and go to state 46
+    BREAK       shift, and go to state 47
+    FOR         shift, and go to state 48
+    BRACE_L     shift, and go to state 104
+    DECREMENT   shift, and go to state 49
+    INCREMENT   shift, and go to state 50
+    SEMIC       shift, and go to state 51
+
+    statement             go to state 105
+    assignment_statement  go to state 54
+    unary_operator        go to state 55
+    array_reference       go to state 56
+    loop_statement        go to state 57
+    selection_statement   go to state 58
+    if_statement          go to state 59
+    break_statement       go to state 60
+    function_call         go to state 61
+
+
+State 78
+
+   72 selection_statement: if_statement else_statement .
+
+    $default  reduce using rule 72 (selection_statement)
+
+
+State 79
+
+    5 function: pre_func PAREN_L argument_list PAREN_R BRACE_L variable_declarations statement_list . BRACE_R
+
+    BRACE_R  shift, and go to state 106
+
+
+State 80
+
+   17 declaration: ARRAY IDENTIFIER BRACKET_L NUMBER BRACKET_R BRACKET_L NUMBER BRACKET_R . SEMIC
+
+    SEMIC  shift, and go to state 107
+
+
+State 81
+
+   12 argument: ARRAY IDENTIFIER BRACKET_L NUMBER BRACKET_R BRACKET_L . BRACKET_R
+
+    BRACKET_R  shift, and go to state 108
+
+
+State 82
+
+   45 unary_operator: . INCREMENT
+   46               | . DECREMENT
+   47 variable: IDENTIFIER .  [PAREN_R, BRACKET_R, ADDITION, SUBTRACTION, MULTIPLICATION, DIVISION, MODULUS, EQUAL, LESS, GRATER, GREQ, LSEQ, SEMIC, COMMA]
+   50         | IDENTIFIER . unary_operator
+   52 array_reference: IDENTIFIER . BRACKET_L variable BRACKET_R
+   53                | IDENTIFIER . BRACKET_L arithmetic_expression BRACKET_R
+   54                | IDENTIFIER . BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   55                | IDENTIFIER . BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   56                | IDENTIFIER . BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | IDENTIFIER . BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+
+    BRACKET_L  shift, and go to state 65
+    DECREMENT  shift, and go to state 49
+    INCREMENT  shift, and go to state 50
+
+    $default  reduce using rule 47 (variable)
+
+    unary_operator  go to state 109
+
+
+State 83
+
+   48 variable: NUMBER .
+
+    $default  reduce using rule 48 (variable)
+
+
+State 84
+
+   34 arithmetic_expression: . arithmetic_expression additive_operator multiplicative_expression
+   35                      | . multiplicative_expression
+   36 multiplicative_expression: . multiplicative_expression multiplicative_operator primary_expression
+   37                          | . primary_expression
+   38 primary_expression: . variable
+   39                   | . PAREN_L arithmetic_expression PAREN_R
+   39                   | PAREN_L . arithmetic_expression PAREN_R
+   45 unary_operator: . INCREMENT
+   46               | . DECREMENT
+   47 variable: . IDENTIFIER
+   48         | . NUMBER
+   49         | . array_reference
+   50         | . IDENTIFIER unary_operator
+   51         | . unary_operator IDENTIFIER
+   52 array_reference: . IDENTIFIER BRACKET_L variable BRACKET_R
+   53                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R
+   54                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   55                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   56                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+
+    IDENTIFIER  shift, and go to state 82
+    NUMBER      shift, and go to state 83
+    PAREN_L     shift, and go to state 84
+    DECREMENT   shift, and go to state 49
+    INCREMENT   shift, and go to state 50
+
+    arithmetic_expression      go to state 110
+    multiplicative_expression  go to state 86
+    primary_expression         go to state 87
+    unary_operator             go to state 88
+    variable                   go to state 93
+    array_reference            go to state 90
+
+
+State 85
+
+   34 arithmetic_expression: arithmetic_expression . additive_operator multiplicative_expression
+   40 additive_operator: . ADDITION
+   41                  | . SUBTRACTION
+   53 array_reference: IDENTIFIER BRACKET_L arithmetic_expression . BRACKET_R
+   55                | IDENTIFIER BRACKET_L arithmetic_expression . BRACKET_R BRACKET_L variable BRACKET_R
+   57                | IDENTIFIER BRACKET_L arithmetic_expression . BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+
+    BRACKET_R    shift, and go to state 111
+    ADDITION     shift, and go to state 112
+    SUBTRACTION  shift, and go to state 113
+
+    additive_operator  go to state 114
+
+
+State 86
+
+   35 arithmetic_expression: multiplicative_expression .  [PAREN_R, BRACKET_R, ADDITION, SUBTRACTION, EQUAL, LESS, GRATER, GREQ, LSEQ, SEMIC, COMMA]
+   36 multiplicative_expression: multiplicative_expression . multiplicative_operator primary_expression
+   42 multiplicative_operator: . MULTIPLICATION
+   43                        | . DIVISION
+   44                        | . MODULUS
+
+    MULTIPLICATION  shift, and go to state 115
+    DIVISION        shift, and go to state 116
+    MODULUS         shift, and go to state 117
+
+    $default  reduce using rule 35 (arithmetic_expression)
+
+    multiplicative_operator  go to state 118
+
+
+State 87
+
+   37 multiplicative_expression: primary_expression .
+
+    $default  reduce using rule 37 (multiplicative_expression)
+
+
+State 88
+
+   51 variable: unary_operator . IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 119
+
+
+State 89
+
+   38 primary_expression: variable .  [BRACKET_R, ADDITION, SUBTRACTION, MULTIPLICATION, DIVISION, MODULUS]
+   52 array_reference: IDENTIFIER BRACKET_L variable . BRACKET_R
+   54                | IDENTIFIER BRACKET_L variable . BRACKET_R BRACKET_L variable BRACKET_R
+   56                | IDENTIFIER BRACKET_L variable . BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+
+    BRACKET_R  shift, and go to state 120
+
+    BRACKET_R  [reduce using rule 38 (primary_expression)]
+    $default   reduce using rule 38 (primary_expression)
+
+
+State 90
+
+   49 variable: array_reference .
+
+    $default  reduce using rule 49 (variable)
+
+
+State 91
+
+   33 assignment_statement: IDENTIFIER ASSIGNMENT SUBTRACTION . arithmetic_expression SEMIC
+   34 arithmetic_expression: . arithmetic_expression additive_operator multiplicative_expression
+   35                      | . multiplicative_expression
+   36 multiplicative_expression: . multiplicative_expression multiplicative_operator primary_expression
+   37                          | . primary_expression
+   38 primary_expression: . variable
+   39                   | . PAREN_L arithmetic_expression PAREN_R
+   45 unary_operator: . INCREMENT
+   46               | . DECREMENT
+   47 variable: . IDENTIFIER
+   48         | . NUMBER
+   49         | . array_reference
+   50         | . IDENTIFIER unary_operator
+   51         | . unary_operator IDENTIFIER
+   52 array_reference: . IDENTIFIER BRACKET_L variable BRACKET_R
+   53                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R
+   54                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   55                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   56                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+
+    IDENTIFIER  shift, and go to state 82
+    NUMBER      shift, and go to state 83
+    PAREN_L     shift, and go to state 84
+    DECREMENT   shift, and go to state 49
+    INCREMENT   shift, and go to state 50
+
+    arithmetic_expression      go to state 121
+    multiplicative_expression  go to state 86
+    primary_expression         go to state 87
+    unary_operator             go to state 88
+    variable                   go to state 93
+    array_reference            go to state 90
+
+
+State 92
+
+   30 assignment_statement: IDENTIFIER ASSIGNMENT arithmetic_expression . SEMIC
+   34 arithmetic_expression: arithmetic_expression . additive_operator multiplicative_expression
+   40 additive_operator: . ADDITION
+   41                  | . SUBTRACTION
+
+    ADDITION     shift, and go to state 112
+    SUBTRACTION  shift, and go to state 113
+    SEMIC        shift, and go to state 122
+
+    additive_operator  go to state 114
+
+
+State 93
+
+   38 primary_expression: variable .
+
+    $default  reduce using rule 38 (primary_expression)
+
+
+State 94
+
+   34 arithmetic_expression: . arithmetic_expression additive_operator multiplicative_expression
+   35                      | . multiplicative_expression
+   36 multiplicative_expression: . multiplicative_expression multiplicative_operator primary_expression
+   37                          | . primary_expression
+   38 primary_expression: . variable
+   39                   | . PAREN_L arithmetic_expression PAREN_R
+   45 unary_operator: . INCREMENT
+   46               | . DECREMENT
+   47 variable: . IDENTIFIER
+   48         | . NUMBER
+   49         | . array_reference
+   50         | . IDENTIFIER unary_operator
+   51         | . unary_operator IDENTIFIER
+   52 array_reference: . IDENTIFIER BRACKET_L variable BRACKET_R
+   53                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R
+   54                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   55                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   56                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   84 function_call: FUNCCALL IDENTIFIER PAREN_L . PAREN_R SEMIC
+   85              | FUNCCALL IDENTIFIER PAREN_L . parameter_list PAREN_R SEMIC
+   86 parameter_list: . arithmetic_expression COMMA parameter_list
+   87               | . arithmetic_expression
+
+    IDENTIFIER  shift, and go to state 82
+    NUMBER      shift, and go to state 83
+    PAREN_L     shift, and go to state 84
+    PAREN_R     shift, and go to state 123
+    DECREMENT   shift, and go to state 49
+    INCREMENT   shift, and go to state 50
+
+    arithmetic_expression      go to state 124
+    multiplicative_expression  go to state 86
+    primary_expression         go to state 87
+    unary_operator             go to state 88
+    variable                   go to state 93
+    array_reference            go to state 90
+    parameter_list             go to state 125
+
+
+State 95
+
+   34 arithmetic_expression: arithmetic_expression . additive_operator multiplicative_expression
+   40 additive_operator: . ADDITION
+   41                  | . SUBTRACTION
+   78 expression: arithmetic_expression . comparison_operator arithmetic_expression
+   79 comparison_operator: . EQUAL
+   80                    | . LESS
+   81                    | . GRATER
+   82                    | . LSEQ
+   83                    | . GREQ
+
+    ADDITION     shift, and go to state 112
+    SUBTRACTION  shift, and go to state 113
+    EQUAL        shift, and go to state 126
+    LESS         shift, and go to state 127
+    GRATER       shift, and go to state 128
+    GREQ         shift, and go to state 129
+    LSEQ         shift, and go to state 130
+
+    additive_operator    go to state 114
+    comparison_operator  go to state 131
+
+
+State 96
+
+   58 loop_statement: WHILE PAREN_L expression . PAREN_R BRACE_L statement_list BRACE_R
+   59               | WHILE PAREN_L expression . PAREN_R statement
+
+    PAREN_R  shift, and go to state 132
+
+
+State 97
+
+   73 if_statement: IF PAREN_L expression . PAREN_R BRACE_L statement_list BRACE_R
+   74             | IF PAREN_L expression . PAREN_R statement
+
+    PAREN_R  shift, and go to state 133
+
+
+State 98
+
+   30 assignment_statement: IDENTIFIER . ASSIGNMENT arithmetic_expression SEMIC
+   33                     | IDENTIFIER . ASSIGNMENT SUBTRACTION arithmetic_expression SEMIC
+   52 array_reference: IDENTIFIER . BRACKET_L variable BRACKET_R
+   53                | IDENTIFIER . BRACKET_L arithmetic_expression BRACKET_R
+   54                | IDENTIFIER . BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   55                | IDENTIFIER . BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   56                | IDENTIFIER . BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | IDENTIFIER . BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+
+    BRACKET_L   shift, and go to state 65
+    ASSIGNMENT  shift, and go to state 66
+
+
+State 99
+
+   63 for_initial: SEMIC .
+
+    $default  reduce using rule 63 (for_initial)
+
+
+State 100
+
+   62 for_initial: assignment_statement .
+
+    $default  reduce using rule 62 (for_initial)
+
+
+State 101
+
+   34 arithmetic_expression: . arithmetic_expression additive_operator multiplicative_expression
+   35                      | . multiplicative_expression
+   36 multiplicative_expression: . multiplicative_expression multiplicative_operator primary_expression
+   37                          | . primary_expression
+   38 primary_expression: . variable
+   39                   | . PAREN_L arithmetic_expression PAREN_R
+   45 unary_operator: . INCREMENT
+   46               | . DECREMENT
+   47 variable: . IDENTIFIER
+   48         | . NUMBER
+   49         | . array_reference
+   50         | . IDENTIFIER unary_operator
+   51         | . unary_operator IDENTIFIER
+   52 array_reference: . IDENTIFIER BRACKET_L variable BRACKET_R
+   53                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R
+   54                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   55                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   56                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   60 loop_statement: FOR PAREN_L for_initial . for_expression for_update PAREN_R BRACE_L statement_list BRACE_R
+   61               | FOR PAREN_L for_initial . for_expression for_update PAREN_R statement
+   64 for_expression: . expression SEMIC
+   65               | . SEMIC
+   78 expression: . arithmetic_expression comparison_operator arithmetic_expression
+
+    IDENTIFIER  shift, and go to state 82
+    NUMBER      shift, and go to state 83
+    PAREN_L     shift, and go to state 84
+    DECREMENT   shift, and go to state 49
+    INCREMENT   shift, and go to state 50
+    SEMIC       shift, and go to state 134
+
+    arithmetic_expression      go to state 95
+    multiplicative_expression  go to state 86
+    primary_expression         go to state 87
+    unary_operator             go to state 88
+    variable                   go to state 93
+    array_reference            go to state 90
+    for_expression             go to state 135
+    expression                 go to state 136
+
+
+State 102
+
+   32 assignment_statement: array_reference ASSIGNMENT SUBTRACTION . arithmetic_expression SEMIC
+   34 arithmetic_expression: . arithmetic_expression additive_operator multiplicative_expression
+   35                      | . multiplicative_expression
+   36 multiplicative_expression: . multiplicative_expression multiplicative_operator primary_expression
+   37                          | . primary_expression
+   38 primary_expression: . variable
+   39                   | . PAREN_L arithmetic_expression PAREN_R
+   45 unary_operator: . INCREMENT
+   46               | . DECREMENT
+   47 variable: . IDENTIFIER
+   48         | . NUMBER
+   49         | . array_reference
+   50         | . IDENTIFIER unary_operator
+   51         | . unary_operator IDENTIFIER
+   52 array_reference: . IDENTIFIER BRACKET_L variable BRACKET_R
+   53                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R
+   54                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   55                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   56                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+
+    IDENTIFIER  shift, and go to state 82
+    NUMBER      shift, and go to state 83
+    PAREN_L     shift, and go to state 84
+    DECREMENT   shift, and go to state 49
+    INCREMENT   shift, and go to state 50
+
+    arithmetic_expression      go to state 137
+    multiplicative_expression  go to state 86
+    primary_expression         go to state 87
+    unary_operator             go to state 88
+    variable                   go to state 93
+    array_reference            go to state 90
+
+
+State 103
+
+   31 assignment_statement: array_reference ASSIGNMENT arithmetic_expression . SEMIC
+   34 arithmetic_expression: arithmetic_expression . additive_operator multiplicative_expression
+   40 additive_operator: . ADDITION
+   41                  | . SUBTRACTION
+
+    ADDITION     shift, and go to state 112
+    SUBTRACTION  shift, and go to state 113
+    SEMIC        shift, and go to state 138
+
+    additive_operator  go to state 114
+
+
+State 104
+
+   20 statement_list: . statement statement_list
+   21               | . statement
+   22 statement: . assignment_statement
+   23          | . loop_statement
+   24          | . selection_statement
+   25          | . function_call
+   26          | . break_statement
+   27          | . IDENTIFIER unary_operator
+   28          | . unary_operator IDENTIFIER
+   29          | . SEMIC
+   30 assignment_statement: . IDENTIFIER ASSIGNMENT arithmetic_expression SEMIC
+   31                     | . array_reference ASSIGNMENT arithmetic_expression SEMIC
+   32                     | . array_reference ASSIGNMENT SUBTRACTION arithmetic_expression SEMIC
+   33                     | . IDENTIFIER ASSIGNMENT SUBTRACTION arithmetic_expression SEMIC
+   45 unary_operator: . INCREMENT
+   46               | . DECREMENT
+   52 array_reference: . IDENTIFIER BRACKET_L variable BRACKET_R
+   53                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R
+   54                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   55                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   56                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   58 loop_statement: . WHILE PAREN_L expression PAREN_R BRACE_L statement_list BRACE_R
+   59               | . WHILE PAREN_L expression PAREN_R statement
+   60               | . FOR PAREN_L for_initial for_expression for_update PAREN_R BRACE_L statement_list BRACE_R
+   61               | . FOR PAREN_L for_initial for_expression for_update PAREN_R statement
+   71 selection_statement: . if_statement
+   72                    | . if_statement else_statement
+   73 if_statement: . IF PAREN_L expression PAREN_R BRACE_L statement_list BRACE_R
+   74             | . IF PAREN_L expression PAREN_R statement
+   75 else_statement: ELSE BRACE_L . statement_list BRACE_R
+   77 break_statement: . BREAK SEMIC
+   84 function_call: . FUNCCALL IDENTIFIER PAREN_L PAREN_R SEMIC
+   85              | . FUNCCALL IDENTIFIER PAREN_L parameter_list PAREN_R SEMIC
+
+    IDENTIFIER  shift, and go to state 43
+    FUNCCALL    shift, and go to state 44
+    WHILE       shift, and go to state 45
+    IF          shift, and go to state 46
+    BREAK       shift, and go to state 47
+    FOR         shift, and go to state 48
+    DECREMENT   shift, and go to state 49
+    INCREMENT   shift, and go to state 50
+    SEMIC       shift, and go to state 51
+
+    statement_list        go to state 139
+    statement             go to state 53
+    assignment_statement  go to state 54
+    unary_operator        go to state 55
+    array_reference       go to state 56
+    loop_statement        go to state 57
+    selection_statement   go to state 58
+    if_statement          go to state 59
+    break_statement       go to state 60
+    function_call         go to state 61
+
+
+State 105
+
+   76 else_statement: ELSE statement .
+
+    $default  reduce using rule 76 (else_statement)
+
+
+State 106
+
+    5 function: pre_func PAREN_L argument_list PAREN_R BRACE_L variable_declarations statement_list BRACE_R .
+
+    $default  reduce using rule 5 (function)
+
+
+State 107
+
+   17 declaration: ARRAY IDENTIFIER BRACKET_L NUMBER BRACKET_R BRACKET_L NUMBER BRACKET_R SEMIC .
+
+    $default  reduce using rule 17 (declaration)
+
+
+State 108
+
+   12 argument: ARRAY IDENTIFIER BRACKET_L NUMBER BRACKET_R BRACKET_L BRACKET_R .
+
+    $default  reduce using rule 12 (argument)
+
+
+State 109
+
+   50 variable: IDENTIFIER unary_operator .
+
+    $default  reduce using rule 50 (variable)
+
+
+State 110
+
+   34 arithmetic_expression: arithmetic_expression . additive_operator multiplicative_expression
+   39 primary_expression: PAREN_L arithmetic_expression . PAREN_R
+   40 additive_operator: . ADDITION
+   41                  | . SUBTRACTION
+
+    PAREN_R      shift, and go to state 140
+    ADDITION     shift, and go to state 112
+    SUBTRACTION  shift, and go to state 113
+
+    additive_operator  go to state 114
+
+
+State 111
+
+   53 array_reference: IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R .  [PAREN_R, BRACKET_R, ADDITION, SUBTRACTION, MULTIPLICATION, DIVISION, MODULUS, EQUAL, LESS, GRATER, GREQ, LSEQ, ASSIGNMENT, SEMIC, COMMA]
+   55                | IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R . BRACKET_L variable BRACKET_R
+   57                | IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R . BRACKET_L arithmetic_expression BRACKET_R
+
+    BRACKET_L  shift, and go to state 141
+
+    $default  reduce using rule 53 (array_reference)
+
+
+State 112
+
+   40 additive_operator: ADDITION .
+
+    $default  reduce using rule 40 (additive_operator)
+
+
+State 113
+
+   41 additive_operator: SUBTRACTION .
+
+    $default  reduce using rule 41 (additive_operator)
+
+
+State 114
+
+   34 arithmetic_expression: arithmetic_expression additive_operator . multiplicative_expression
+   36 multiplicative_expression: . multiplicative_expression multiplicative_operator primary_expression
+   37                          | . primary_expression
+   38 primary_expression: . variable
+   39                   | . PAREN_L arithmetic_expression PAREN_R
+   45 unary_operator: . INCREMENT
+   46               | . DECREMENT
+   47 variable: . IDENTIFIER
+   48         | . NUMBER
+   49         | . array_reference
+   50         | . IDENTIFIER unary_operator
+   51         | . unary_operator IDENTIFIER
+   52 array_reference: . IDENTIFIER BRACKET_L variable BRACKET_R
+   53                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R
+   54                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   55                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   56                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+
+    IDENTIFIER  shift, and go to state 82
+    NUMBER      shift, and go to state 83
+    PAREN_L     shift, and go to state 84
+    DECREMENT   shift, and go to state 49
+    INCREMENT   shift, and go to state 50
+
+    multiplicative_expression  go to state 142
+    primary_expression         go to state 87
+    unary_operator             go to state 88
+    variable                   go to state 93
+    array_reference            go to state 90
+
+
+State 115
+
+   42 multiplicative_operator: MULTIPLICATION .
+
+    $default  reduce using rule 42 (multiplicative_operator)
+
+
+State 116
+
+   43 multiplicative_operator: DIVISION .
+
+    $default  reduce using rule 43 (multiplicative_operator)
+
+
+State 117
+
+   44 multiplicative_operator: MODULUS .
+
+    $default  reduce using rule 44 (multiplicative_operator)
+
+
+State 118
+
+   36 multiplicative_expression: multiplicative_expression multiplicative_operator . primary_expression
+   38 primary_expression: . variable
+   39                   | . PAREN_L arithmetic_expression PAREN_R
+   45 unary_operator: . INCREMENT
+   46               | . DECREMENT
+   47 variable: . IDENTIFIER
+   48         | . NUMBER
+   49         | . array_reference
+   50         | . IDENTIFIER unary_operator
+   51         | . unary_operator IDENTIFIER
+   52 array_reference: . IDENTIFIER BRACKET_L variable BRACKET_R
+   53                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R
+   54                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   55                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   56                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+
+    IDENTIFIER  shift, and go to state 82
+    NUMBER      shift, and go to state 83
+    PAREN_L     shift, and go to state 84
+    DECREMENT   shift, and go to state 49
+    INCREMENT   shift, and go to state 50
+
+    primary_expression  go to state 143
+    unary_operator      go to state 88
+    variable            go to state 93
+    array_reference     go to state 90
+
+
+State 119
+
+   51 variable: unary_operator IDENTIFIER .
+
+    $default  reduce using rule 51 (variable)
+
+
+State 120
+
+   52 array_reference: IDENTIFIER BRACKET_L variable BRACKET_R .  [PAREN_R, BRACKET_R, ADDITION, SUBTRACTION, MULTIPLICATION, DIVISION, MODULUS, EQUAL, LESS, GRATER, GREQ, LSEQ, ASSIGNMENT, SEMIC, COMMA]
+   54                | IDENTIFIER BRACKET_L variable BRACKET_R . BRACKET_L variable BRACKET_R
+   56                | IDENTIFIER BRACKET_L variable BRACKET_R . BRACKET_L arithmetic_expression BRACKET_R
+
+    BRACKET_L  shift, and go to state 144
+
+    $default  reduce using rule 52 (array_reference)
+
+
+State 121
+
+   33 assignment_statement: IDENTIFIER ASSIGNMENT SUBTRACTION arithmetic_expression . SEMIC
+   34 arithmetic_expression: arithmetic_expression . additive_operator multiplicative_expression
+   40 additive_operator: . ADDITION
+   41                  | . SUBTRACTION
+
+    ADDITION     shift, and go to state 112
+    SUBTRACTION  shift, and go to state 113
+    SEMIC        shift, and go to state 145
+
+    additive_operator  go to state 114
+
+
+State 122
+
+   30 assignment_statement: IDENTIFIER ASSIGNMENT arithmetic_expression SEMIC .
+
+    $default  reduce using rule 30 (assignment_statement)
+
+
+State 123
+
+   84 function_call: FUNCCALL IDENTIFIER PAREN_L PAREN_R . SEMIC
+
+    SEMIC  shift, and go to state 146
+
+
+State 124
+
+   34 arithmetic_expression: arithmetic_expression . additive_operator multiplicative_expression
+   40 additive_operator: . ADDITION
+   41                  | . SUBTRACTION
+   86 parameter_list: arithmetic_expression . COMMA parameter_list
+   87               | arithmetic_expression .  [PAREN_R]
+
+    ADDITION     shift, and go to state 112
+    SUBTRACTION  shift, and go to state 113
+    COMMA        shift, and go to state 147
+
+    $default  reduce using rule 87 (parameter_list)
+
+    additive_operator  go to state 114
+
+
+State 125
+
+   85 function_call: FUNCCALL IDENTIFIER PAREN_L parameter_list . PAREN_R SEMIC
+
+    PAREN_R  shift, and go to state 148
+
+
+State 126
+
+   79 comparison_operator: EQUAL .
+
+    $default  reduce using rule 79 (comparison_operator)
+
+
+State 127
+
+   80 comparison_operator: LESS .
+
+    $default  reduce using rule 80 (comparison_operator)
+
+
+State 128
+
+   81 comparison_operator: GRATER .
+
+    $default  reduce using rule 81 (comparison_operator)
+
+
+State 129
+
+   83 comparison_operator: GREQ .
+
+    $default  reduce using rule 83 (comparison_operator)
+
+
+State 130
+
+   82 comparison_operator: LSEQ .
+
+    $default  reduce using rule 82 (comparison_operator)
+
+
+State 131
+
+   34 arithmetic_expression: . arithmetic_expression additive_operator multiplicative_expression
+   35                      | . multiplicative_expression
+   36 multiplicative_expression: . multiplicative_expression multiplicative_operator primary_expression
+   37                          | . primary_expression
+   38 primary_expression: . variable
+   39                   | . PAREN_L arithmetic_expression PAREN_R
+   45 unary_operator: . INCREMENT
+   46               | . DECREMENT
+   47 variable: . IDENTIFIER
+   48         | . NUMBER
+   49         | . array_reference
+   50         | . IDENTIFIER unary_operator
+   51         | . unary_operator IDENTIFIER
+   52 array_reference: . IDENTIFIER BRACKET_L variable BRACKET_R
+   53                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R
+   54                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   55                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   56                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   78 expression: arithmetic_expression comparison_operator . arithmetic_expression
+
+    IDENTIFIER  shift, and go to state 82
+    NUMBER      shift, and go to state 83
+    PAREN_L     shift, and go to state 84
+    DECREMENT   shift, and go to state 49
+    INCREMENT   shift, and go to state 50
+
+    arithmetic_expression      go to state 149
+    multiplicative_expression  go to state 86
+    primary_expression         go to state 87
+    unary_operator             go to state 88
+    variable                   go to state 93
+    array_reference            go to state 90
+
+
+State 132
+
+   22 statement: . assignment_statement
+   23          | . loop_statement
+   24          | . selection_statement
+   25          | . function_call
+   26          | . break_statement
+   27          | . IDENTIFIER unary_operator
+   28          | . unary_operator IDENTIFIER
+   29          | . SEMIC
+   30 assignment_statement: . IDENTIFIER ASSIGNMENT arithmetic_expression SEMIC
+   31                     | . array_reference ASSIGNMENT arithmetic_expression SEMIC
+   32                     | . array_reference ASSIGNMENT SUBTRACTION arithmetic_expression SEMIC
+   33                     | . IDENTIFIER ASSIGNMENT SUBTRACTION arithmetic_expression SEMIC
+   45 unary_operator: . INCREMENT
+   46               | . DECREMENT
+   52 array_reference: . IDENTIFIER BRACKET_L variable BRACKET_R
+   53                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R
+   54                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   55                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   56                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   58 loop_statement: . WHILE PAREN_L expression PAREN_R BRACE_L statement_list BRACE_R
+   58               | WHILE PAREN_L expression PAREN_R . BRACE_L statement_list BRACE_R
+   59               | . WHILE PAREN_L expression PAREN_R statement
+   59               | WHILE PAREN_L expression PAREN_R . statement
+   60               | . FOR PAREN_L for_initial for_expression for_update PAREN_R BRACE_L statement_list BRACE_R
+   61               | . FOR PAREN_L for_initial for_expression for_update PAREN_R statement
+   71 selection_statement: . if_statement
+   72                    | . if_statement else_statement
+   73 if_statement: . IF PAREN_L expression PAREN_R BRACE_L statement_list BRACE_R
+   74             | . IF PAREN_L expression PAREN_R statement
+   77 break_statement: . BREAK SEMIC
+   84 function_call: . FUNCCALL IDENTIFIER PAREN_L PAREN_R SEMIC
+   85              | . FUNCCALL IDENTIFIER PAREN_L parameter_list PAREN_R SEMIC
+
+    IDENTIFIER  shift, and go to state 43
+    FUNCCALL    shift, and go to state 44
+    WHILE       shift, and go to state 45
+    IF          shift, and go to state 46
+    BREAK       shift, and go to state 47
+    FOR         shift, and go to state 48
+    BRACE_L     shift, and go to state 150
+    DECREMENT   shift, and go to state 49
+    INCREMENT   shift, and go to state 50
+    SEMIC       shift, and go to state 51
+
+    statement             go to state 151
+    assignment_statement  go to state 54
+    unary_operator        go to state 55
+    array_reference       go to state 56
+    loop_statement        go to state 57
+    selection_statement   go to state 58
+    if_statement          go to state 59
+    break_statement       go to state 60
+    function_call         go to state 61
+
+
+State 133
+
+   22 statement: . assignment_statement
+   23          | . loop_statement
+   24          | . selection_statement
+   25          | . function_call
+   26          | . break_statement
+   27          | . IDENTIFIER unary_operator
+   28          | . unary_operator IDENTIFIER
+   29          | . SEMIC
+   30 assignment_statement: . IDENTIFIER ASSIGNMENT arithmetic_expression SEMIC
+   31                     | . array_reference ASSIGNMENT arithmetic_expression SEMIC
+   32                     | . array_reference ASSIGNMENT SUBTRACTION arithmetic_expression SEMIC
+   33                     | . IDENTIFIER ASSIGNMENT SUBTRACTION arithmetic_expression SEMIC
+   45 unary_operator: . INCREMENT
+   46               | . DECREMENT
+   52 array_reference: . IDENTIFIER BRACKET_L variable BRACKET_R
+   53                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R
+   54                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   55                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   56                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   58 loop_statement: . WHILE PAREN_L expression PAREN_R BRACE_L statement_list BRACE_R
+   59               | . WHILE PAREN_L expression PAREN_R statement
+   60               | . FOR PAREN_L for_initial for_expression for_update PAREN_R BRACE_L statement_list BRACE_R
+   61               | . FOR PAREN_L for_initial for_expression for_update PAREN_R statement
+   71 selection_statement: . if_statement
+   72                    | . if_statement else_statement
+   73 if_statement: . IF PAREN_L expression PAREN_R BRACE_L statement_list BRACE_R
+   73             | IF PAREN_L expression PAREN_R . BRACE_L statement_list BRACE_R
+   74             | . IF PAREN_L expression PAREN_R statement
+   74             | IF PAREN_L expression PAREN_R . statement
+   77 break_statement: . BREAK SEMIC
+   84 function_call: . FUNCCALL IDENTIFIER PAREN_L PAREN_R SEMIC
+   85              | . FUNCCALL IDENTIFIER PAREN_L parameter_list PAREN_R SEMIC
+
+    IDENTIFIER  shift, and go to state 43
+    FUNCCALL    shift, and go to state 44
+    WHILE       shift, and go to state 45
+    IF          shift, and go to state 46
+    BREAK       shift, and go to state 47
+    FOR         shift, and go to state 48
+    BRACE_L     shift, and go to state 152
+    DECREMENT   shift, and go to state 49
+    INCREMENT   shift, and go to state 50
+    SEMIC       shift, and go to state 51
+
+    statement             go to state 153
+    assignment_statement  go to state 54
+    unary_operator        go to state 55
+    array_reference       go to state 56
+    loop_statement        go to state 57
+    selection_statement   go to state 58
+    if_statement          go to state 59
+    break_statement       go to state 60
+    function_call         go to state 61
+
+
+State 134
+
+   65 for_expression: SEMIC .
+
+    $default  reduce using rule 65 (for_expression)
+
+
+State 135
+
+   45 unary_operator: . INCREMENT
+   46               | . DECREMENT
+   52 array_reference: . IDENTIFIER BRACKET_L variable BRACKET_R
+   53                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R
+   54                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   55                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   56                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   60 loop_statement: FOR PAREN_L for_initial for_expression . for_update PAREN_R BRACE_L statement_list BRACE_R
+   61               | FOR PAREN_L for_initial for_expression . for_update PAREN_R statement
+   66 for_update: . IDENTIFIER ASSIGNMENT arithmetic_expression
+   67           | . array_reference ASSIGNMENT arithmetic_expression
+   68           | . IDENTIFIER unary_operator
+   69           | . unary_operator IDENTIFIER
+   70           | . %empty  [PAREN_R]
+
+    IDENTIFIER  shift, and go to state 154
+    DECREMENT   shift, and go to state 49
+    INCREMENT   shift, and go to state 50
+
+    $default  reduce using rule 70 (for_update)
+
+    unary_operator   go to state 155
+    array_reference  go to state 156
+    for_update       go to state 157
+
+
+State 136
+
+   64 for_expression: expression . SEMIC
+
+    SEMIC  shift, and go to state 158
+
+
+State 137
+
+   32 assignment_statement: array_reference ASSIGNMENT SUBTRACTION arithmetic_expression . SEMIC
+   34 arithmetic_expression: arithmetic_expression . additive_operator multiplicative_expression
+   40 additive_operator: . ADDITION
+   41                  | . SUBTRACTION
+
+    ADDITION     shift, and go to state 112
+    SUBTRACTION  shift, and go to state 113
+    SEMIC        shift, and go to state 159
+
+    additive_operator  go to state 114
+
+
+State 138
+
+   31 assignment_statement: array_reference ASSIGNMENT arithmetic_expression SEMIC .
+
+    $default  reduce using rule 31 (assignment_statement)
+
+
+State 139
+
+   75 else_statement: ELSE BRACE_L statement_list . BRACE_R
+
+    BRACE_R  shift, and go to state 160
+
+
+State 140
+
+   39 primary_expression: PAREN_L arithmetic_expression PAREN_R .
+
+    $default  reduce using rule 39 (primary_expression)
+
+
+State 141
+
+   34 arithmetic_expression: . arithmetic_expression additive_operator multiplicative_expression
+   35                      | . multiplicative_expression
+   36 multiplicative_expression: . multiplicative_expression multiplicative_operator primary_expression
+   37                          | . primary_expression
+   38 primary_expression: . variable
+   39                   | . PAREN_L arithmetic_expression PAREN_R
+   45 unary_operator: . INCREMENT
+   46               | . DECREMENT
+   47 variable: . IDENTIFIER
+   48         | . NUMBER
+   49         | . array_reference
+   50         | . IDENTIFIER unary_operator
+   51         | . unary_operator IDENTIFIER
+   52 array_reference: . IDENTIFIER BRACKET_L variable BRACKET_R
+   53                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R
+   54                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   55                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   55                | IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L . variable BRACKET_R
+   56                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L . arithmetic_expression BRACKET_R
+
+    IDENTIFIER  shift, and go to state 82
+    NUMBER      shift, and go to state 83
+    PAREN_L     shift, and go to state 84
+    DECREMENT   shift, and go to state 49
+    INCREMENT   shift, and go to state 50
+
+    arithmetic_expression      go to state 161
+    multiplicative_expression  go to state 86
+    primary_expression         go to state 87
+    unary_operator             go to state 88
+    variable                   go to state 162
+    array_reference            go to state 90
+
+
+State 142
+
+   34 arithmetic_expression: arithmetic_expression additive_operator multiplicative_expression .  [PAREN_R, BRACKET_R, ADDITION, SUBTRACTION, EQUAL, LESS, GRATER, GREQ, LSEQ, SEMIC, COMMA]
+   36 multiplicative_expression: multiplicative_expression . multiplicative_operator primary_expression
+   42 multiplicative_operator: . MULTIPLICATION
+   43                        | . DIVISION
+   44                        | . MODULUS
+
+    MULTIPLICATION  shift, and go to state 115
+    DIVISION        shift, and go to state 116
+    MODULUS         shift, and go to state 117
+
+    $default  reduce using rule 34 (arithmetic_expression)
+
+    multiplicative_operator  go to state 118
+
+
+State 143
+
+   36 multiplicative_expression: multiplicative_expression multiplicative_operator primary_expression .
+
+    $default  reduce using rule 36 (multiplicative_expression)
+
+
+State 144
+
+   34 arithmetic_expression: . arithmetic_expression additive_operator multiplicative_expression
+   35                      | . multiplicative_expression
+   36 multiplicative_expression: . multiplicative_expression multiplicative_operator primary_expression
+   37                          | . primary_expression
+   38 primary_expression: . variable
+   39                   | . PAREN_L arithmetic_expression PAREN_R
+   45 unary_operator: . INCREMENT
+   46               | . DECREMENT
+   47 variable: . IDENTIFIER
+   48         | . NUMBER
+   49         | . array_reference
+   50         | . IDENTIFIER unary_operator
+   51         | . unary_operator IDENTIFIER
+   52 array_reference: . IDENTIFIER BRACKET_L variable BRACKET_R
+   53                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R
+   54                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   54                | IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L . variable BRACKET_R
+   55                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   56                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   56                | IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L . arithmetic_expression BRACKET_R
+   57                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+
+    IDENTIFIER  shift, and go to state 82
+    NUMBER      shift, and go to state 83
+    PAREN_L     shift, and go to state 84
+    DECREMENT   shift, and go to state 49
+    INCREMENT   shift, and go to state 50
+
+    arithmetic_expression      go to state 163
+    multiplicative_expression  go to state 86
+    primary_expression         go to state 87
+    unary_operator             go to state 88
+    variable                   go to state 164
+    array_reference            go to state 90
+
+
+State 145
+
+   33 assignment_statement: IDENTIFIER ASSIGNMENT SUBTRACTION arithmetic_expression SEMIC .
+
+    $default  reduce using rule 33 (assignment_statement)
+
+
+State 146
+
+   84 function_call: FUNCCALL IDENTIFIER PAREN_L PAREN_R SEMIC .
+
+    $default  reduce using rule 84 (function_call)
+
+
+State 147
+
+   34 arithmetic_expression: . arithmetic_expression additive_operator multiplicative_expression
+   35                      | . multiplicative_expression
+   36 multiplicative_expression: . multiplicative_expression multiplicative_operator primary_expression
+   37                          | . primary_expression
+   38 primary_expression: . variable
+   39                   | . PAREN_L arithmetic_expression PAREN_R
+   45 unary_operator: . INCREMENT
+   46               | . DECREMENT
+   47 variable: . IDENTIFIER
+   48         | . NUMBER
+   49         | . array_reference
+   50         | . IDENTIFIER unary_operator
+   51         | . unary_operator IDENTIFIER
+   52 array_reference: . IDENTIFIER BRACKET_L variable BRACKET_R
+   53                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R
+   54                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   55                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   56                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   86 parameter_list: . arithmetic_expression COMMA parameter_list
+   86               | arithmetic_expression COMMA . parameter_list
+   87               | . arithmetic_expression
+
+    IDENTIFIER  shift, and go to state 82
+    NUMBER      shift, and go to state 83
+    PAREN_L     shift, and go to state 84
+    DECREMENT   shift, and go to state 49
+    INCREMENT   shift, and go to state 50
+
+    arithmetic_expression      go to state 124
+    multiplicative_expression  go to state 86
+    primary_expression         go to state 87
+    unary_operator             go to state 88
+    variable                   go to state 93
+    array_reference            go to state 90
+    parameter_list             go to state 165
+
+
+State 148
+
+   85 function_call: FUNCCALL IDENTIFIER PAREN_L parameter_list PAREN_R . SEMIC
+
+    SEMIC  shift, and go to state 166
+
+
+State 149
+
+   34 arithmetic_expression: arithmetic_expression . additive_operator multiplicative_expression
+   40 additive_operator: . ADDITION
+   41                  | . SUBTRACTION
+   78 expression: arithmetic_expression comparison_operator arithmetic_expression .  [PAREN_R, SEMIC]
+
+    ADDITION     shift, and go to state 112
+    SUBTRACTION  shift, and go to state 113
+
+    $default  reduce using rule 78 (expression)
+
+    additive_operator  go to state 114
+
+
+State 150
+
+   20 statement_list: . statement statement_list
+   21               | . statement
+   22 statement: . assignment_statement
+   23          | . loop_statement
+   24          | . selection_statement
+   25          | . function_call
+   26          | . break_statement
+   27          | . IDENTIFIER unary_operator
+   28          | . unary_operator IDENTIFIER
+   29          | . SEMIC
+   30 assignment_statement: . IDENTIFIER ASSIGNMENT arithmetic_expression SEMIC
+   31                     | . array_reference ASSIGNMENT arithmetic_expression SEMIC
+   32                     | . array_reference ASSIGNMENT SUBTRACTION arithmetic_expression SEMIC
+   33                     | . IDENTIFIER ASSIGNMENT SUBTRACTION arithmetic_expression SEMIC
+   45 unary_operator: . INCREMENT
+   46               | . DECREMENT
+   52 array_reference: . IDENTIFIER BRACKET_L variable BRACKET_R
+   53                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R
+   54                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   55                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   56                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   58 loop_statement: . WHILE PAREN_L expression PAREN_R BRACE_L statement_list BRACE_R
+   58               | WHILE PAREN_L expression PAREN_R BRACE_L . statement_list BRACE_R
+   59               | . WHILE PAREN_L expression PAREN_R statement
+   60               | . FOR PAREN_L for_initial for_expression for_update PAREN_R BRACE_L statement_list BRACE_R
+   61               | . FOR PAREN_L for_initial for_expression for_update PAREN_R statement
+   71 selection_statement: . if_statement
+   72                    | . if_statement else_statement
+   73 if_statement: . IF PAREN_L expression PAREN_R BRACE_L statement_list BRACE_R
+   74             | . IF PAREN_L expression PAREN_R statement
+   77 break_statement: . BREAK SEMIC
+   84 function_call: . FUNCCALL IDENTIFIER PAREN_L PAREN_R SEMIC
+   85              | . FUNCCALL IDENTIFIER PAREN_L parameter_list PAREN_R SEMIC
+
+    IDENTIFIER  shift, and go to state 43
+    FUNCCALL    shift, and go to state 44
+    WHILE       shift, and go to state 45
+    IF          shift, and go to state 46
+    BREAK       shift, and go to state 47
+    FOR         shift, and go to state 48
+    DECREMENT   shift, and go to state 49
+    INCREMENT   shift, and go to state 50
+    SEMIC       shift, and go to state 51
+
+    statement_list        go to state 167
+    statement             go to state 53
+    assignment_statement  go to state 54
+    unary_operator        go to state 55
+    array_reference       go to state 56
+    loop_statement        go to state 57
+    selection_statement   go to state 58
+    if_statement          go to state 59
+    break_statement       go to state 60
+    function_call         go to state 61
+
+
+State 151
+
+   59 loop_statement: WHILE PAREN_L expression PAREN_R statement .
+
+    $default  reduce using rule 59 (loop_statement)
+
+
+State 152
+
+   20 statement_list: . statement statement_list
+   21               | . statement
+   22 statement: . assignment_statement
+   23          | . loop_statement
+   24          | . selection_statement
+   25          | . function_call
+   26          | . break_statement
+   27          | . IDENTIFIER unary_operator
+   28          | . unary_operator IDENTIFIER
+   29          | . SEMIC
+   30 assignment_statement: . IDENTIFIER ASSIGNMENT arithmetic_expression SEMIC
+   31                     | . array_reference ASSIGNMENT arithmetic_expression SEMIC
+   32                     | . array_reference ASSIGNMENT SUBTRACTION arithmetic_expression SEMIC
+   33                     | . IDENTIFIER ASSIGNMENT SUBTRACTION arithmetic_expression SEMIC
+   45 unary_operator: . INCREMENT
+   46               | . DECREMENT
+   52 array_reference: . IDENTIFIER BRACKET_L variable BRACKET_R
+   53                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R
+   54                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   55                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   56                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   58 loop_statement: . WHILE PAREN_L expression PAREN_R BRACE_L statement_list BRACE_R
+   59               | . WHILE PAREN_L expression PAREN_R statement
+   60               | . FOR PAREN_L for_initial for_expression for_update PAREN_R BRACE_L statement_list BRACE_R
+   61               | . FOR PAREN_L for_initial for_expression for_update PAREN_R statement
+   71 selection_statement: . if_statement
+   72                    | . if_statement else_statement
+   73 if_statement: . IF PAREN_L expression PAREN_R BRACE_L statement_list BRACE_R
+   73             | IF PAREN_L expression PAREN_R BRACE_L . statement_list BRACE_R
+   74             | . IF PAREN_L expression PAREN_R statement
+   77 break_statement: . BREAK SEMIC
+   84 function_call: . FUNCCALL IDENTIFIER PAREN_L PAREN_R SEMIC
+   85              | . FUNCCALL IDENTIFIER PAREN_L parameter_list PAREN_R SEMIC
+
+    IDENTIFIER  shift, and go to state 43
+    FUNCCALL    shift, and go to state 44
+    WHILE       shift, and go to state 45
+    IF          shift, and go to state 46
+    BREAK       shift, and go to state 47
+    FOR         shift, and go to state 48
+    DECREMENT   shift, and go to state 49
+    INCREMENT   shift, and go to state 50
+    SEMIC       shift, and go to state 51
+
+    statement_list        go to state 168
+    statement             go to state 53
+    assignment_statement  go to state 54
+    unary_operator        go to state 55
+    array_reference       go to state 56
+    loop_statement        go to state 57
+    selection_statement   go to state 58
+    if_statement          go to state 59
+    break_statement       go to state 60
+    function_call         go to state 61
+
+
+State 153
+
+   74 if_statement: IF PAREN_L expression PAREN_R statement .
+
+    $default  reduce using rule 74 (if_statement)
+
+
+State 154
+
+   45 unary_operator: . INCREMENT
+   46               | . DECREMENT
+   52 array_reference: IDENTIFIER . BRACKET_L variable BRACKET_R
+   53                | IDENTIFIER . BRACKET_L arithmetic_expression BRACKET_R
+   54                | IDENTIFIER . BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   55                | IDENTIFIER . BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   56                | IDENTIFIER . BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | IDENTIFIER . BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   66 for_update: IDENTIFIER . ASSIGNMENT arithmetic_expression
+   68           | IDENTIFIER . unary_operator
+
+    BRACKET_L   shift, and go to state 65
+    DECREMENT   shift, and go to state 49
+    INCREMENT   shift, and go to state 50
+    ASSIGNMENT  shift, and go to state 169
+
+    unary_operator  go to state 170
+
+
+State 155
+
+   69 for_update: unary_operator . IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 171
+
+
+State 156
+
+   67 for_update: array_reference . ASSIGNMENT arithmetic_expression
+
+    ASSIGNMENT  shift, and go to state 172
+
+
+State 157
+
+   60 loop_statement: FOR PAREN_L for_initial for_expression for_update . PAREN_R BRACE_L statement_list BRACE_R
+   61               | FOR PAREN_L for_initial for_expression for_update . PAREN_R statement
+
+    PAREN_R  shift, and go to state 173
+
+
+State 158
+
+   64 for_expression: expression SEMIC .
+
+    $default  reduce using rule 64 (for_expression)
+
+
+State 159
+
+   32 assignment_statement: array_reference ASSIGNMENT SUBTRACTION arithmetic_expression SEMIC .
+
+    $default  reduce using rule 32 (assignment_statement)
+
+
+State 160
+
+   75 else_statement: ELSE BRACE_L statement_list BRACE_R .
+
+    $default  reduce using rule 75 (else_statement)
+
+
+State 161
+
+   34 arithmetic_expression: arithmetic_expression . additive_operator multiplicative_expression
+   40 additive_operator: . ADDITION
+   41                  | . SUBTRACTION
+   57 array_reference: IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression . BRACKET_R
+
+    BRACKET_R    shift, and go to state 174
+    ADDITION     shift, and go to state 112
+    SUBTRACTION  shift, and go to state 113
+
+    additive_operator  go to state 114
+
+
+State 162
+
+   38 primary_expression: variable .  [BRACKET_R, ADDITION, SUBTRACTION, MULTIPLICATION, DIVISION, MODULUS]
+   55 array_reference: IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable . BRACKET_R
+
+    BRACKET_R  shift, and go to state 175
+
+    BRACKET_R  [reduce using rule 38 (primary_expression)]
+    $default   reduce using rule 38 (primary_expression)
+
+
+State 163
+
+   34 arithmetic_expression: arithmetic_expression . additive_operator multiplicative_expression
+   40 additive_operator: . ADDITION
+   41                  | . SUBTRACTION
+   56 array_reference: IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression . BRACKET_R
+
+    BRACKET_R    shift, and go to state 176
+    ADDITION     shift, and go to state 112
+    SUBTRACTION  shift, and go to state 113
+
+    additive_operator  go to state 114
+
+
+State 164
+
+   38 primary_expression: variable .  [BRACKET_R, ADDITION, SUBTRACTION, MULTIPLICATION, DIVISION, MODULUS]
+   54 array_reference: IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L variable . BRACKET_R
+
+    BRACKET_R  shift, and go to state 177
+
+    BRACKET_R  [reduce using rule 38 (primary_expression)]
+    $default   reduce using rule 38 (primary_expression)
+
+
+State 165
+
+   86 parameter_list: arithmetic_expression COMMA parameter_list .
+
+    $default  reduce using rule 86 (parameter_list)
+
+
+State 166
+
+   85 function_call: FUNCCALL IDENTIFIER PAREN_L parameter_list PAREN_R SEMIC .
+
+    $default  reduce using rule 85 (function_call)
+
+
+State 167
+
+   58 loop_statement: WHILE PAREN_L expression PAREN_R BRACE_L statement_list . BRACE_R
+
+    BRACE_R  shift, and go to state 178
+
+
+State 168
+
+   73 if_statement: IF PAREN_L expression PAREN_R BRACE_L statement_list . BRACE_R
+
+    BRACE_R  shift, and go to state 179
+
+
+State 169
+
+   34 arithmetic_expression: . arithmetic_expression additive_operator multiplicative_expression
+   35                      | . multiplicative_expression
+   36 multiplicative_expression: . multiplicative_expression multiplicative_operator primary_expression
+   37                          | . primary_expression
+   38 primary_expression: . variable
+   39                   | . PAREN_L arithmetic_expression PAREN_R
+   45 unary_operator: . INCREMENT
+   46               | . DECREMENT
+   47 variable: . IDENTIFIER
+   48         | . NUMBER
+   49         | . array_reference
+   50         | . IDENTIFIER unary_operator
+   51         | . unary_operator IDENTIFIER
+   52 array_reference: . IDENTIFIER BRACKET_L variable BRACKET_R
+   53                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R
+   54                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   55                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   56                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   66 for_update: IDENTIFIER ASSIGNMENT . arithmetic_expression
+
+    IDENTIFIER  shift, and go to state 82
+    NUMBER      shift, and go to state 83
+    PAREN_L     shift, and go to state 84
+    DECREMENT   shift, and go to state 49
+    INCREMENT   shift, and go to state 50
+
+    arithmetic_expression      go to state 180
+    multiplicative_expression  go to state 86
+    primary_expression         go to state 87
+    unary_operator             go to state 88
+    variable                   go to state 93
+    array_reference            go to state 90
+
+
+State 170
+
+   68 for_update: IDENTIFIER unary_operator .
+
+    $default  reduce using rule 68 (for_update)
+
+
+State 171
+
+   69 for_update: unary_operator IDENTIFIER .
+
+    $default  reduce using rule 69 (for_update)
+
+
+State 172
+
+   34 arithmetic_expression: . arithmetic_expression additive_operator multiplicative_expression
+   35                      | . multiplicative_expression
+   36 multiplicative_expression: . multiplicative_expression multiplicative_operator primary_expression
+   37                          | . primary_expression
+   38 primary_expression: . variable
+   39                   | . PAREN_L arithmetic_expression PAREN_R
+   45 unary_operator: . INCREMENT
+   46               | . DECREMENT
+   47 variable: . IDENTIFIER
+   48         | . NUMBER
+   49         | . array_reference
+   50         | . IDENTIFIER unary_operator
+   51         | . unary_operator IDENTIFIER
+   52 array_reference: . IDENTIFIER BRACKET_L variable BRACKET_R
+   53                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R
+   54                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   55                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   56                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   67 for_update: array_reference ASSIGNMENT . arithmetic_expression
+
+    IDENTIFIER  shift, and go to state 82
+    NUMBER      shift, and go to state 83
+    PAREN_L     shift, and go to state 84
+    DECREMENT   shift, and go to state 49
+    INCREMENT   shift, and go to state 50
+
+    arithmetic_expression      go to state 181
+    multiplicative_expression  go to state 86
+    primary_expression         go to state 87
+    unary_operator             go to state 88
+    variable                   go to state 93
+    array_reference            go to state 90
+
+
+State 173
+
+   22 statement: . assignment_statement
+   23          | . loop_statement
+   24          | . selection_statement
+   25          | . function_call
+   26          | . break_statement
+   27          | . IDENTIFIER unary_operator
+   28          | . unary_operator IDENTIFIER
+   29          | . SEMIC
+   30 assignment_statement: . IDENTIFIER ASSIGNMENT arithmetic_expression SEMIC
+   31                     | . array_reference ASSIGNMENT arithmetic_expression SEMIC
+   32                     | . array_reference ASSIGNMENT SUBTRACTION arithmetic_expression SEMIC
+   33                     | . IDENTIFIER ASSIGNMENT SUBTRACTION arithmetic_expression SEMIC
+   45 unary_operator: . INCREMENT
+   46               | . DECREMENT
+   52 array_reference: . IDENTIFIER BRACKET_L variable BRACKET_R
+   53                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R
+   54                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   55                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   56                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   58 loop_statement: . WHILE PAREN_L expression PAREN_R BRACE_L statement_list BRACE_R
+   59               | . WHILE PAREN_L expression PAREN_R statement
+   60               | . FOR PAREN_L for_initial for_expression for_update PAREN_R BRACE_L statement_list BRACE_R
+   60               | FOR PAREN_L for_initial for_expression for_update PAREN_R . BRACE_L statement_list BRACE_R
+   61               | . FOR PAREN_L for_initial for_expression for_update PAREN_R statement
+   61               | FOR PAREN_L for_initial for_expression for_update PAREN_R . statement
+   71 selection_statement: . if_statement
+   72                    | . if_statement else_statement
+   73 if_statement: . IF PAREN_L expression PAREN_R BRACE_L statement_list BRACE_R
+   74             | . IF PAREN_L expression PAREN_R statement
+   77 break_statement: . BREAK SEMIC
+   84 function_call: . FUNCCALL IDENTIFIER PAREN_L PAREN_R SEMIC
+   85              | . FUNCCALL IDENTIFIER PAREN_L parameter_list PAREN_R SEMIC
+
+    IDENTIFIER  shift, and go to state 43
+    FUNCCALL    shift, and go to state 44
+    WHILE       shift, and go to state 45
+    IF          shift, and go to state 46
+    BREAK       shift, and go to state 47
+    FOR         shift, and go to state 48
+    BRACE_L     shift, and go to state 182
+    DECREMENT   shift, and go to state 49
+    INCREMENT   shift, and go to state 50
+    SEMIC       shift, and go to state 51
+
+    statement             go to state 183
+    assignment_statement  go to state 54
+    unary_operator        go to state 55
+    array_reference       go to state 56
+    loop_statement        go to state 57
+    selection_statement   go to state 58
+    if_statement          go to state 59
+    break_statement       go to state 60
+    function_call         go to state 61
+
+
+State 174
+
+   57 array_reference: IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R .
+
+    $default  reduce using rule 57 (array_reference)
+
+
+State 175
+
+   55 array_reference: IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R .
+
+    $default  reduce using rule 55 (array_reference)
+
+
+State 176
+
+   56 array_reference: IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R .
+
+    $default  reduce using rule 56 (array_reference)
+
+
+State 177
+
+   54 array_reference: IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R .
+
+    $default  reduce using rule 54 (array_reference)
+
+
+State 178
+
+   58 loop_statement: WHILE PAREN_L expression PAREN_R BRACE_L statement_list BRACE_R .
+
+    $default  reduce using rule 58 (loop_statement)
+
+
+State 179
+
+   73 if_statement: IF PAREN_L expression PAREN_R BRACE_L statement_list BRACE_R .
+
+    $default  reduce using rule 73 (if_statement)
+
+
+State 180
+
+   34 arithmetic_expression: arithmetic_expression . additive_operator multiplicative_expression
+   40 additive_operator: . ADDITION
+   41                  | . SUBTRACTION
+   66 for_update: IDENTIFIER ASSIGNMENT arithmetic_expression .  [PAREN_R]
+
+    ADDITION     shift, and go to state 112
+    SUBTRACTION  shift, and go to state 113
+
+    $default  reduce using rule 66 (for_update)
+
+    additive_operator  go to state 114
+
+
+State 181
+
+   34 arithmetic_expression: arithmetic_expression . additive_operator multiplicative_expression
+   40 additive_operator: . ADDITION
+   41                  | . SUBTRACTION
+   67 for_update: array_reference ASSIGNMENT arithmetic_expression .  [PAREN_R]
+
+    ADDITION     shift, and go to state 112
+    SUBTRACTION  shift, and go to state 113
+
+    $default  reduce using rule 67 (for_update)
+
+    additive_operator  go to state 114
+
+
+State 182
+
+   20 statement_list: . statement statement_list
+   21               | . statement
+   22 statement: . assignment_statement
+   23          | . loop_statement
+   24          | . selection_statement
+   25          | . function_call
+   26          | . break_statement
+   27          | . IDENTIFIER unary_operator
+   28          | . unary_operator IDENTIFIER
+   29          | . SEMIC
+   30 assignment_statement: . IDENTIFIER ASSIGNMENT arithmetic_expression SEMIC
+   31                     | . array_reference ASSIGNMENT arithmetic_expression SEMIC
+   32                     | . array_reference ASSIGNMENT SUBTRACTION arithmetic_expression SEMIC
+   33                     | . IDENTIFIER ASSIGNMENT SUBTRACTION arithmetic_expression SEMIC
+   45 unary_operator: . INCREMENT
+   46               | . DECREMENT
+   52 array_reference: . IDENTIFIER BRACKET_L variable BRACKET_R
+   53                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R
+   54                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L variable BRACKET_R
+   55                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L variable BRACKET_R
+   56                | . IDENTIFIER BRACKET_L variable BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   57                | . IDENTIFIER BRACKET_L arithmetic_expression BRACKET_R BRACKET_L arithmetic_expression BRACKET_R
+   58 loop_statement: . WHILE PAREN_L expression PAREN_R BRACE_L statement_list BRACE_R
+   59               | . WHILE PAREN_L expression PAREN_R statement
+   60               | . FOR PAREN_L for_initial for_expression for_update PAREN_R BRACE_L statement_list BRACE_R
+   60               | FOR PAREN_L for_initial for_expression for_update PAREN_R BRACE_L . statement_list BRACE_R
+   61               | . FOR PAREN_L for_initial for_expression for_update PAREN_R statement
+   71 selection_statement: . if_statement
+   72                    | . if_statement else_statement
+   73 if_statement: . IF PAREN_L expression PAREN_R BRACE_L statement_list BRACE_R
+   74             | . IF PAREN_L expression PAREN_R statement
+   77 break_statement: . BREAK SEMIC
+   84 function_call: . FUNCCALL IDENTIFIER PAREN_L PAREN_R SEMIC
+   85              | . FUNCCALL IDENTIFIER PAREN_L parameter_list PAREN_R SEMIC
+
+    IDENTIFIER  shift, and go to state 43
+    FUNCCALL    shift, and go to state 44
+    WHILE       shift, and go to state 45
+    IF          shift, and go to state 46
+    BREAK       shift, and go to state 47
+    FOR         shift, and go to state 48
+    DECREMENT   shift, and go to state 49
+    INCREMENT   shift, and go to state 50
+    SEMIC       shift, and go to state 51
+
+    statement_list        go to state 184
+    statement             go to state 53
+    assignment_statement  go to state 54
+    unary_operator        go to state 55
+    array_reference       go to state 56
+    loop_statement        go to state 57
+    selection_statement   go to state 58
+    if_statement          go to state 59
+    break_statement       go to state 60
+    function_call         go to state 61
+
+
+State 183
+
+   61 loop_statement: FOR PAREN_L for_initial for_expression for_update PAREN_R statement .
+
+    $default  reduce using rule 61 (loop_statement)
+
+
+State 184
+
+   60 loop_statement: FOR PAREN_L for_initial for_expression for_update PAREN_R BRACE_L statement_list . BRACE_R
+
+    BRACE_R  shift, and go to state 185
+
+
+State 185
+
+   60 loop_statement: FOR PAREN_L for_initial for_expression for_update PAREN_R BRACE_L statement_list BRACE_R .
+
+    $default  reduce using rule 60 (loop_statement)
