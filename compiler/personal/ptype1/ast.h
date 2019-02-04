@@ -1,5 +1,6 @@
 #ifndef _AST_H_
 #define _AST_H_
+
 typedef enum{
   SYM_VAR,
   SYM_ARG_VAR,
@@ -42,7 +43,7 @@ typedef enum{
 
 typedef struct node{
   Ntype type;
-  int value; 
+  int value;
   int value2;
   char *name;
   int n_child;
@@ -57,6 +58,7 @@ typedef struct symbols{
   unsigned int size2;
   unsigned int arg_num; //SYM_FUNCに使用
   unsigned int address; 
+  int value; //保持している値
   int array_flag;       //set_ident_address内で使用,配列か否かを判断
   struct symbols *next;
   struct symbols *branch;
@@ -91,31 +93,23 @@ void generate_initial_code();
 void generate_function_list_code(Node *node, Symbols *gstable);
 void generate_function_code(Node *func, Symbols *gstable, Symbols *lstable);
 unsigned int calc_local_variables_size(Node *func);
+unsigned int calc_local_variables_size_by_table(Symbols *lstable);
 void generate_global_variables_definitions(Symbols *gstable);
 void generate_statement_code(Node *stat, Symbols *gstable, Symbols *lstable);
-//assign_functions
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
-void generate_assign_code(Node *assign, Symbols *gstable, Symbols *lstable);
+int is_primitive_node(Node *node);
+int calc_local_variable_offset(Symbols *lstable, Symbols *sym);
+int calc_argment_offset(Symbols *lstable, Symbols *sym);
+char *get_variable_address(Node *var, Symbols *gstable, Symbols *lstable);
 int generate_arithmetic_code(Node *exp, Symbols *gstable, Symbols *lstable);
+//int generate_arithmetic_code(Node *exp, Symbols *gstable, Symbols *lstable, int stack_size);
+void generate_expression_code(Node *exp, Symbols *gstable, Symbols *lstable, char *label_name);
+void generate_while_code(Node *while_node, Symbols *gstable, Symbols *lstable);
+
 void set_ident_address(Symbols *lstable, int func_arg_size, int stack_size);
+void generate_assign_code(Node *assign, Symbols *gstable, Symbols *lstable);
 int get_ident_address(Node *node, Symbols *gstable, Symbols *lstable);
 void get_array_address(Node *array_ref, Symbols *gstable, Symbols *lstable);
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
-
-//while_functions
-//########################################################################//
-void generate_while_code(Node *while_node, Symbols *gstable, Symbols *lstable);
-void generate_expression_code(Node *exp, Symbols *gstable, Symbols *lstable, char *label_name, int bool);
-//########################################################################//
-
-//if_functions
-//########################################################################//
-void generate_if_code(Node *if_node, Symbols *gstable, Symbols *lstable, int skip);
-//########################################################################//
-
-//for_functions
-//########################################################################//
-void generate_for_code(Node *for_node, Symbols *gstable, Symbols *lstable);
-//########################################################################//
+void set_ident_value(Node *node, int value, Symbols *gstable, Symbols *lstable);
+int get_ident_value(Node *node, Symbols *symbol, Symbols *gstable, Symbols *lstable);
 #endif // _AST_H_
 

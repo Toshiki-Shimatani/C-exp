@@ -415,16 +415,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  14
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   244
+#define YYLAST   269
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  35
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  33
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  82
+#define YYNRULES  88
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  171
+#define YYNSTATES  186
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
@@ -473,15 +473,15 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    43,    43,    44,    46,    47,    49,    55,    62,    79,
-      80,    82,    99,   116,   134,   140,   142,   143,   155,   170,
-     184,   200,   201,   204,   205,   206,   207,   208,   209,   224,
-     239,   242,   258,   263,   267,   269,   273,   275,   276,   278,
-     279,   281,   282,   283,   285,   286,   288,   301,   302,   303,
-     318,   334,   349,   365,   368,   371,   374,   377,   378,   380,
-     381,   383,   398,   399,   414,   429,   431,   432,   435,   436,
-     438,   439,   441,   443,   445,   446,   447,   448,   449,   451,
-     464,   477,   478
+       0,    43,    43,    44,    46,    47,    49,    59,    67,    84,
+      85,    87,   103,   119,   136,   142,   144,   145,   157,   171,
+     185,   201,   202,   205,   206,   207,   208,   209,   210,   226,
+     242,   245,   261,   264,   268,   287,   291,   293,   297,   299,
+     300,   302,   303,   305,   306,   307,   309,   310,   312,   325,
+     326,   327,   343,   360,   375,   390,   405,   420,   435,   451,
+     454,   457,   460,   463,   464,   466,   467,   469,   484,   485,
+     501,   517,   519,   520,   523,   524,   526,   527,   529,   531,
+     533,   534,   535,   536,   537,   539,   552,   565,   566
 };
 #endif
 
@@ -520,10 +520,10 @@ static const yytype_uint16 yytoknum[] =
 };
 # endif
 
-#define YYPACT_NINF -75
+#define YYPACT_NINF -73
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-75)))
+  (!!((Yystate) == (-73)))
 
 #define YYTABLE_NINF -1
 
@@ -534,24 +534,25 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-      65,    42,    57,    72,   107,   -75,   102,   124,   102,    15,
-      79,   110,   132,   -75,   -75,   -75,   185,   -75,   -75,    42,
-     -75,   134,   147,   153,   145,   154,   150,   -75,   151,   -75,
-     159,    15,   161,   131,   -10,   111,   168,    15,   -75,   184,
-     -75,   179,   -75,    58,   192,   188,   189,   171,   191,   -75,
-     -75,   -75,   187,   168,   -75,   202,   176,   -75,   -75,   198,
-     -75,   -75,   168,   193,   195,   136,    50,   -75,   199,    50,
-      50,   -75,     4,   -75,   -75,   -75,    50,    30,   -75,   196,
-     181,   200,    99,   -75,   207,   201,   -75,    50,    -9,    62,
-     -75,   -75,   106,   166,   204,   205,    13,   -75,   -75,    45,
-      46,   168,   -75,   -75,   -75,   -75,   -75,   -75,   206,     1,
-     -75,   -75,   -75,    50,   -75,   -75,   -75,    50,   183,    -6,
-     208,   -75,   -75,   -75,   -75,   -75,    50,   114,   141,   -75,
-      27,   194,   -75,   209,   136,   -75,    62,   -75,   -75,    50,
-     197,   135,   168,   -75,   168,   -75,    66,   216,   203,   210,
-     -75,   -75,   212,   -75,   -75,   213,   214,    50,   -75,   -75,
-      50,   152,   -75,   -75,   -75,   135,   135,   168,   -75,   215,
-     -75
+     104,    17,    30,    33,    48,   -73,    49,    51,    49,    59,
+      43,    34,    67,   -73,   -73,   -73,   138,   -73,   -73,    17,
+     -73,    89,    99,   108,    97,   102,    87,   -73,   111,   -73,
+     107,    59,   113,   170,    -8,     3,    79,    59,   -73,   128,
+     -73,   121,   -73,    39,   131,   147,   149,   112,   154,   -73,
+     -73,   -73,   165,    79,   -73,   184,   162,   -73,   -73,   189,
+     -73,   -73,    79,   181,   210,   202,    45,   -73,   191,   202,
+     202,   -73,     7,   -73,   -73,   -73,   119,     6,   -73,   200,
+     195,   214,    -3,   -73,   202,   127,   223,   -73,   235,   224,
+     -73,   202,    73,   -73,   187,   209,   229,   233,    41,   -73,
+     -73,   166,   202,   106,    79,   -73,   -73,   -73,   -73,   -73,
+      65,   234,   -73,   -73,   202,   -73,   -73,   -73,   202,   -73,
+     236,   192,   -73,   216,    24,   238,   -73,   -73,   -73,   -73,
+     -73,   202,   146,   157,   -73,    -1,   218,   194,   -73,   237,
+     -73,   202,   223,   -73,   202,   -73,   -73,   202,   221,   201,
+      79,   -73,    79,   -73,   179,   250,   225,   243,   -73,   -73,
+     -73,   203,   242,   222,   244,   -73,   -73,   241,   245,   202,
+     -73,   -73,   202,   173,   -73,   -73,   -73,   -73,   -73,   -73,
+     201,   201,    79,   -73,   246,   -73
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -563,38 +564,39 @@ static const yytype_uint8 yydefact[] =
       20,     0,     0,     8,     1,     4,     0,     2,    14,     0,
       16,     0,     0,     0,     0,     0,    10,    19,     0,    11,
        0,     0,     0,     0,     0,     0,     0,     0,     9,     0,
-      17,     0,    12,     0,     0,     0,     0,     0,     0,    45,
-      44,    30,     0,    22,    23,     0,     0,    24,    25,    66,
+      17,     0,    12,     0,     0,     0,     0,     0,     0,    47,
+      46,    30,     0,    22,    23,     0,     0,    24,    25,    72,
       27,    26,     0,     0,     0,     0,     0,    28,     0,     0,
-       0,    72,     0,     7,    21,    29,     0,     0,    67,     0,
-       0,     0,    46,    47,     0,     0,    48,     0,     0,    34,
-      36,    37,     0,     0,     0,     0,     0,    58,    57,     0,
-       0,     0,    71,     6,    18,    13,    49,    50,    51,     0,
-      39,    40,    31,     0,    41,    42,    43,     0,     0,    82,
-       0,    74,    75,    76,    78,    77,     0,     0,     0,    60,
-      65,     0,    32,     0,     0,    38,    33,    35,    79,     0,
-       0,    73,     0,    54,     0,    69,     0,     0,     0,     0,
-      59,    70,     0,    81,    80,     0,     0,     0,    63,    64,
-       0,     0,    52,    53,    68,    61,    62,     0,    56,     0,
-      55
+       0,    78,     0,     7,    21,    29,     0,     0,    73,     0,
+       0,     0,    48,    49,     0,     0,    36,    38,     0,    39,
+      50,     0,     0,    39,     0,     0,     0,     0,     0,    64,
+      63,     0,     0,     0,     0,    77,     6,    18,    13,    51,
+       0,    54,    41,    42,     0,    43,    44,    45,     0,    52,
+      53,     0,    31,     0,    88,     0,    80,    81,    82,    84,
+      83,     0,     0,     0,    66,    71,     0,     0,    32,     0,
+      40,     0,    35,    37,     0,    34,    85,     0,     0,    79,
+       0,    60,     0,    75,     0,     0,     0,     0,    65,    33,
+      76,     0,    39,     0,    39,    87,    86,     0,     0,     0,
+      69,    70,     0,     0,    58,    56,    57,    55,    59,    74,
+      67,    68,     0,    62,     0,    61
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int16 yypgoto[] =
 {
-     -75,   -75,    97,   -75,   -75,   211,   -75,    -4,   -75,   217,
-     -49,   -74,   165,   -56,   113,   121,   -75,   -75,   -36,   -63,
-     -28,   -75,   -75,   -75,   -75,   -75,   -75,   -75,   -75,   -69,
-     -75,   -75,    85
+     -73,   -73,    25,   -73,   -73,   230,   -73,    12,   -73,   247,
+     -52,   -72,   190,   -12,   153,   150,   -73,   -73,   -36,   -63,
+     -30,   -73,   -73,   -73,   -73,   -73,   -73,   -73,   -73,   -67,
+     -73,   -73,   122
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int16 yydefgoto[] =
 {
       -1,     4,     5,     6,     7,    25,    26,     8,     9,    11,
-      52,    53,    54,    93,    89,    90,   113,   117,    84,    91,
-      86,    57,    99,   130,   149,    58,    59,    78,    60,    94,
-     126,    61,   120
+      52,    53,    54,    95,    86,    87,   114,   118,    88,    93,
+      90,    57,   101,   135,   157,    58,    59,    78,    60,    96,
+     131,    61,   125
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -602,60 +604,64 @@ static const yytype_int16 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-      55,    95,    85,   102,    74,    18,    39,    67,    56,    96,
-      88,   110,   111,    79,   110,   111,   135,    55,     1,     2,
-     100,   110,   111,    40,   112,    56,    55,    36,   139,    65,
-     131,   109,   146,    62,    56,    43,   119,    97,    44,    45,
-      46,    55,    47,    48,    56,    66,   106,    10,   101,    56,
-      82,    83,   133,   143,   145,    82,    83,    49,    50,    87,
-      49,    50,    12,    51,    87,    55,   110,   111,     1,     2,
-     141,   152,     3,    56,    65,    49,    50,    13,   129,   132,
-      49,    50,    65,   119,   114,   115,   116,   168,    49,    50,
-      66,    55,    55,   155,   147,   156,    49,    50,   157,    56,
-      56,   165,   148,    15,   166,    17,    55,    14,    55,     3,
-     158,    82,    83,    19,    56,    65,    56,    41,   169,    43,
-      87,   118,    44,    45,    46,    55,    47,    48,    42,    49,
-      50,    55,   142,    56,    22,    23,    49,    50,    16,    56,
-      28,    82,    83,    20,    49,    50,    43,    51,    21,    44,
-      45,    46,    29,    47,    48,   110,   111,    43,    30,   144,
-      44,    45,    46,    31,    47,    48,    49,    50,    34,    32,
-     167,    49,    50,    43,    51,    35,    44,    45,    46,    37,
-      47,    48,    49,    50,    33,    51,   110,   111,    22,    23,
-      63,   121,   122,   123,   124,   125,    64,    68,    49,    50,
-      24,    51,    69,    70,    71,    72,    73,    75,    76,    77,
-      80,    81,   107,    92,   104,   103,   138,   105,   108,   127,
-     128,   159,   134,   140,   153,   161,   136,   150,   151,   162,
-     154,     0,   163,   164,   170,   160,    27,    98,   137,     0,
-       0,     0,     0,     0,    38
+      55,    74,    89,    97,   154,   105,    56,    67,    39,    41,
+      79,    43,    98,    65,    44,    45,    46,    55,    47,    48,
+      42,    18,    10,    56,   104,    40,    55,    49,    50,    49,
+      50,    15,    56,    17,   136,    12,    49,    50,    13,    51,
+      99,    55,    56,    36,   112,   113,   109,    56,    14,    62,
+      82,    83,   139,    85,    92,    65,     3,    65,   147,    84,
+     151,   153,     1,     2,   103,    16,    91,    20,    55,    49,
+      50,    66,   110,    66,    56,    49,    50,    19,   162,   121,
+     140,   164,   124,    21,    43,   112,   113,    44,    45,    46,
+     137,    47,    48,   112,   113,    28,    55,    55,   167,   155,
+     168,   183,    56,    56,    29,   156,   122,     1,     2,    49,
+      50,     3,    51,    30,    55,    31,    55,    32,   170,   149,
+      56,    33,    56,    35,    82,    83,   112,   113,    34,   161,
+     184,    37,   163,    84,    63,   124,    68,    55,    64,   138,
+     102,    22,    23,    56,   111,    71,    55,   112,   113,    49,
+      50,    43,    56,    24,    44,    45,    46,   180,    47,    48,
+     181,    69,    43,    70,   150,    44,    45,    46,    72,    47,
+      48,    82,    83,    22,    23,   152,    49,    50,    43,    51,
+      84,    44,    45,    46,    73,    47,    48,    49,    50,    75,
+      51,   182,    82,    83,    76,    65,    49,    50,    80,   134,
+      77,    84,   123,    49,    50,    94,    51,    82,    83,    49,
+      50,   169,   112,   113,   112,   113,    84,    49,    50,   106,
+     174,   112,   113,   112,   113,   145,    81,   159,   107,   112,
+     113,   108,    49,    50,   126,   127,   128,   129,   130,   176,
+     119,   120,   112,   113,   132,   115,   116,   117,   133,   146,
+     141,   158,   144,   148,   166,   171,   160,   172,   173,   175,
+     178,   177,   100,    38,   179,   185,    27,   142,   143,   165
 };
 
-static const yytype_int16 yycheck[] =
+static const yytype_uint8 yycheck[] =
 {
-      36,    70,    65,    77,    53,     9,    16,    43,    36,     5,
-      66,    20,    21,    62,    20,    21,    15,    53,     3,     4,
-      76,    20,    21,    33,    33,    53,    62,    31,    34,    16,
-      99,    87,     5,    37,    62,     5,    92,    33,     8,     9,
-      10,    77,    12,    13,    72,    32,    82,     5,    18,    77,
-       5,     6,   101,   127,   128,     5,     6,    30,    31,    14,
-      30,    31,     5,    33,    14,   101,    20,    21,     3,     4,
-     126,   134,     7,   101,    16,    30,    31,     5,    33,    33,
-      30,    31,    16,   139,    22,    23,    24,   161,    30,    31,
-      32,   127,   128,   142,   130,   144,    30,    31,    32,   127,
-     128,   157,   130,     6,   160,     8,   142,     0,   144,     7,
-     146,     5,     6,    34,   142,    16,   144,     6,   167,     5,
-      14,    15,     8,     9,    10,   161,    12,    13,    17,    30,
-      31,   167,    18,   161,     3,     4,    30,    31,    14,   167,
-       6,     5,     6,    33,    30,    31,     5,    33,    16,     8,
-       9,    10,     5,    12,    13,    20,    21,     5,     5,    18,
-       8,     9,    10,    18,    12,    13,    30,    31,    17,    15,
-      18,    30,    31,     5,    33,    16,     8,     9,    10,    18,
-      12,    13,    30,    31,    34,    33,    20,    21,     3,     4,
-       6,    25,    26,    27,    28,    29,    17,     5,    30,    31,
-      15,    33,    14,    14,    33,    14,    19,     5,    32,    11,
-      17,    16,     5,    14,    33,    19,    33,    17,    17,    15,
-      15,     5,    16,    15,   139,    15,   113,    33,    19,    17,
-      33,    -1,    19,    19,    19,    32,    19,    72,   117,    -1,
-      -1,    -1,    -1,    -1,    33
+      36,    53,    65,    70,     5,    77,    36,    43,    16,     6,
+      62,     5,     5,    16,     8,     9,    10,    53,    12,    13,
+      17,     9,     5,    53,    18,    33,    62,    30,    31,    30,
+      31,     6,    62,     8,   101,     5,    30,    31,     5,    33,
+      33,    77,    72,    31,    20,    21,    82,    77,     0,    37,
+       5,     6,   104,    65,    66,    16,     7,    16,    34,    14,
+     132,   133,     3,     4,    76,    14,    21,    33,   104,    30,
+      31,    32,    84,    32,   104,    30,    31,    34,   141,    91,
+      15,   144,    94,    16,     5,    20,    21,     8,     9,    10,
+     102,    12,    13,    20,    21,     6,   132,   133,   150,   135,
+     152,   173,   132,   133,     5,   135,    33,     3,     4,    30,
+      31,     7,    33,     5,   150,    18,   152,    15,   154,   131,
+     150,    34,   152,    16,     5,     6,    20,    21,    17,   141,
+     182,    18,   144,    14,     6,   147,     5,   173,    17,    33,
+      21,     3,     4,   173,    17,    33,   182,    20,    21,    30,
+      31,     5,   182,    15,     8,     9,    10,   169,    12,    13,
+     172,    14,     5,    14,    18,     8,     9,    10,    14,    12,
+      13,     5,     6,     3,     4,    18,    30,    31,     5,    33,
+      14,     8,     9,    10,    19,    12,    13,    30,    31,     5,
+      33,    18,     5,     6,    32,    16,    30,    31,    17,    33,
+      11,    14,    15,    30,    31,    14,    33,     5,     6,    30,
+      31,    32,    20,    21,    20,    21,    14,    30,    31,    19,
+      17,    20,    21,    20,    21,    33,    16,    33,    33,    20,
+      21,    17,    30,    31,    25,    26,    27,    28,    29,    17,
+       5,    17,    20,    21,    15,    22,    23,    24,    15,    33,
+      16,    33,    16,    15,    33,     5,    19,    32,    15,    17,
+      19,    17,    72,    33,    19,    19,    19,   114,   118,   147
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -670,16 +676,17 @@ static const yytype_uint8 yystos[] =
       31,    33,    45,    46,    47,    53,    55,    56,    60,    61,
       63,    66,    42,     6,    17,    16,    32,    53,     5,    14,
       14,    33,    14,    19,    45,     5,    32,    11,    62,    45,
-      17,    16,     5,     6,    53,    54,    55,    14,    48,    49,
-      50,    54,    14,    48,    64,    64,     5,    33,    47,    57,
-      48,    18,    46,    19,    33,    17,    53,     5,    17,    48,
-      20,    21,    33,    51,    22,    23,    24,    52,    15,    48,
-      67,    25,    26,    27,    28,    29,    65,    15,    15,    33,
-      58,    64,    33,    45,    16,    15,    49,    50,    33,    34,
-      15,    48,    18,    46,    18,    46,     5,    53,    55,    59,
-      33,    19,    54,    67,    33,    45,    45,    32,    53,     5,
-      32,    15,    17,    19,    19,    48,    48,    18,    46,    45,
-      19
+      17,    16,     5,     6,    14,    48,    49,    50,    53,    54,
+      55,    21,    48,    54,    14,    48,    64,    64,     5,    33,
+      47,    57,    21,    48,    18,    46,    19,    33,    17,    53,
+      48,    17,    20,    21,    51,    22,    23,    24,    52,     5,
+      17,    48,    33,    15,    48,    67,    25,    26,    27,    28,
+      29,    65,    15,    15,    33,    58,    64,    48,    33,    45,
+      15,    16,    49,    50,    16,    33,    33,    34,    15,    48,
+      18,    46,    18,    46,     5,    53,    55,    59,    33,    33,
+      19,    48,    54,    48,    54,    67,    33,    45,    45,    32,
+      53,     5,    32,    15,    17,    17,    17,    17,    19,    19,
+      48,    48,    18,    46,    45,    19
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
@@ -688,12 +695,12 @@ static const yytype_uint8 yyr1[] =
        0,    35,    36,    36,    37,    37,    38,    38,    39,    40,
       40,    41,    41,    41,    42,    42,    43,    43,    43,    44,
       44,    45,    45,    46,    46,    46,    46,    46,    46,    46,
-      46,    47,    47,    48,    48,    49,    49,    50,    50,    51,
-      51,    52,    52,    52,    53,    53,    54,    54,    54,    54,
-      54,    55,    55,    56,    56,    56,    56,    57,    57,    58,
-      58,    59,    59,    59,    59,    59,    60,    60,    61,    61,
-      62,    62,    63,    64,    65,    65,    65,    65,    65,    66,
-      66,    67,    67
+      46,    47,    47,    47,    47,    48,    48,    49,    49,    50,
+      50,    51,    51,    52,    52,    52,    53,    53,    54,    54,
+      54,    54,    54,    55,    55,    55,    55,    55,    55,    56,
+      56,    56,    56,    57,    57,    58,    58,    59,    59,    59,
+      59,    59,    60,    60,    61,    61,    62,    62,    63,    64,
+      65,    65,    65,    65,    65,    66,    66,    67,    67
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
@@ -702,12 +709,12 @@ static const yytype_uint8 yyr2[] =
        0,     2,     2,     1,     2,     1,     8,     7,     2,     3,
        1,     2,     4,     7,     2,     1,     3,     6,     9,     3,
        1,     2,     1,     1,     1,     1,     1,     1,     2,     2,
-       1,     4,     4,     3,     1,     3,     1,     1,     3,     1,
-       1,     1,     1,     1,     1,     1,     1,     1,     1,     2,
-       2,     4,     7,     7,     5,     9,     7,     1,     1,     2,
-       1,     3,     3,     2,     2,     0,     1,     2,     7,     5,
-       4,     2,     2,     3,     1,     1,     1,     1,     1,     5,
-       6,     3,     1
+       1,     4,     4,     5,     5,     3,     1,     3,     1,     1,
+       3,     1,     1,     1,     1,     1,     1,     1,     1,     1,
+       1,     2,     2,     4,     4,     7,     7,     7,     7,     7,
+       5,     9,     7,     1,     1,     2,     1,     3,     3,     2,
+       2,     0,     1,     2,     7,     5,     4,     2,     2,     3,
+       1,     1,     1,     1,     1,     5,     6,     3,     1
 };
 
 
@@ -1386,51 +1393,56 @@ yyreduce:
         case 2:
 #line 43 "langspec.y" /* yacc.c:1646  */
     {top=make_nchild_node(AST_PROGRAM, (yyvsp[-1].np), (yyvsp[0].np));}
-#line 1390 "langspec.tab.c" /* yacc.c:1646  */
+#line 1397 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
 #line 44 "langspec.y" /* yacc.c:1646  */
     {top=make_nchild_node(AST_PROGRAM, (yyvsp[0].np), NULL);}
-#line 1396 "langspec.tab.c" /* yacc.c:1646  */
+#line 1403 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
 #line 46 "langspec.y" /* yacc.c:1646  */
     {(yyval.np)=make_nchild_node(AST_FUNC_LIST, (yyvsp[-1].np), (yyvsp[0].np));}
-#line 1402 "langspec.tab.c" /* yacc.c:1646  */
+#line 1409 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
 #line 47 "langspec.y" /* yacc.c:1646  */
     {(yyval.np)=make_nchild_node(AST_FUNC_LIST, (yyvsp[0].np), NULL);}
-#line 1408 "langspec.tab.c" /* yacc.c:1646  */
+#line 1415 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
 #line 49 "langspec.y" /* yacc.c:1646  */
     {
   Node *nfun;
+  int arg_num;
   
+  arg_num = calc_arg_node_depth((yyvsp[-5].np),1);
+  //printf("%d\n",arg_num);
   nfun = make_nchild_node(AST_FUNC, (yyvsp[-7].np), (yyvsp[-5].np), (yyvsp[-2].np), (yyvsp[-1].np));
-  (yyval.np) = nfun;
-}
-#line 1419 "langspec.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 7:
-#line 55 "langspec.y" /* yacc.c:1646  */
-    {
-  Node *nfun;
-  
-  nfun = make_nchild_node(AST_FUNC, (yyvsp[-6].np), NULL, (yyvsp[-2].np), (yyvsp[-1].np));
+  nfun->value  = arg_num;
   (yyval.np) = nfun;
 }
 #line 1430 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
+  case 7:
+#line 59 "langspec.y" /* yacc.c:1646  */
+    {
+  Node *nfun;
+  
+  nfun = make_nchild_node(AST_FUNC, (yyvsp[-6].np), NULL, (yyvsp[-2].np), (yyvsp[-1].np));
+  nfun->value = 0;
+  (yyval.np) = nfun;
+}
+#line 1442 "langspec.tab.c" /* yacc.c:1646  */
+    break;
+
   case 8:
-#line 62 "langspec.y" /* yacc.c:1646  */
+#line 67 "langspec.y" /* yacc.c:1646  */
     {
   Node *nid;
   Symbols *stmp;
@@ -1439,7 +1451,7 @@ yyreduce:
   if(sym_lookup(global_stable, (yyvsp[0].name)) == -1){ //  global
     stmp = sym_add(global_stable, (yyvsp[0].name), SYM_FUNC,0,0);
     stmp->branch = stable;
-    nid = make_ident_node(SYM_FUNC, stmp->symno, NULL);
+    nid = make_ident_node(SYM_FUNC, stmp->symno, NULL, (yyvsp[0].name));
     (yyval.np) = nid;
   } else {
     sprintf(errmsg, "Function name is redefined : %s", (yyvsp[0].name));
@@ -1447,23 +1459,23 @@ yyreduce:
     err_flag = 1;
   }
 }
-#line 1451 "langspec.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 9:
-#line 79 "langspec.y" /* yacc.c:1646  */
-    {(yyval.np)=make_nchild_node(AST_ARG_LIST, (yyvsp[-2].np), (yyvsp[0].np));}
-#line 1457 "langspec.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 10:
-#line 80 "langspec.y" /* yacc.c:1646  */
-    {(yyval.np)=make_nchild_node(AST_ARG_LIST, (yyvsp[0].np), NULL);}
 #line 1463 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
+  case 9:
+#line 84 "langspec.y" /* yacc.c:1646  */
+    {(yyval.np)=make_nchild_node(AST_ARG_LIST, (yyvsp[-2].np), (yyvsp[0].np));}
+#line 1469 "langspec.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 10:
+#line 85 "langspec.y" /* yacc.c:1646  */
+    {(yyval.np)=make_nchild_node(AST_ARG_LIST, (yyvsp[0].np), NULL);}
+#line 1475 "langspec.tab.c" /* yacc.c:1646  */
+    break;
+
   case 11:
-#line 82 "langspec.y" /* yacc.c:1646  */
+#line 87 "langspec.y" /* yacc.c:1646  */
     {
   Symbols *stmp;
   Node *nid;
@@ -1471,21 +1483,20 @@ yyreduce:
 
   if(sym_lookup(stable, (yyvsp[0].name)) == -1){
     stmp = sym_add(stable, (yyvsp[0].name), SYM_ARG_VAR, 0, 0);
-    nid = make_ident_node(SYM_ARG_VAR, stmp->symno, NULL);
+    nid = make_ident_node(SYM_ARG_VAR, stmp->symno, NULL,(yyvsp[0].name));
     (yyval.np) = make_nchild_node(AST_ARG, nid, NULL);
     (yyval.np)->value = 0;
-    (yyval.np)->size = 1;
   } else {
     sprintf(errmsg, "undefined id %s", (yyvsp[0].name));
     yyerror(errmsg);
     err_flag = 1;
   }
 }
-#line 1485 "langspec.tab.c" /* yacc.c:1646  */
+#line 1496 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 99 "langspec.y" /* yacc.c:1646  */
+#line 103 "langspec.y" /* yacc.c:1646  */
     {
   Symbols *stmp;
   Node *nid;
@@ -1493,21 +1504,20 @@ yyreduce:
 
   if(sym_lookup(stable, (yyvsp[-2].name)) == -1){
     stmp = sym_add(stable, (yyvsp[-2].name), SYM_ARG_VAR, 0, 0);
-    nid = make_ident_node(SYM_ARG_VAR, stmp->symno, NULL);
+    nid = make_ident_node(SYM_ARG_VAR, stmp->symno, NULL,(yyvsp[-2].name));
     (yyval.np) = make_nchild_node(AST_ARG, nid, NULL);
     (yyval.np)->value = 1;
-    (yyval.np)->size = 1;
   } else {
     sprintf(errmsg, "undefined id %s", (yyvsp[-2].name));
     yyerror(errmsg);
     err_flag = 1;
   }
  }
-#line 1507 "langspec.tab.c" /* yacc.c:1646  */
+#line 1517 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 116 "langspec.y" /* yacc.c:1646  */
+#line 119 "langspec.y" /* yacc.c:1646  */
     {
   Symbols *stmp;
   Node *nid;
@@ -1515,44 +1525,43 @@ yyreduce:
   
   if(sym_lookup(stable, (yyvsp[-5].name)) == -1){
     stmp = sym_add(stable, (yyvsp[-5].name), SYM_ARG_VAR, 0, 0);
-    nid = make_ident_node(SYM_ARG_VAR, stmp->symno, NULL);
+    nid = make_ident_node(SYM_ARG_VAR, stmp->symno, NULL,(yyvsp[-5].name));
     (yyval.np) = make_nchild_node(AST_ARG, nid, (yyvsp[-3].np));
     (yyval.np)->value = 2;
-    (yyval.np)->size = (yyvsp[-3].np)->value;
   } else {
     sprintf(errmsg, "undefined id %s", (yyvsp[-5].name));
     yyerror(errmsg);
     err_flag = 1;
   }
 }
-#line 1529 "langspec.tab.c" /* yacc.c:1646  */
+#line 1538 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 134 "langspec.y" /* yacc.c:1646  */
+#line 136 "langspec.y" /* yacc.c:1646  */
     {
   Node *ntmp = (yyvsp[-1].np);
   while(ntmp->child[1] != NULL) ntmp = ntmp->child[1];
   ntmp->child[1] = (yyvsp[0].np);
   (yyval.np) = (yyvsp[-1].np);
 }
-#line 1540 "langspec.tab.c" /* yacc.c:1646  */
+#line 1549 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 140 "langspec.y" /* yacc.c:1646  */
+#line 142 "langspec.y" /* yacc.c:1646  */
     {(yyval.np)=(yyvsp[0].np);}
-#line 1546 "langspec.tab.c" /* yacc.c:1646  */
+#line 1555 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 142 "langspec.y" /* yacc.c:1646  */
+#line 144 "langspec.y" /* yacc.c:1646  */
     {(yyval.np) = (yyvsp[-1].np);}
-#line 1552 "langspec.tab.c" /* yacc.c:1646  */
+#line 1561 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 143 "langspec.y" /* yacc.c:1646  */
+#line 145 "langspec.y" /* yacc.c:1646  */
     {
   Node *ntmp = make_new_ident_node(stable, SYM_VAR, (yyvsp[-4].name), (yyvsp[-2].np), NULL);
   char errmsg[1024];
@@ -1565,11 +1574,11 @@ yyreduce:
     err_flag = 1;
   }
 }
-#line 1569 "langspec.tab.c" /* yacc.c:1646  */
+#line 1578 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 155 "langspec.y" /* yacc.c:1646  */
+#line 157 "langspec.y" /* yacc.c:1646  */
     {
   Node *ntmp = make_new_ident_node(stable, SYM_VAR, (yyvsp[-7].name), (yyvsp[-5].np), (yyvsp[-2].np));
   char errmsg[1024];
@@ -1582,11 +1591,11 @@ yyreduce:
     err_flag = 1;
   }
 }
-#line 1586 "langspec.tab.c" /* yacc.c:1646  */
+#line 1595 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 170 "langspec.y" /* yacc.c:1646  */
+#line 171 "langspec.y" /* yacc.c:1646  */
     {
   Node *ntmp = make_new_ident_node(stable, SYM_VAR, (yyvsp[-2].name), NULL, NULL);
   char errmsg[1024];
@@ -1601,11 +1610,11 @@ yyreduce:
     //print_symbol_table(global_stable, 0);
   }
 }
-#line 1605 "langspec.tab.c" /* yacc.c:1646  */
+#line 1614 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 184 "langspec.y" /* yacc.c:1646  */
+#line 185 "langspec.y" /* yacc.c:1646  */
     {
   Node *ntmp = make_new_ident_node(stable, SYM_VAR, (yyvsp[0].name), NULL, NULL);
   char errmsg[1024];
@@ -1619,53 +1628,53 @@ yyreduce:
     //print_symbol_table(global_stable, 0);
   }
 }
-#line 1623 "langspec.tab.c" /* yacc.c:1646  */
+#line 1632 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 200 "langspec.y" /* yacc.c:1646  */
+#line 201 "langspec.y" /* yacc.c:1646  */
     {(yyval.np)=make_nchild_node(AST_STAT_LIST, (yyvsp[-1].np), (yyvsp[0].np));}
-#line 1629 "langspec.tab.c" /* yacc.c:1646  */
+#line 1638 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 201 "langspec.y" /* yacc.c:1646  */
+#line 202 "langspec.y" /* yacc.c:1646  */
     {(yyval.np)=make_nchild_node(AST_STAT_LIST, (yyvsp[0].np), NULL);}
-#line 1635 "langspec.tab.c" /* yacc.c:1646  */
+#line 1644 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 204 "langspec.y" /* yacc.c:1646  */
+#line 205 "langspec.y" /* yacc.c:1646  */
     {(yyval.np) = (yyvsp[0].np);}
-#line 1641 "langspec.tab.c" /* yacc.c:1646  */
+#line 1650 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 205 "langspec.y" /* yacc.c:1646  */
+#line 206 "langspec.y" /* yacc.c:1646  */
     {(yyval.np) = (yyvsp[0].np);}
-#line 1647 "langspec.tab.c" /* yacc.c:1646  */
+#line 1656 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 206 "langspec.y" /* yacc.c:1646  */
+#line 207 "langspec.y" /* yacc.c:1646  */
     {(yyval.np) = (yyvsp[0].np);}
-#line 1653 "langspec.tab.c" /* yacc.c:1646  */
+#line 1662 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 207 "langspec.y" /* yacc.c:1646  */
+#line 208 "langspec.y" /* yacc.c:1646  */
     {(yyval.np) = (yyvsp[0].np);}
-#line 1659 "langspec.tab.c" /* yacc.c:1646  */
+#line 1668 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 208 "langspec.y" /* yacc.c:1646  */
+#line 209 "langspec.y" /* yacc.c:1646  */
     {(yyval.np) = (yyvsp[0].np);}
-#line 1665 "langspec.tab.c" /* yacc.c:1646  */
+#line 1674 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 209 "langspec.y" /* yacc.c:1646  */
+#line 210 "langspec.y" /* yacc.c:1646  */
     {
   int symno;
   Node *nid;
@@ -1678,14 +1687,15 @@ yyreduce:
       err_flag = 1;
     }
   }
-  nid = make_ident_node(SYM_VAR, symno, NULL);
+  nid = make_ident_node(SYM_VAR, symno, NULL,(yyvsp[-1].name));
   (yyval.np) = make_nchild_node((yyvsp[0].op), nid);
+  (yyval.np)->value = 1;
 }
-#line 1685 "langspec.tab.c" /* yacc.c:1646  */
+#line 1695 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 224 "langspec.y" /* yacc.c:1646  */
+#line 226 "langspec.y" /* yacc.c:1646  */
     {
   int symno;
   Node *nid;
@@ -1698,20 +1708,21 @@ yyreduce:
       err_flag = 1;
     }
   }
-  nid = make_ident_node(SYM_VAR, symno, NULL);
+  nid = make_ident_node(SYM_VAR, symno, NULL,(yyvsp[0].name));
   (yyval.np) = make_nchild_node((yyvsp[-1].op), nid);
+  (yyval.np)->value = 0;
 }
-#line 1705 "langspec.tab.c" /* yacc.c:1646  */
+#line 1716 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 239 "langspec.y" /* yacc.c:1646  */
+#line 242 "langspec.y" /* yacc.c:1646  */
     {(yyval.np) = NULL;}
-#line 1711 "langspec.tab.c" /* yacc.c:1646  */
+#line 1722 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 242 "langspec.y" /* yacc.c:1646  */
+#line 245 "langspec.y" /* yacc.c:1646  */
     {
   int symno;
   Node *nid;
@@ -1725,104 +1736,135 @@ yyreduce:
     }
   }
 
-  nid = make_ident_node(SYM_VAR, symno, stable);
+  nid = make_ident_node(SYM_VAR, symno, stable,(yyvsp[-3].name));
   (yyval.np) = make_nchild_node(AST_ASSIGN, nid, (yyvsp[-1].np));
 }
-#line 1732 "langspec.tab.c" /* yacc.c:1646  */
+#line 1743 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 258 "langspec.y" /* yacc.c:1646  */
+#line 261 "langspec.y" /* yacc.c:1646  */
     {
   (yyval.np) = make_nchild_node(AST_ASSIGN, (yyvsp[-3].np), (yyvsp[-1].np));
 }
-#line 1740 "langspec.tab.c" /* yacc.c:1646  */
+#line 1751 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
 #line 264 "langspec.y" /* yacc.c:1646  */
     {
-  (yyval.np) = make_nchild_node((yyvsp[-1].op), (yyvsp[-2].np), (yyvsp[0].np));
+  (yyvsp[-1].np)->value = (yyvsp[-1].np)->value * (-1);
+  (yyval.np) = make_nchild_node(AST_ASSIGN, (yyvsp[-4].np), (yyvsp[-1].np));
 }
-#line 1748 "langspec.tab.c" /* yacc.c:1646  */
+#line 1760 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 267 "langspec.y" /* yacc.c:1646  */
-    {(yyval.np) = (yyvsp[0].np);}
-#line 1754 "langspec.tab.c" /* yacc.c:1646  */
+#line 268 "langspec.y" /* yacc.c:1646  */
+    {
+  int symno;
+  Node *nid;
+  char errmsg[1024];
+
+  if((symno = sym_lookup(stable, (yyvsp[-4].name))) == -1){
+    if((symno = sym_lookup(global_stable, (yyvsp[-4].name))) == -1){
+      sprintf(errmsg, "undefined id %s", (yyvsp[-4].name));
+      yyerror(errmsg);
+      err_flag = 1;
+    }
+  }
+
+  nid = make_ident_node(SYM_VAR, symno, stable,(yyvsp[-4].name));
+  (yyvsp[-1].np)->value = (yyvsp[-1].np)->value * (-1);
+  (yyval.np) = make_nchild_node(AST_ASSIGN, nid, (yyvsp[-1].np));
+ }
+#line 1782 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 270 "langspec.y" /* yacc.c:1646  */
+#line 288 "langspec.y" /* yacc.c:1646  */
     {
   (yyval.np) = make_nchild_node((yyvsp[-1].op), (yyvsp[-2].np), (yyvsp[0].np));
 }
-#line 1762 "langspec.tab.c" /* yacc.c:1646  */
+#line 1790 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 273 "langspec.y" /* yacc.c:1646  */
+#line 291 "langspec.y" /* yacc.c:1646  */
     {(yyval.np) = (yyvsp[0].np);}
-#line 1768 "langspec.tab.c" /* yacc.c:1646  */
+#line 1796 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 275 "langspec.y" /* yacc.c:1646  */
-    {(yyval.np) = (yyvsp[0].np);}
-#line 1774 "langspec.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 38:
-#line 276 "langspec.y" /* yacc.c:1646  */
-    {(yyval.np) = (yyvsp[-1].np);}
-#line 1780 "langspec.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 39:
-#line 278 "langspec.y" /* yacc.c:1646  */
-    {(yyval.op) = AST_ADD;}
-#line 1786 "langspec.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 40:
-#line 279 "langspec.y" /* yacc.c:1646  */
-    {(yyval.op) = AST_SUB;}
-#line 1792 "langspec.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 41:
-#line 281 "langspec.y" /* yacc.c:1646  */
-    {(yyval.op) = AST_MUL;}
-#line 1798 "langspec.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 42:
-#line 282 "langspec.y" /* yacc.c:1646  */
-    {(yyval.op) = AST_DIV;}
+#line 294 "langspec.y" /* yacc.c:1646  */
+    {
+  (yyval.np) = make_nchild_node((yyvsp[-1].op), (yyvsp[-2].np), (yyvsp[0].np));
+}
 #line 1804 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
-  case 43:
-#line 283 "langspec.y" /* yacc.c:1646  */
-    {(yyval.op) = AST_MOD;}
+  case 38:
+#line 297 "langspec.y" /* yacc.c:1646  */
+    {(yyval.np) = (yyvsp[0].np);}
 #line 1810 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
-  case 44:
-#line 285 "langspec.y" /* yacc.c:1646  */
-    {(yyval.op) = AST_INCRE;}
+  case 39:
+#line 299 "langspec.y" /* yacc.c:1646  */
+    {(yyval.np) = (yyvsp[0].np);}
 #line 1816 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
-  case 45:
-#line 286 "langspec.y" /* yacc.c:1646  */
-    {(yyval.op) = AST_DECRE;}
+  case 40:
+#line 300 "langspec.y" /* yacc.c:1646  */
+    {(yyval.np) = (yyvsp[-1].np);}
 #line 1822 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
+  case 41:
+#line 302 "langspec.y" /* yacc.c:1646  */
+    {(yyval.op) = AST_ADD;}
+#line 1828 "langspec.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 42:
+#line 303 "langspec.y" /* yacc.c:1646  */
+    {(yyval.op) = AST_SUB;}
+#line 1834 "langspec.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 43:
+#line 305 "langspec.y" /* yacc.c:1646  */
+    {(yyval.op) = AST_MUL;}
+#line 1840 "langspec.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 44:
+#line 306 "langspec.y" /* yacc.c:1646  */
+    {(yyval.op) = AST_DIV;}
+#line 1846 "langspec.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 45:
+#line 307 "langspec.y" /* yacc.c:1646  */
+    {(yyval.op) = AST_MOD;}
+#line 1852 "langspec.tab.c" /* yacc.c:1646  */
+    break;
+
   case 46:
-#line 288 "langspec.y" /* yacc.c:1646  */
+#line 309 "langspec.y" /* yacc.c:1646  */
+    {(yyval.op) = AST_INCRE;}
+#line 1858 "langspec.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 47:
+#line 310 "langspec.y" /* yacc.c:1646  */
+    {(yyval.op) = AST_DECRE;}
+#line 1864 "langspec.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 48:
+#line 312 "langspec.y" /* yacc.c:1646  */
     {
   int symno;
   char errmsg[1024];
@@ -1834,25 +1876,25 @@ yyreduce:
       err_flag = 1;
     }
   }
-  (yyval.np) = make_ident_node(SYM_VAR, symno, stable);
+  (yyval.np) = make_ident_node(SYM_VAR, symno, stable,(yyvsp[0].name));
 }
-#line 1840 "langspec.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 47:
-#line 301 "langspec.y" /* yacc.c:1646  */
-    {(yyval.np) = (yyvsp[0].np);}
-#line 1846 "langspec.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 48:
-#line 302 "langspec.y" /* yacc.c:1646  */
-    {(yyval.np) = (yyvsp[0].np);}
-#line 1852 "langspec.tab.c" /* yacc.c:1646  */
+#line 1882 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 303 "langspec.y" /* yacc.c:1646  */
+#line 325 "langspec.y" /* yacc.c:1646  */
+    {(yyval.np) = (yyvsp[0].np);}
+#line 1888 "langspec.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 50:
+#line 326 "langspec.y" /* yacc.c:1646  */
+    {(yyval.np) = (yyvsp[0].np);}
+#line 1894 "langspec.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 51:
+#line 327 "langspec.y" /* yacc.c:1646  */
     {
   int symno;
   Node *nid;
@@ -1865,14 +1907,15 @@ yyreduce:
       err_flag = 1;
     }
   }
-  nid = make_ident_node(SYM_VAR, symno, stable);
+  nid = make_ident_node(SYM_VAR, symno, stable,(yyvsp[-1].name));
   (yyval.np) = make_nchild_node((yyvsp[0].op), nid);
+  (yyval.np)->value = 1;
 }
-#line 1872 "langspec.tab.c" /* yacc.c:1646  */
+#line 1915 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
-  case 50:
-#line 318 "langspec.y" /* yacc.c:1646  */
+  case 52:
+#line 343 "langspec.y" /* yacc.c:1646  */
     {
   int symno;
   Node *nid;
@@ -1885,14 +1928,15 @@ yyreduce:
       err_flag = 1;
     }
   }
-  nid = make_ident_node(SYM_VAR, symno, stable);
+  nid = make_ident_node(SYM_VAR, symno, stable,(yyvsp[0].name));
   (yyval.np) = make_nchild_node((yyvsp[-1].op), nid);
+  (yyval.np)->value = 0;
 }
-#line 1892 "langspec.tab.c" /* yacc.c:1646  */
+#line 1936 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
-  case 51:
-#line 334 "langspec.y" /* yacc.c:1646  */
+  case 53:
+#line 360 "langspec.y" /* yacc.c:1646  */
     {
   int symno;
   Node *nid;
@@ -1905,14 +1949,34 @@ yyreduce:
       err_flag = 1;
     }
   }
-  nid = make_ident_node(SYM_VAR, symno, stable);
+  nid = make_ident_node(SYM_VAR, symno, stable,(yyvsp[-3].name));
   (yyval.np) = make_nchild_node(AST_ARRAY_REF, nid, (yyvsp[-1].np), NULL);
 }
-#line 1912 "langspec.tab.c" /* yacc.c:1646  */
+#line 1956 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
-  case 52:
-#line 349 "langspec.y" /* yacc.c:1646  */
+  case 54:
+#line 375 "langspec.y" /* yacc.c:1646  */
+    {
+  int symno;
+  Node *nid;
+  char errmsg[1024];
+
+  if((symno = sym_lookup(stable, (yyvsp[-3].name))) == -1){
+    if((symno = sym_lookup(global_stable, (yyvsp[-3].name))) == -1){
+      sprintf(errmsg, "undefined id %s", (yyvsp[-3].name));
+      yyerror(errmsg);
+      err_flag = 1;
+    }
+  }
+  nid = make_ident_node(SYM_VAR, symno, stable,(yyvsp[-3].name));
+  (yyval.np) = make_nchild_node(AST_ARRAY_REF, nid, (yyvsp[-1].np), NULL);
+}
+#line 1976 "langspec.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 55:
+#line 390 "langspec.y" /* yacc.c:1646  */
     {
   int symno;
   Node *nid;
@@ -1925,69 +1989,129 @@ yyreduce:
       err_flag = 1;
     }
   }
-  nid = make_ident_node(SYM_VAR, symno, stable);
+  nid = make_ident_node(SYM_VAR, symno, stable,(yyvsp[-6].name));
   (yyval.np) = make_nchild_node(AST_ARRAY_REF, nid, (yyvsp[-4].np), (yyvsp[-1].np));
 }
-#line 1932 "langspec.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 53:
-#line 365 "langspec.y" /* yacc.c:1646  */
-    {
-  (yyval.np) = make_nchild_node(AST_WHILE, (yyvsp[-4].np), (yyvsp[-1].np));
-}
-#line 1940 "langspec.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 54:
-#line 368 "langspec.y" /* yacc.c:1646  */
-    {
-  (yyval.np) = make_nchild_node(AST_WHILE, (yyvsp[-2].np), (yyvsp[0].np));
-}
-#line 1948 "langspec.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 55:
-#line 371 "langspec.y" /* yacc.c:1646  */
-    {
-  (yyval.np) = make_nchild_node(AST_FOR, (yyvsp[-6].np), (yyvsp[-5].np), (yyvsp[-4].np), (yyvsp[-1].np));
-}
-#line 1956 "langspec.tab.c" /* yacc.c:1646  */
+#line 1996 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 56:
-#line 374 "langspec.y" /* yacc.c:1646  */
+#line 405 "langspec.y" /* yacc.c:1646  */
     {
-  (yyval.np) = make_nchild_node(AST_FOR, (yyvsp[-4].np), (yyvsp[-3].np), (yyvsp[-2].np), (yyvsp[0].np));}
-#line 1963 "langspec.tab.c" /* yacc.c:1646  */
+  int symno;
+  Node *nid;
+  char errmsg[1024];
+
+  if((symno = sym_lookup(stable, (yyvsp[-6].name))) == -1){
+    if((symno = sym_lookup(global_stable, (yyvsp[-6].name))) == -1){
+      sprintf(errmsg, "undefined id %s", (yyvsp[-6].name));
+      yyerror(errmsg);
+      err_flag = 1;
+    }
+  }
+  nid = make_ident_node(SYM_VAR, symno, stable,(yyvsp[-6].name));
+  (yyval.np) = make_nchild_node(AST_ARRAY_REF, nid, (yyvsp[-4].np), (yyvsp[-1].np));
+}
+#line 2016 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 377 "langspec.y" /* yacc.c:1646  */
-    { (yyval.np) = (yyvsp[0].np);}
-#line 1969 "langspec.tab.c" /* yacc.c:1646  */
+#line 420 "langspec.y" /* yacc.c:1646  */
+    {
+  int symno;
+  Node *nid;
+  char errmsg[1024];
+
+  if((symno = sym_lookup(stable, (yyvsp[-6].name))) == -1){
+    if((symno = sym_lookup(global_stable, (yyvsp[-6].name))) == -1){
+      sprintf(errmsg, "undefined id %s", (yyvsp[-6].name));
+      yyerror(errmsg);
+      err_flag = 1;
+    }
+  }
+  nid = make_ident_node(SYM_VAR, symno, stable,(yyvsp[-6].name));
+  (yyval.np) = make_nchild_node(AST_ARRAY_REF, nid, (yyvsp[-4].np), (yyvsp[-1].np));
+}
+#line 2036 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 378 "langspec.y" /* yacc.c:1646  */
-    { (yyval.np) = NULL;}
-#line 1975 "langspec.tab.c" /* yacc.c:1646  */
+#line 435 "langspec.y" /* yacc.c:1646  */
+    {
+  int symno;
+  Node *nid;
+  char errmsg[1024];
+
+  if((symno = sym_lookup(stable, (yyvsp[-6].name))) == -1){
+    if((symno = sym_lookup(global_stable, (yyvsp[-6].name))) == -1){
+      sprintf(errmsg, "undefined id %s", (yyvsp[-6].name));
+      yyerror(errmsg);
+      err_flag = 1;
+    }
+  }
+  nid = make_ident_node(SYM_VAR, symno, stable,(yyvsp[-6].name));
+  (yyval.np) = make_nchild_node(AST_ARRAY_REF, nid, (yyvsp[-4].np), (yyvsp[-1].np));
+}
+#line 2056 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 59:
-#line 380 "langspec.y" /* yacc.c:1646  */
-    { (yyval.np) = (yyvsp[-1].np);}
-#line 1981 "langspec.tab.c" /* yacc.c:1646  */
+#line 451 "langspec.y" /* yacc.c:1646  */
+    {
+  (yyval.np) = make_nchild_node(AST_WHILE, (yyvsp[-4].np), (yyvsp[-1].np));
+}
+#line 2064 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 381 "langspec.y" /* yacc.c:1646  */
-    {(yyval.np) = NULL;}
-#line 1987 "langspec.tab.c" /* yacc.c:1646  */
+#line 454 "langspec.y" /* yacc.c:1646  */
+    {
+  (yyval.np) = make_nchild_node(AST_WHILE, (yyvsp[-2].np), (yyvsp[0].np));
+}
+#line 2072 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 383 "langspec.y" /* yacc.c:1646  */
+#line 457 "langspec.y" /* yacc.c:1646  */
+    {
+  (yyval.np) = make_nchild_node(AST_FOR, (yyvsp[-6].np), (yyvsp[-5].np), (yyvsp[-4].np), (yyvsp[-1].np));
+}
+#line 2080 "langspec.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 62:
+#line 460 "langspec.y" /* yacc.c:1646  */
+    {
+  (yyval.np) = make_nchild_node(AST_FOR, (yyvsp[-4].np), (yyvsp[-3].np), (yyvsp[-2].np), (yyvsp[0].np));}
+#line 2087 "langspec.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 63:
+#line 463 "langspec.y" /* yacc.c:1646  */
+    { (yyval.np) = (yyvsp[0].np);}
+#line 2093 "langspec.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 64:
+#line 464 "langspec.y" /* yacc.c:1646  */
+    { (yyval.np) = NULL;}
+#line 2099 "langspec.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 65:
+#line 466 "langspec.y" /* yacc.c:1646  */
+    { (yyval.np) = (yyvsp[-1].np);}
+#line 2105 "langspec.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 66:
+#line 467 "langspec.y" /* yacc.c:1646  */
+    {(yyval.np) = NULL;}
+#line 2111 "langspec.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 67:
+#line 469 "langspec.y" /* yacc.c:1646  */
     {
   int symno;
   Node *nid;
@@ -2000,20 +2124,20 @@ yyreduce:
       err_flag = 1;
     }
   }
-  nid = make_ident_node(SYM_VAR, symno, stable);
+  nid = make_ident_node(SYM_VAR, symno, stable,(yyvsp[-2].name));
   (yyval.np) = make_nchild_node(AST_ASSIGN, nid, (yyvsp[0].np));
 }
-#line 2007 "langspec.tab.c" /* yacc.c:1646  */
+#line 2131 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
-  case 62:
-#line 398 "langspec.y" /* yacc.c:1646  */
+  case 68:
+#line 484 "langspec.y" /* yacc.c:1646  */
     { (yyval.np) = make_nchild_node(AST_ASSIGN, (yyvsp[-2].np), (yyvsp[0].np));}
-#line 2013 "langspec.tab.c" /* yacc.c:1646  */
+#line 2137 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
-  case 63:
-#line 399 "langspec.y" /* yacc.c:1646  */
+  case 69:
+#line 485 "langspec.y" /* yacc.c:1646  */
     {
   int symno;
   Node *nid;
@@ -2026,14 +2150,15 @@ yyreduce:
       err_flag = 1;
     }
   }
-  nid = make_ident_node(SYM_VAR, symno, stable);
+  nid = make_ident_node(SYM_VAR, symno, stable,(yyvsp[-1].name));
   (yyval.np) = make_nchild_node((yyvsp[0].op), nid);
+  (yyval.np)->value = 1;
 }
-#line 2033 "langspec.tab.c" /* yacc.c:1646  */
+#line 2158 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
-  case 64:
-#line 414 "langspec.y" /* yacc.c:1646  */
+  case 70:
+#line 501 "langspec.y" /* yacc.c:1646  */
     {
   int symno;
   Node *nid;
@@ -2046,98 +2171,99 @@ yyreduce:
       err_flag = 1;
     }
   }
-  nid = make_ident_node(SYM_VAR, symno, stable);
+  nid = make_ident_node(SYM_VAR, symno, stable,(yyvsp[0].name));
   (yyval.np) = make_nchild_node((yyvsp[-1].op), nid);
+  (yyval.np)->value = 0;
 }
-#line 2053 "langspec.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 65:
-#line 429 "langspec.y" /* yacc.c:1646  */
-    {(yyval.np) = NULL;}
-#line 2059 "langspec.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 66:
-#line 431 "langspec.y" /* yacc.c:1646  */
-    { (yyval.np) = (yyvsp[0].np); }
-#line 2065 "langspec.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 67:
-#line 432 "langspec.y" /* yacc.c:1646  */
-    { (yyvsp[-1].np)->child[2] = (yyvsp[0].np); (yyval.np) = (yyvsp[-1].np); }
-#line 2071 "langspec.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 68:
-#line 435 "langspec.y" /* yacc.c:1646  */
-    { (yyval.np) = make_nchild_node(AST_IF, (yyvsp[-4].np), (yyvsp[-1].np), NULL); }
-#line 2077 "langspec.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 69:
-#line 436 "langspec.y" /* yacc.c:1646  */
-    { (yyval.np) = make_nchild_node(AST_IF, (yyvsp[-2].np), (yyvsp[0].np), NULL); }
-#line 2083 "langspec.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 70:
-#line 438 "langspec.y" /* yacc.c:1646  */
-    { (yyval.np) = (yyvsp[-1].np); }
-#line 2089 "langspec.tab.c" /* yacc.c:1646  */
+#line 2179 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 71:
-#line 439 "langspec.y" /* yacc.c:1646  */
-    { (yyval.np) = (yyvsp[0].np); }
-#line 2095 "langspec.tab.c" /* yacc.c:1646  */
+#line 517 "langspec.y" /* yacc.c:1646  */
+    {(yyval.np) = NULL;}
+#line 2185 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 72:
-#line 441 "langspec.y" /* yacc.c:1646  */
-    { (yyval.np) = make_nchild_node(AST_BREAK); }
-#line 2101 "langspec.tab.c" /* yacc.c:1646  */
+#line 519 "langspec.y" /* yacc.c:1646  */
+    { (yyval.np) = (yyvsp[0].np); }
+#line 2191 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 73:
-#line 443 "langspec.y" /* yacc.c:1646  */
-    { (yyval.np) = make_nchild_node((yyvsp[-1].op), (yyvsp[-2].np), (yyvsp[0].np)); }
-#line 2107 "langspec.tab.c" /* yacc.c:1646  */
+#line 520 "langspec.y" /* yacc.c:1646  */
+    { (yyvsp[-1].np)->child[2] = (yyvsp[0].np); (yyval.np) = (yyvsp[-1].np); }
+#line 2197 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 74:
-#line 445 "langspec.y" /* yacc.c:1646  */
-    { (yyval.op) = AST_EQ; }
-#line 2113 "langspec.tab.c" /* yacc.c:1646  */
+#line 523 "langspec.y" /* yacc.c:1646  */
+    { (yyval.np) = make_nchild_node(AST_IF, (yyvsp[-4].np), (yyvsp[-1].np), NULL); }
+#line 2203 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 75:
-#line 446 "langspec.y" /* yacc.c:1646  */
-    { (yyval.op) = AST_LESS; }
-#line 2119 "langspec.tab.c" /* yacc.c:1646  */
+#line 524 "langspec.y" /* yacc.c:1646  */
+    { (yyval.np) = make_nchild_node(AST_IF, (yyvsp[-2].np), (yyvsp[0].np), NULL); }
+#line 2209 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 76:
-#line 447 "langspec.y" /* yacc.c:1646  */
-    { (yyval.op) = AST_GR; }
-#line 2125 "langspec.tab.c" /* yacc.c:1646  */
+#line 526 "langspec.y" /* yacc.c:1646  */
+    { (yyval.np) = (yyvsp[-1].np); }
+#line 2215 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 77:
-#line 448 "langspec.y" /* yacc.c:1646  */
-    { (yyval.op) = AST_LSEQ; }
-#line 2131 "langspec.tab.c" /* yacc.c:1646  */
+#line 527 "langspec.y" /* yacc.c:1646  */
+    { (yyval.np) = (yyvsp[0].np); }
+#line 2221 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 78:
-#line 449 "langspec.y" /* yacc.c:1646  */
-    { (yyval.op) = AST_GREQ; }
-#line 2137 "langspec.tab.c" /* yacc.c:1646  */
+#line 529 "langspec.y" /* yacc.c:1646  */
+    { (yyval.np) = make_nchild_node(AST_BREAK); }
+#line 2227 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
   case 79:
-#line 451 "langspec.y" /* yacc.c:1646  */
+#line 531 "langspec.y" /* yacc.c:1646  */
+    { (yyval.np) = make_nchild_node((yyvsp[-1].op), (yyvsp[-2].np), (yyvsp[0].np)); }
+#line 2233 "langspec.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 80:
+#line 533 "langspec.y" /* yacc.c:1646  */
+    { (yyval.op) = AST_EQ; }
+#line 2239 "langspec.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 81:
+#line 534 "langspec.y" /* yacc.c:1646  */
+    { (yyval.op) = AST_LESS; }
+#line 2245 "langspec.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 82:
+#line 535 "langspec.y" /* yacc.c:1646  */
+    { (yyval.op) = AST_GR; }
+#line 2251 "langspec.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 83:
+#line 536 "langspec.y" /* yacc.c:1646  */
+    { (yyval.op) = AST_LSEQ; }
+#line 2257 "langspec.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 84:
+#line 537 "langspec.y" /* yacc.c:1646  */
+    { (yyval.op) = AST_GREQ; }
+#line 2263 "langspec.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 85:
+#line 539 "langspec.y" /* yacc.c:1646  */
     {
   int symno;
   Node *nid;
@@ -2148,14 +2274,14 @@ yyreduce:
     yyerror(errmsg);
     err_flag = 1;
   }
-  nid = make_ident_node(SYM_FUNC, symno, NULL);
+  nid = make_ident_node(SYM_FUNC, symno, NULL,(yyvsp[-3].name));
   (yyval.np) = make_nchild_node(AST_FUNCCALL, nid, NULL);
 }
-#line 2155 "langspec.tab.c" /* yacc.c:1646  */
+#line 2281 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
-  case 80:
-#line 464 "langspec.y" /* yacc.c:1646  */
+  case 86:
+#line 552 "langspec.y" /* yacc.c:1646  */
     {
   int symno;
   Node *nid;
@@ -2166,25 +2292,25 @@ yyreduce:
     yyerror(errmsg);
     err_flag = 1;
   }
-  nid = make_ident_node(SYM_FUNC, symno, NULL);
+  nid = make_ident_node(SYM_FUNC, symno, NULL,(yyvsp[-4].name));
   (yyval.np) = make_nchild_node(AST_FUNCCALL, nid, (yyvsp[-2].np));}
-#line 2172 "langspec.tab.c" /* yacc.c:1646  */
+#line 2298 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
-  case 81:
-#line 477 "langspec.y" /* yacc.c:1646  */
+  case 87:
+#line 565 "langspec.y" /* yacc.c:1646  */
     { (yyval.np) = make_nchild_node(AST_PARAM_LIST, (yyvsp[-2].np), (yyvsp[0].np)); }
-#line 2178 "langspec.tab.c" /* yacc.c:1646  */
+#line 2304 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
-  case 82:
-#line 478 "langspec.y" /* yacc.c:1646  */
+  case 88:
+#line 566 "langspec.y" /* yacc.c:1646  */
     { (yyval.np) = make_nchild_node(AST_PARAM_LIST, (yyvsp[0].np), NULL); }
-#line 2184 "langspec.tab.c" /* yacc.c:1646  */
+#line 2310 "langspec.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 2188 "langspec.tab.c" /* yacc.c:1646  */
+#line 2314 "langspec.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2412,9 +2538,9 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 480 "langspec.y" /* yacc.c:1906  */
+#line 568 "langspec.y" /* yacc.c:1906  */
 
-int main(){
+int main(int argc, char* argv[]){
   global_stable = sym_add(global_stable, "global", SYM_KEYWORD, 0, 0);
   stable = global_stable;
   if(yyparse()){
@@ -2423,16 +2549,20 @@ int main(){
   }
   if(err_flag != 0) {
     printf("\x1b[31m");     /* 前景色を赤に */
+    printf("\x1b[1m"); // 太文字出力
     printf("ERROR: ");
+    printf("\x1b[0m");
     printf("\x1b[39m");     /* 前景色をデフォルトに戻す */
     printf("Stopped compiling\n");
     return 1;
-  }    
+  }
+  if(argc > 1){
   printf("tree\n");
   print_ast_tree(top, global_stable, global_stable, 0);
   printf("symbol table\n");
-   print_symbol_table(global_stable, 0);
+  print_symbol_table(global_stable, 0);
   printf("code\n");
+  }
   generate_program_code(top, global_stable);
   return 0;
 }

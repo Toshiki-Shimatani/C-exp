@@ -13,6 +13,7 @@ OBJ=langspec.tab.o lex.yy.o ast.o
 
 $(TARGET): $(OBJ) $(HDR)
 	$(CC) $(OBJ) $(LDFLAGS) -o $@
+	cp $(TARGET) ./sample/
 
 lex.yy.c: langspec.l
 	$(LEX) $<

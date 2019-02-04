@@ -21,63 +21,82 @@ init:
 	.text 	0x00001000
 	.align  2
 main:
-	addiu $sp, $sp, -32
-	sw    $ra, 28($sp)
-	sw    $fp, 24($sp)
+	addiu $sp, $sp, -40
+	sw    $ra, 36($sp)
+	sw    $fp, 32($sp)
 	add   $fp, $sp, $zero
-	sw    $a0, 32($sp)
-	sw    $a1, 36($sp)
-	sw    $a2, 40($sp)
-	sw    $a3, 44($sp)
+	sw    $a0, 40($sp)
+	sw    $a1, 44($sp)
+	sw    $a2, 48($sp)
+	sw    $a3, 52($sp)
 main_body:
 	li     $v0, 0
-	sw     $v0, 20($fp)
-	li     $v0, 1
 	sw     $v0, 16($fp)
-	j      while_L2_0
-while_L1_0:
+	li     $v0, 0
+	sw     $v0, 20($fp)
+	j      for_L1
+for_L0:
+	li     $v0, 0
+	sw     $v0, 24($fp)
+	j      for_L3
+for_L2:
+	addi   $t8, $fp, 16
+	lw     $v0, 16($fp)
+	nop
+	sw     $v0, -4($fp)
+	li     $v0, 1
+	sw     $v0, -8($fp)
+	lw     $v1, -8($fp)
+	nop
+	lw     $v0, -4($fp)
+	nop
+	add    $v0, $v0, $v1
+	sw     $v0, 16($fp)
+	addi   $t8, $fp, 24
+	lw     $v0, 24($fp)
+	nop
+	sw     $v0, -4($fp)
+	lw     $v0, -4($fp)
+	nop
+	addi   $v0, $v0, 1
+	sw     $v0, 0($t8)
+	addi   $v0, $v0, -1
+for_L3:
+	li     $v0, 3
+	add    $t7, $v0, $zero
+	addi   $t8, $fp, 24
+	lw     $v0, 24($fp)
+	nop
+	add    $v1, $t7, $zero
+	slt  $v0, $v0, $v1
+	bne  $v0, $zero, for_L2
+	nop
 	addi   $t8, $fp, 20
 	lw     $v0, 20($fp)
 	nop
 	sw     $v0, -4($fp)
-	addi   $t8, $fp, 16
-	lw     $v0, 16($fp)
-	nop
-	sw     $v0, -8($fp)
-	lw     $v1, -8($fp)
-	nop
 	lw     $v0, -4($fp)
 	nop
-	add    $v0, $v0, $v1
-	sw     $v0, 20($fp)
-	addi   $t8, $fp, 16
-	lw     $v0, 16($fp)
+	addi   $v0, $v0, 1
+	sw     $v0, 0($t8)
+	addi   $v0, $v0, -1
+for_L1:
+	li     $v0, 3
+	add    $t7, $v0, $zero
+	addi   $t8, $fp, 20
+	lw     $v0, 20($fp)
 	nop
-	sw     $v0, -4($fp)
-	li     $v0, 1
-	sw     $v0, -8($fp)
-	lw     $v1, -8($fp)
-	nop
-	lw     $v0, -4($fp)
-	nop
-	add    $v0, $v0, $v1
-	sw     $v0, 16($fp)
-while_L2_0:
-	li     $v0, 11
-	add    $v1, $v0, $zero
-	addi   $t8, $fp, 16
-	lw     $v0, 16($fp)
-	nop
+	add    $v1, $t7, $zero
 	slt  $v0, $v0, $v1
-	bne  $v0, $zero, while_L1_0
+	bne  $v0, $zero, for_L0
 	nop
 	add   $t9, $v0, $zero
 main_end:
 	add   $sp, $fp, $zero
-	lw    $ra, 28($sp)
+	lw    $ra, 36($sp)
 	nop
-	lw    $fp, 24($sp)
+	lw    $fp, 32($sp)
 	nop
-	addiu $sp, $sp, 32
+	addiu $sp, $sp, 40
 	jr    $ra
 	.align 2

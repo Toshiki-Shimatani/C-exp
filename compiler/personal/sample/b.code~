@@ -1,0 +1,13 @@
+func main(){
+     define a;
+     define b;
+     define i;
+     define sum;
+     b=10;
+     a=1;
+     sum = 0;
+     for(i=0;i<b;i++){
+     sum = a + sum;
+     a++;
+     }
+}

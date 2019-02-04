@@ -1,4 +1,4 @@
-#define DEBUG 
+//#define DEBUG 
 
 #include "ast.h"
 #include <stdio.h>
@@ -6,11 +6,7 @@
 #include <string.h>
 #include <stdarg.h>
 
-int label_count;
-int stack_count = 1;
-int skip_count = 0;
-int skip = 0;
-int for_count = 0;
+int stack_count;
 
 Node *make_num_node(int n){
   Node *obj;
@@ -176,6 +172,7 @@ Symbols *sym_add(Symbols *stable, char *name, Stype type, unsigned int size1, un
       obj->array_flag = 2;
     }
   }
+  obj->value = 0;
   if(stable == NULL){
     obj->symno = sym_count;
     sym_count++;
@@ -408,8 +405,7 @@ void generate_program_code(Node *root, Symbols *gstable){
 
 void generate_initial_code(){
   printf("\tINITIAL_GP = 0x10008000		# initial value of global pointer\n");
-  printf("\tINITIAL_SP = 0x80000000		# initial value of stack pointer\n");
-  //printf("\tINITIAL_SP = 0x7fffffff		# initial value of stack pointer\n");
+  printf("\tINITIAL_SP = 0x7ffffffc		# initial value of stack pointer\n");
   printf("\t# system call service number\n");
   printf("\tstop_service = 99\n");
   printf("\n");
@@ -417,7 +413,7 @@ void generate_initial_code(){
   printf("init:\n");
   printf("\t# initialize $gp (global pointer) and $sp (stack pointer)\n");
   printf("\tla	$gp, INITIAL_GP		# $sp <- 0x10008000 (INITIAL_GP)\n");
-  printf("\tla	$sp, INITIAL_SP		# $sp <- 0x7fffffff (INITIAL_SP)\n");
+  printf("\tla	$sp, INITIAL_SP		# $sp <- 0x7ffffffc (INITIAL_SP)\n");
   printf("\tjal	main			# jump to `main'\n");
   printf("\tnop				# (delay slot)\n");
   printf("\tli	$v0, stop_service	# $v0 <- 99 (stop_service)\n");
@@ -509,7 +505,7 @@ void generate_function_code(Node *func, Symbols *gstable, Symbols *lstable){
  
   func_name = sym_lookup_name(gstable, func->child[0]->value);
   local_size = calc_local_variables_size(func);
-  //local_size = ((local_size/2)+1)*8;
+  local_size = ((local_size/2)+1)*8;
   #ifdef DEBUG
   printf("\x1b[31m");     /* 前景色を青に */
   printf("\x1b[1m"); // 太文字出力
@@ -577,7 +573,6 @@ unsigned int calc_local_variables_size(Node *func){
   Node *decs = func->child[2], *dec;
 
   do {
-    size = 0;
     dec = decs->child[0];
     if(dec->child[1] == NULL){  // 変数
       size = 1;
@@ -591,10 +586,31 @@ unsigned int calc_local_variables_size(Node *func){
     decs = decs->child[1];
   } while(decs != NULL);
 
-  val_area_size = ((val_area_size+1)/2)*8;
+
   return val_area_size;
 }
+unsigned int calc_local_variables_size_by_table(Symbols *lstable){
+  unsigned int total_size = 0;
+  unsigned int size;
+  
+  // localまで移動
+  while(lstable->type != SYM_VAR) lstable = lstable->next;
+  
+  do {
+    if(lstable->size1 == 0){
+      size = 1;
+    } else if(lstable->size2 == 0){
+      size = lstable->size1;
+    } else {
+      size = lstable->size1 * lstable->size2;
+    }
+    total_size += size * 4;
 
+    lstable = lstable->next;
+  } while(lstable != NULL);
+
+  return total_size;
+}
 
 void generate_global_variables_definitions(Symbols *gstable){
   //int i, j;
@@ -639,6 +655,7 @@ void generate_global_variables_definitions(Symbols *gstable){
 	}
       }
     }
+
     gstable = gstable->next;
   } while(gstable != NULL);
 }
@@ -654,51 +671,61 @@ void generate_statement_code(Node *stat, Symbols *gstable, Symbols *lstable){
     #ifdef DEBUG
     printf(" assign\n");
     #endif
-    generate_assign_code(stat, gstable, lstable);
+    generate_assign_code(stat,gstable,lstable);
+    //printf("\tlw  $t0, -4($sp)\n\tnop\n");
+    //printf("\tsw  $t0, %s\n", get_variable_address(stat->child[0], gstable, lstable));
   }
   
   if(stat->type == AST_WHILE){
-    #ifdef DEBUG
-    printf("while\n");
-    #endif
-    generate_while_code(stat, gstable, lstable);
+    //generate_while_code(stat, gstable, lstable);
   }
   if(stat->type == AST_IF){
-    skip++;
-    #ifdef DEBUG
-    printf("if\n");
-    #endif
-    generate_if_code(stat, gstable, lstable, skip);
-    printf("if_end_L%d:\n",skip);
-  }
-  if(stat->type == AST_FOR){
-    #ifdef DEBUG
-    printf("for\n");
-    #endif
-    generate_for_code(stat, gstable, lstable);
   }
   if(stat->type == AST_BREAK){
   }
   if(stat->type == AST_INCRE){
-    generate_arithmetic_code(stat, gstable, lstable);
   }
   if(stat->type == AST_DECRE){
-    generate_arithmetic_code(stat, gstable, lstable);
-  }  
-}
   
+  #ifdef DEBUG
+  printf("\x1b[31m");     /* 後景色を赤に */
+  //printf("\x1b[1m"); // 太文字出力
+  printf("ERROR! in function get_indent_address\n");
+  //printf("\x1b[0m");		
+  printf("\x1b[39m");     /* 後景色をデフォルトに戻す */   
+  #endif
+  }
+}
+
 void generate_assign_code(Node *assign, Symbols *gstable, Symbols *lstable){
   int lval_address = 0;
-  if(assign == NULL) return;  
+  int assign_value = 0;
+
+  if(assign == NULL){
+    return;
+  }
 
   lval_address = get_ident_address(assign->child[0],gstable,lstable);
   if(assign->child[0]->type == AST_ARRAY_REF){
     get_array_address(assign->child[0],gstable,lstable);
     printf("\tadd    $t9,$zero,$v0\n");
   }
-  //右辺が算術式
-  generate_arithmetic_code(assign->child[1], gstable, lstable);
-   
+  /*
+  if(assign->child[1]->type == AST_NUM){ //右辺が定数
+    assign_value = assign->child[1]->value;
+    printf("\tli     $v0, %d\n",assign_value);
+    set_ident_value(assign->child[0], assign_value,gstable,lstable);
+    #ifdef DEBUG
+    if(assign->child[0]-> type == AST_IDENT){
+    printf("%s value <<<< %d\n",assign->child[0]->name,assign_value);
+    }else
+      printf("%s value <<<< %d\n",assign->child[0]->child[0]->name,assign_value); 
+    #endif
+    }else{*/ //右辺が算術式
+      stack_count = 1;
+    assign_value = generate_arithmetic_code(assign->child[1], gstable, lstable);
+    //set_ident_value(assign->child[0], assign_value,gstable,lstable);
+    //}
   if(assign->child[0]->type == AST_ARRAY_REF){
     printf("\tsw     $v0, 0($t9)\n");
     return;
@@ -706,11 +733,10 @@ void generate_assign_code(Node *assign, Symbols *gstable, Symbols *lstable){
     printf("\tsw     $v0, %d($fp)\n",lval_address);
   return;
 }
-// generate_arithmetic_code
-// 結果は$v0に格納して返す.　
-// 呼び出し側はそれをswしたりオペランドとして使用する.
+
 int generate_arithmetic_code(Node *exp, Symbols *gstable, Symbols *lstable){
   int val_address = 0;
+  Symbols *tmp_symbol;
   
   if(exp == NULL) {
     #ifdef DEBUG
@@ -721,6 +747,7 @@ int generate_arithmetic_code(Node *exp, Symbols *gstable, Symbols *lstable){
   }
 
   if(exp->type == AST_IDENT){
+    //printf("!!!%s!!!\n",exp->name);
     val_address = get_ident_address(exp,gstable,lstable);
     printf("\taddi   $t8, $fp, %d\n",val_address); 
     printf("\tlw     $v0, %d($fp)\n",val_address);
@@ -737,6 +764,17 @@ int generate_arithmetic_code(Node *exp, Symbols *gstable, Symbols *lstable){
     return 0;
   }
   // 以下はexpが演算子だったときに動作
+  /*if(exp->type == AST_INCRE && exp->type == AST_DECRE){
+    tmp_symbol = lstable;
+    while(tmp_symbol!=NULL){
+      if(strcmp(exp->child[0]->name,tmp_symbol->symbolname)==0){
+	break;
+      }else
+	tmp_symbol = tmp_symbol->next;
+    }
+    printf("\tlw     $v0, %d($fp)\n",tmp_symbol->address);
+    printf("\tnop\n");
+  */
   if(exp->child[0] != NULL){
     generate_arithmetic_code(exp->child[0],gstable,lstable);
     printf("\tsw     $v0, -%d($fp)\n",stack_count*4);
@@ -763,27 +801,37 @@ int generate_arithmetic_code(Node *exp, Symbols *gstable, Symbols *lstable){
     printf("\tlw     $v0, -%d($fp)\n",(stack_count-1)*4);
     printf("\tnop\n");
     stack_count--;
-
+    /*
+    if(exp->child[1] != NULL){
+    printf("\tlw     $v1, -%d($fp)\n",(stack_count-1)*4);
+    printf("\tnop\n");
+    }*/
   if(exp->type == AST_ADD){
     printf("\tadd    $v0, $v0, $v1\n");
-   }else if(exp->type == AST_SUB){
+    //stack_count = stack_count - 2;
+  }else if(exp->type == AST_SUB){
     printf("\tsub    $v0, $v0, $v1\n");
-   }else if(exp->type == AST_MUL){
+    //stack_count = stack_count - 2;
+  }else if(exp->type == AST_MUL){
     printf("\tmult   $v0, $v1\n");
     printf("\tmflo   $v0\n");
-   }else if(exp->type == AST_DIV){
+    //stack_count = stack_count - 2;
+  }else if(exp->type == AST_DIV){
     printf("\tdiv    $v0, $v1\n");
     printf("\tmflo   $v0\n");
-    }else if(exp->type == AST_MOD){
+    //stack_count = stack_count - 2;
+   }else if(exp->type == AST_MOD){
     printf("\tdiv    $v0, $v1\n");
     printf("\tmfhi   $v0\n");
-   }else if(exp->type == AST_INCRE){
+    //stack_count = stack_count - 2;
+  }else if(exp->type == AST_INCRE){
     printf("\taddi   $v0, $v0, 1\n");
     printf("\tsw     $v0, 0($t8)\n");
     if(exp->value == 0){
     }else if(exp->value == 1){
       printf("\taddi   $v0, $v0, -1\n");
     }
+    //stack_count = stack_count - 1;
   }else if(exp->type == AST_DECRE){
     printf("\taddi   $v0, $v0, -1\n");
     printf("\tsw     $v0, 0($t8)\n");
@@ -791,9 +839,82 @@ int generate_arithmetic_code(Node *exp, Symbols *gstable, Symbols *lstable){
     }else if(exp->value == 1){
       printf("\taddi   $v0, $v0, 1\n");
     }  
+    //stack_count = stack_count - 1;
   }
+  
+  //printf("\tadd    $v0, $zero ,$v1\n");
   return 0;
 }
+
+int is_primitive_node(Node *node){
+  if(node->type == AST_NUM || node->type == AST_IDENT){
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
+int calc_local_variable_offset(Symbols *lstable, Symbols *sym){
+  int offset = 0;
+
+  // 最初のローカル変数を探す
+  while(lstable->type != SYM_VAR) lstable = lstable->next;
+
+  // symを探す
+  while(lstable->symno != sym->symno){
+    if(lstable->size1 == 0) offset++;
+    else if(lstable->size2 == 0) offset += lstable->size1;
+    else offset += lstable->size1 * lstable->size2;
+    
+    lstable = lstable->next;
+  }
+  return offset * 4;
+}
+
+int calc_argment_offset(Symbols *lstable, Symbols *sym){
+  int offset = 0;
+
+  // 最初の引数を探す
+  while(lstable->type != SYM_ARG_VAR) lstable = lstable->next;
+
+  // sym
+  while(lstable->symno != sym->symno){
+    offset++;
+    lstable = lstable->next;
+  }
+  offset = offset * 4 + calc_local_variables_size_by_table(lstable) + 8;
+  return offset;
+}
+
+// グローバル変数なら$t7にアドレスを格納
+char variable_address_str[100] = {0};
+char *get_variable_address(Node *var, Symbols *gstable, Symbols *lstable){
+  Symbols *sym;
+
+  if(var == NULL){
+    return NULL;
+  }
+
+  if(var->type == AST_IDENT){
+    sym = sym_lookup_entry(lstable, var->value);
+    if(sym == NULL){ // global
+      sym = sym_lookup_entry(gstable, var->value);
+      printf("\tla $t7, %s\n", sym->symbolname);
+      sprintf(variable_address_str, "0($t7)");
+    } else { // local or arg
+      if(sym->type == SYM_VAR){ // local
+	sprintf(variable_address_str, "%d($sp)",
+		calc_local_variable_offset(lstable, sym));
+      } else if(sym->type == SYM_ARG_VAR){ // arg
+	sprintf(variable_address_str, "%d($sp)",
+		calc_argment_offset(lstable, sym));
+      }
+    }
+  }
+  return variable_address_str;
+}
+
+// $t2 <- $t0 op $t1
 
 void set_ident_address(Symbols *lstable, int func_arg_size, int stack_size){
   int arg_count = 0;
@@ -830,13 +951,6 @@ void set_ident_address(Symbols *lstable, int func_arg_size, int stack_size){
       }else if(tmp_table->array_flag == 2){
 	tmp_table->address = 16 + func_arg_size + var_count * 4;
 	var_count += tmp_table->size1 * tmp_table->size2;
-	#ifdef DEBUG
-	printf("\x1b[31m");     /* 前景色を青に */
-	printf("\x1b[1m"); // 太文字出力
-	printf("%s: address is %d($fp) < set_ident_address\n",tmp_table->symbolname,tmp_table->address);
-	printf("\x1b[0m");
-	printf("\x1b[39m");     /* 前景色をデフォルトに戻す */
-	#endif
       }else{
 	#ifdef DEBUG
 	printf("\x1b[31m");     /* 前景色を青に */
@@ -854,9 +968,38 @@ void set_ident_address(Symbols *lstable, int func_arg_size, int stack_size){
 int get_ident_address(Node *node, Symbols *gstable, Symbols *lstable){
   Symbols *tmp_symbol;
   char* ident_name;
-  
+  int array_flag;
+
   if(node == NULL) return -1;
-  if(node->type == AST_IDENT){
+
+  if(node->type == AST_ARRAY_REF){
+    if((ident_name = sym_lookup_name(lstable, node->child[0]->value)) == NULL){
+      ident_name = sym_lookup_name(gstable, node->child[0]->value);
+      printf("\tglobal val: %s\n",ident_name);
+      return -1;
+    }
+    tmp_symbol = lstable;
+  while(tmp_symbol != NULL){
+    if(strcmp(tmp_symbol->symbolname, ident_name) == 0){
+      array_flag = tmp_symbol->array_flag;
+      break;
+    }else{
+	tmp_symbol = tmp_symbol->next;
+    }
+  }
+  
+  if(array_flag == 1){
+    if(node->child[1]->type == AST_NUM){
+      return tmp_symbol->address + node->child[1]->value*4;
+    }else if(node->child[1]->type == AST_IDENT){
+    }else if(node->child[1]->type == AST_ARRAY_REF){
+    }
+  }else if(array_flag == 2){
+    //printf("2 array\n");
+  }
+  return 100;
+
+  }else if(node->type == AST_IDENT){
     if((ident_name = sym_lookup_name(lstable, node->value)) == NULL){
       ident_name = sym_lookup_name(gstable, node->value);
       printf("\tglobal val: %s\n",ident_name);
@@ -880,6 +1023,7 @@ int get_ident_address(Node *node, Symbols *gstable, Symbols *lstable){
   printf("\x1b[39m");     /* 後景色をデフォルトに戻す */  
   #endif
   return -1;
+  
 }
 
 void get_array_address(Node *array_ref, Symbols *gstable, Symbols *lstable){
@@ -930,181 +1074,38 @@ void get_array_address(Node *array_ref, Symbols *gstable, Symbols *lstable){
     printf("\tadd    $v0, $v1,$v0\n");
     stack_count--;
   }
-}
-//label_count is groval
-void generate_while_code(Node *while_node, Symbols *gstable, Symbols *lstable){
-  Node *stat_list;
-  char label_name[100]={0};
-  int keep_label = label_count;
-  label_count++;
-  /*
-    while(exp_part){
-       statements_area
-    }
-   */
-  if(while_node == NULL) return;
-
-  sprintf(label_name, "while_L1_%d", keep_label);
   
-  printf("\tj      while_L2_%d\n",keep_label);
-  printf("while_L1_%d:\n", keep_label);
-  //statements_area
-  if(while_node->child[1]->type == AST_STAT_LIST){
-    printf("aaa\n");
-    #ifdef DEBUG
-    printf("\x1b[33m");     /* 前景色を黄色に */
-    printf("/* stat_list */\n");
-    printf("\x1b[39m");     /* 前景色をデフォルトに戻す */
-    #endif
-    stat_list = while_node->child[1];
-    while(stat_list != NULL){
-      generate_statement_code(stat_list->child[0],gstable,lstable);
-      stat_list = stat_list->child[1];
-    }
-  }else { //statement が　一行のみの場合
-    printf("bbb\n");
-    #ifdef DEBUG
-    printf("\x1b[33m");     /* 前景色を黄色に */
-    printf("/* statement %s */\n",get_ntype_name(while_node->child[1]->type));
-    printf("\x1b[39m");     /* 前景色をデフォルトに戻す */
-    #endif
-    generate_statement_code(while_node->child[1],gstable, lstable);
-  }
-  printf("while_L2_%d:\n", keep_label);
-  //exp_part
-  generate_expression_code(while_node->child[0],gstable,lstable,label_name, 1);
-
 }
 
-void generate_expression_code(Node *exp, Symbols *gstable, Symbols *lstable, char *label_name, int bool){
-  if(exp == NULL) return;
+void set_ident_value(Node *node, int value, Symbols *gstable, Symbols *lstable){
+  char *name;
+  Symbols *tg_sym;
 
-  generate_arithmetic_code(exp->child[1],gstable,lstable);
-  printf("\tadd    $t7, $v0, $zero\n"); 
-  generate_arithmetic_code(exp->child[0],gstable,lstable);
-
-  printf("\tadd    $v1, $t7, $zero\n");
-  if(bool == 1){
-    if(exp->type == AST_EQ){
-      printf("\tbeq  $v0, $v1, %s\n", label_name);
-      printf("\tnop\n");
-    } else if(exp->type == AST_LESS){
-      printf("\tslt  $v0, $v0, $v1\n");
-      printf("\tbne  $v0, $zero, %s\n", label_name);
-      printf("\tnop\n");
-    } else if(exp->type == AST_GR){
-      printf("\tslt  $v0, $v1, $v0\n");
-      printf("\tbne  $v0, $zero, %s\n", label_name);
-      printf("\tnop\n");
-    } else if(exp->type == AST_LSEQ){
-      printf("\tslt  $v0, $v1, $v0\n");
-      printf("\tbeq  $v0, $zero, %s\n", label_name);
-      printf("\tnop\n");
-    } else if(exp->type == AST_GREQ){
-      printf("\tslt  $v0, $v0, $v1\n");
-      printf("\tbeq  $v0, $zero, %s\n", label_name);
-      printf("\tnop\n");
-    }
-  }else if(bool == 0){
-    if(exp->type == AST_EQ){
-      printf("\tbne  $v0, $v1, %s\n", label_name);
-      printf("\tnop\n");
-    } else if(exp->type == AST_LESS){
-      printf("\tslt  $v0, $v0, $v1\n");
-      printf("\tbeq  $v0, $zero, %s\n", label_name);
-      printf("\tnop\n");
-    } else if(exp->type == AST_GR){
-      printf("\tslt  $v0, $v1, $v0\n");
-      printf("\tbeq  $v0, $zero, %s\n", label_name);
-      printf("\tnop\n");
-    } else if(exp->type == AST_LSEQ){
-      printf("\tslt  $v0, $v1, $v0\n");
-      printf("\tbne  $v0, $zero, %s\n", label_name);
-      printf("\tnop\n");
-    } else if(exp->type == AST_GREQ){
-      printf("\tslt  $v0, $v0, $v1\n");
-      printf("\tbne  $v0, $zero, %s\n", label_name);
-      printf("\tnop\n");
-    }
-  }else {
-    #ifdef DEBUG
-    printf("\x1b[31m");
-    printf("ERROR: in generate_expression code: invalid argument \"bool\" passed\n");
-    printf("\x1b[39m");
-    #endif
-  }
-}
-
-void generate_if_code(Node *if_node, Symbols *gstable, Symbols *lstable, int skip){
-  Node *stat_list;
-  char skip_name[100] = {0};
-  int keep_skip = skip;
-  
-  if(if_node == NULL) return;
-  
-  
-  sprintf(skip_name, "if_L%d", skip_count);
-  skip_count++;
-  generate_expression_code(if_node->child[0], gstable, lstable, skip_name, 0);
-  
-  stat_list = if_node->child[1];
-  if(stat_list->type == AST_STAT_LIST){
-    while(stat_list != NULL){
-      generate_statement_code(stat_list->child[0], gstable, lstable);
-      stat_list = stat_list->child[1];
-    }
+  if(node->type == AST_IDENT){
+    name = node->name;
   }else{
-    generate_statement_code(stat_list, gstable, lstable);
+    name = node->child[0]->name;
   }
-  printf("\tj      if_end_L%d\n", keep_skip);
-  printf("%s:\n",skip_name);
-  if(if_node->child[2] != NULL){
-    if(if_node->child[2]->type == AST_IF){
-      generate_if_code(if_node->child[2], gstable, lstable,keep_skip);
-    }else{ //AST_STAT_LIST or STAT
-      stat_list = if_node->child[2];
-      if(stat_list->type == AST_STAT_LIST){
-	while(stat_list != NULL){
-	  generate_statement_code(stat_list->child[0], gstable, lstable);
-	  stat_list = stat_list->child[1];
-	}
-      }else{
-	generate_statement_code(stat_list, gstable, lstable);
-      }
-    }
+  
+  tg_sym = lstable;
+  while(tg_sym != NULL){
+    if(strcmp(name,tg_sym->symbolname) == 0){
+      tg_sym->value = value;
+      return;
+    }else
+      tg_sym = tg_sym->next;
   }
+  tg_sym = gstable;
+  while(tg_sym != NULL){
+    if(strcmp(name,tg_sym->symbolname) == 0){
+      tg_sym->value = value;
+      return;
+    }else
+      tg_sym = tg_sym->next;
+  }
+  
 }
 
-void generate_for_code(Node *for_node, Symbols *gstable, Symbols *lstable){
-  int keep_count = for_count;
-  Node *stat_list;
-  char for_name[100]={0};
-  for_count += 2;
-
-  if(for_node == NULL) return;
+void array_resolution(Node array_ref){
   
-  //for_init 必ずAST_ASSIGN
-  generate_statement_code(for_node->child[0], gstable, lstable);
-  
-  printf("\tj      for_L%d\n",keep_count+1);
-  sprintf(for_name,"for_L%d",keep_count);
-  printf("%s:\n",for_name);
-  
-  //stat_list
-  stat_list = for_node->child[3];
-  if(stat_list->type == AST_STAT_LIST){
-    while(stat_list != NULL){
-      generate_statement_code(stat_list->child[0], gstable, lstable);
-      stat_list = stat_list->child[1];
-    }
-  }else{
-    generate_statement_code(stat_list, gstable, lstable);
-  }
-
-  //for_update
-  generate_arithmetic_code(for_node->child[2], gstable, lstable);
-  printf("for_L%d:\n",keep_count+1);
-
-  //for_exp
-  generate_expression_code(for_node->child[1], gstable, lstable, for_name, 1);
 }

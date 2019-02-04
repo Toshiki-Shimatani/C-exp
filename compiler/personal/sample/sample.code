@@ -1,4 +1,3 @@
-define a;
 func main(){
 
 define i;
@@ -10,5 +9,4 @@ while(i < 11) {
    sum = sum + i;
    i = i + 1;
 }
- a = sum;	
-}
+	

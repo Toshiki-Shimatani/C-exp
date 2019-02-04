@@ -566,7 +566,7 @@ parameter_list : arithmetic_expression COMMA parameter_list { $$ = make_nchild_n
                | arithmetic_expression { $$ = make_nchild_node(AST_PARAM_LIST, $1, NULL); }
 ;
 %%
-int main(int argc, char* argv[]){
+int main(){
   global_stable = sym_add(global_stable, "global", SYM_KEYWORD, 0, 0);
   stable = global_stable;
   if(yyparse()){
@@ -581,14 +581,12 @@ int main(int argc, char* argv[]){
     printf("\x1b[39m");     /* 前景色をデフォルトに戻す */
     printf("Stopped compiling\n");
     return 1;
-  }
-  if(argc > 1){
-  printf("tree\n");
-  print_ast_tree(top, global_stable, global_stable, 0);
-  printf("symbol table\n");
-  print_symbol_table(global_stable, 0);
-  printf("code\n");
-  }
+  }  
+  //printf("tree\n");
+  //print_ast_tree(top, global_stable, global_stable, 0);
+  //printf("symbol table\n");
+  //print_symbol_table(global_stable, 0);
+  //printf("code\n");
   generate_program_code(top, global_stable);
   return 0;
 }

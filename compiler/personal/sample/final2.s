@@ -30,7 +30,7 @@ main:
 	sw    $a2, 40($sp)
 	sw    $a3, 44($sp)
 main_body:
-	li     $v0, 0
+	li     $v0, 1
 	sw     $v0, 20($fp)
 	li     $v0, 1
 	sw     $v0, 16($fp)
@@ -48,7 +48,8 @@ while_L1_0:
 	nop
 	lw     $v0, -4($fp)
 	nop
-	add    $v0, $v0, $v1
+	mult   $v0, $v1
+	mflo   $v0
 	sw     $v0, 20($fp)
 	addi   $t8, $fp, 16
 	lw     $v0, 16($fp)
@@ -63,7 +64,7 @@ while_L1_0:
 	add    $v0, $v0, $v1
 	sw     $v0, 16($fp)
 while_L2_0:
-	li     $v0, 11
+	li     $v0, 6
 	add    $v1, $v0, $zero
 	addi   $t8, $fp, 16
 	lw     $v0, 16($fp)

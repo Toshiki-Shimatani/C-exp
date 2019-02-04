@@ -16,14 +16,6 @@ func quicksort(array a[], define l, define r){
     funccall quicksort(a, i+1, r);
     }
 }
-func alt(){
-     define a;
-     a = a+a;
-}
-func alt(){
-     define a;
-     a = a+a;
-}
 
 func main(){
     array data[10];
