@@ -379,10 +379,196 @@ MAPSに通したいときには，コメントアウト一つで余分な出力�
 \section{最終課題を解くために(定義した言語で)書いたプログラムの概要}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{yaccプログラム: langspec.y}
+##
+\subsubsection{定義部}
+プログラム中で登場する終端記号および非終端記号の型が定義されている.
+主にノードかオペランドかの二種類となる.
+\subsubsection{規則部}
+通常の書き方に応じて記述を行った.数値に関してはlexレベルでは記号に未対応とさせ，
+yaccレベルで対応させている.これにより，配列の中で式が要素として与えられた際に，
+オペランド同士の隙間がなくても読み取ることができる.
+\subsubsection{ユーザ定義サブルーチン部}
+ここでは入力されたテキストを読み込んで，それが規則部で記述したとおりに構文が構成され
+ているかを調べ，エラーが生じたら途中でエラー出力とともにプログラムを終了し，
+エラーがなければ抽象構文木生成，シンボルテーブルの表示，コード生成を行う.
+いつも抽象構文木とシンボルテーブルの表示が行われると不便であるため，
+コマンドライン引数としてなんらかの引数を渡した場合のみ実行されるように改良した.
+そのため，引数になにも与えずにプログラムを実行すると，コード生成のみが行われる.
+##
 \subsection{lexプログラム: langspec.l}
+##
+\subsubsection{定義部}
+使用するヘッダファイルを記述している.抽象構文木作成のための関数を字句解析レベルで
+使用するため，``ast.h''も含まれている.
+\subsubsection{規則部}
+入力文字列に対して，適切な終端記号を返す.また関数の局所変数テーブルを作成するために，
+この段階で記号表のルート部分をこの段階で作成している.また数値に関しては，
+字句解析段階で数値ノードとして作成する.
+\subsubsection{ユーザ定義サブルーチン部}
+lexレベルでは何もしない.
+##
 \subsection{抽象構文木作成およびコード生成プログラム: ast.c}
-\subsection{ast.c のヘッダ: ast.h}
+##
+\subsubsection{抽象構文木生成プログラム}
+以下の関数を用いて抽象構文木を生成し，出力する.
+各プログラムに関して，それぞれ簡単な説明を行う.
+\begin{itemize}
+\item \verb|make_num_node|
+\begin{itemize}
+数字ノードを作成する.返り値はNode*型.Node型に関する説明はヘッダファイルの部分で行う.
+Node型のメンバvalueに整数値を格納して返す.
+\end{itemize}
+\item \verb|make_ident_node|
+\begin{itemize}
+識別子ノードを作成する.識別子ノードに該当するのは関数や変数，配列などである.
+Node型のメンバvalueにユニークなシンボルナンバーを格納して返す.
+\end{itemize}
+\item \verb|make_new_ident_node|
+\begin{itemize}
+配列の宣言時に使用.機能は\verb|make_ident_node|と変わらないが，
+配列宣言用に改造されている.
+\end{itemize}
+\item \verb|make_nchild_node|
+\begin{itemize}
+ノードの子ノードを生成する際に使用.第２引数のノードを親とし，以降の引数のノードを
+子とする.
+\end{itemize}
+\item \verb|get_child_num|
+\begin{itemize}
+ノードタイプによる子の数を取得する.
+\end{itemize}
+\item \verb|sym_lookup|
+\begin{itemize}
+名前から識別子のシンボルナンバーを取得する.
+\end{itemize}
+\item \verb|sym_add|
+\begin{itemize}
+記号表に識別子を加える関数である.
+\end{itemize}
+\item \verb|sym_lookup_name|
+\begin{itemize}
+識別子のシンボルナンバーから識別子の名前を取得する.
+\end{itemize}
+\item \verb|sym_lookup_entry|
+\begin{itemize}
+関数の局所変数テーブルの先頭を取得するために使用する.
+\end{itemize}
+\item \verb|get_ntype_name|
+\begin{itemize}
+構文木出力でしようする.ノードのタイプから名前を返す.
+\end{itemize}
+\item \verb|print_ast_tree|
+\begin{itemize}
+作成されたノード集合から構文木を出力する.
+\end{itemize}
+\item \verb|print_symbol_table|
+\begin{itemize}
+作成された記号表を出力する.それぞれの記号のシンボルナンバーも同時に出力する.
+\end{itemize}
+\end{itemize}
+##
+\subsubsection{コード生成プログラム}
+以下の関数を用いてコード生成し，出力する.
+各プログラムに関して，それぞれ簡単な説明を行う.
+\item \verb|calc_arg_node_depth|
+\begin{itemize}
+関数の引数の数を取得する.
+\end{itemize}
+\item \verb|generate_program_code|
+\begin{itemize}
+コード生成の開始関数.この関数から順にコード生成関数を呼び出していく.
+\end{itemize}
+\item \verb|generate_initial_code|
+\begin{itemize}
+コード生成にあたり，最初に書くべきコードを生成する.
+\end{itemize}
+\item \verb|generate_function_list_code|
+\begin{itemize}
+関数の数だけ関数のコード生成を行う.
+\end{itemize}
+\item \verb|generate_function_code|
+\begin{itemize}
+関数に対応するコード生成を行う.開始処理，メイン処理，終了処理の3部分で構成される.
+\end{itemize}
+\item \verb|calc_local_variable_size|
+\begin{itemize}
+関数における局所変数領域のサイズを計算する関数.スタックの確保に使用する.
+\end{itemize}
+\item \verb|generate_gloval_variables_definitions|
+\begin{itemize}
+大域変数の宣言に関するコードを生成する.
+\end{itemize}
+\item \verb|generate_statement_code|
+\begin{itemize}
+文に対応するそれぞれの関数を呼び出す.
+\end{itemize}
+\item \verb|generate_assign_code|
+\begin{itemize}
+代入文に対応するコードを生成する.
+\end{itemize}
+\item \verb|generate_arithmetic_code|
+\begin{itemize}
+算術式に対応するコードを生成する.
+\end{itemize}
+\item \verb|set_ident_address|
+\begin{itemize}
+変数や配列にアドレスを割り当てる.
+\end{itemize}
+\item \verb|get_ident_address|
+\begin{itemize}
+変数のアドレスを取得する.
+\end{itemize}
+\item \verb|get_array_address|
+\begin{itemize}
+配列のアドレスを取得する.
+\end{itemize}
+\item \verb|generate_while_code|
+\begin{itemize}
+while文に対応するコードを生成する.
+\end{itemize}
+\item \verb|generate_expression_code|
+\begin{itemize}
+ループ文や条件分岐における式評価を行うコードを生成する.
+\end{itemize}
+\item \verb|generate_if_code|
+\begin{itemize}
+if文に対応するコードを生成する.
+\end{itemize}
+\item \verb|generate_for_code|
+\begin{itemize}
+for文に対応するコードを生成する.
+\end{itemize}
+\item \verb|generate_funccall_code|
+\begin{itemize}
+関数呼び出しに対応するコードを生成する.
+\end{itemize}
 
+\begin{itemize}
+\end{itemize}
+\end{itemize}
+##
+\subsection{ast.c のヘッダ: ast.h}
+##
+抽象構文木やコード生成で用いる列挙型や構造体の定義や，関数のプロトタイプ宣言が記述してある.
+作成したが使用していないものもそのまま残してある.例えば，構造体の``Fours'' は四つ組中間表現の
+実装に向けて使用する予定だったが，スタック方式を採用したため，使用していない.
+
+またここで構造体Nodeの説明を行う.これは抽象構文木におけるノードを表す構造体である.
+メンバは以下のとおりである.
+\begin{itemize}
+\item  Ntype type
+\item  int value 
+\item  int value2
+\item  char *name
+\item  int n\_child
+\item  struct node **child
+\end{itemize}
+typeにはノードの種類が，valueにはノードに対応する値が格納され，識別子などの場合は
+nameに変数名，関数名などが格納される.n\_childは子の数であり，childは子ノードへの
+アクセスに利用する.
+
+
+##
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{最終課題の実行結果}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -491,12 +677,25 @@ MAPSに通したいときには，コメントアウト一つで余分な出力�
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{考察}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-ステップ数からわかるように非常に実行命令数が多い．これは値を取り出す一つ一つにスタックの出し入れ操作が含まれているから
+ステップ数からわかるように実行命令数が多い．これは値を取り出す一つ一つにスタックの出し入れ操作が含まれているから
 である．また，最終課題3の改良前と改良後でステップ数が3分の1程減少している．これは算術式の中に現れる変数や定数項の数が減ったためである．
 このことから，一つの演算子や項に対するステップ数の依存度の高さが読み取れる．そのため，最適化や適切なレジスタ操作を
 行わない，性能の低いコンパイラによって生成されたプログラムのコードはステップ数が増え，性能が悪化することが分かる．
 
+##
+作成過程で気づいたこともいくつか存在する。C言語においては関数の順番は使用する順に定義する
+必要がある。順番を気にせずにプログラムの作成を行うにはプロトタイプ宣言が必要となる。
+これは関数のスタックエリア確保の際に，スタックサイズを計算するために，関数の引数の
+種類と数が必要になるためであると考えることができる. 呼び出し側関数のスタックを確保する
+際に，関数中に登場する関数呼び出しで呼ばれる関数の引数が4つ以上の場合，新たにスタックエリア
+を確保しなければならない(図1でのAdditional Stack Area). 
 
+また，MIPS規約に存在する倍語長境界を維持するというルールであるが，これは倍語長を
+扱う際に，実装上最大のデータ単位で考えることで，データ型の違いによるスタック確保
+の処理の違いを吸収する意味があるのではないかと考えた. そのため，あらゆるデータを32bit
+単位で扱う今回のコンパイラではあまり意味のないルールとなっているのではないかと考えられる.
+
+##
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{ソースプログラムのある場所}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -508,6 +707,14 @@ MAPSに通したいときには，コメントアウト一つで余分な出力�
 
 /home/users/ecs/09428526/git/C-exp/compiler/personal/sample
 
+##
+ファイルはそれぞれ以下に対応する
+\begin{itemize}
+\item yacc:　langspec.y
+\item tex:　langspec.l
+\item 抽象構文木作成プログラム:　ast.c
+\item 抽象構文木ヘッダファイル:　ast.h
+\end{itemize}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{最終課題およびコード生成に成功したプログラム}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
